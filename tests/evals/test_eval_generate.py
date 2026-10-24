@@ -24,6 +24,7 @@ from pc_diag_mcp.models import (
     RootCauseCategory,
     SensorSnapshot,
 )
+from pc_diag_mcp.record import Scrubber
 
 EVENTS = TypeAdapter(list[EventRecord])
 SENSORS = TypeAdapter(list[SensorSnapshot])
@@ -48,8 +49,14 @@ def generated(tmp_path_factory: pytest.TempPathFactory) -> Path:
 
 
 @pytest.fixture(scope="module")
-def cases(generated: Path) -> list[EvalCase]:
+def all_cases(generated: Path) -> list[EvalCase]:
     return load_cases(generated / "cases.jsonl")
+
+
+@pytest.fixture(scope="module")
+def cases(all_cases: list[EvalCase]) -> list[EvalCase]:
+    """The synthetic cases; recorded ones are covered by their own tests below."""
+    return [c for c in all_cases if c.source == "synthetic"]
 
 
 def _scenario_dir(root: Path, case: EvalCase) -> Path:
@@ -428,3 +435,111 @@ def test_cases_jsonl_lines_are_compact_json(generated: Path) -> None:
     for line in lines:
         obj = json.loads(line)
         assert list(obj) == ["id", "split", "question", "scenario", "expected", "tags", "source"]
+
+
+# --------------------------------------------------------------------------- #
+# recorded cases (hand-labelled scrubbed captures under scenarios/rec-*)
+# --------------------------------------------------------------------------- #
+
+RECORDED_IDS = ["rec-001", "rec-002"]
+
+
+def _recorded_events(case_id: str) -> list[EventRecord]:
+    path = generate.REPO_ROOT / "evals" / "scenarios" / case_id / "events.json"
+    return EVENTS.validate_json(path.read_bytes())
+
+
+def test_recorded_cases_follow_the_synthetic_ones(all_cases: list[EvalCase]) -> None:
+    assert [c.id for c in all_cases] == [s.id for s in SPECS] + RECORDED_IDS
+    for case in all_cases[len(SPECS) :]:
+        assert case.source == "recorded"
+        assert case.split == "test"
+        assert case.scenario == f"evals/scenarios/{case.id}"
+        sdir = generate.REPO_ROOT / case.scenario
+        assert {p.name for p in sdir.iterdir()} <= ALLOWED_FILES
+        scenario = ReplayScenario.model_validate_json((sdir / "scenario.json").read_bytes())
+        assert scenario.id == case.id
+        assert _recorded_events(case.id)
+        assert ("ambiguous" in case.tags) == (len(case.expected.acceptable) > 1)
+
+
+def test_recorded_cases_do_not_leak_answers(all_cases: list[EvalCase]) -> None:
+    words = {c.value.replace("_", " ") for c in RootCauseCategory} | {"bugcheck", "0x"}
+    for case in all_cases[len(SPECS) :]:
+        meta = (generate.REPO_ROOT / case.scenario / "scenario.json").read_text("utf-8").lower()
+        for word in words:
+            assert word not in case.question.lower(), (case.id, word)
+            assert word not in meta.replace("_", " "), (case.id, word)
+
+
+def test_recorded_scenarios_hold_the_labelled_evidence() -> None:
+    crash = _recorded_events("rec-001")
+    kp41 = [e for e in crash if e.provider == "Microsoft-Windows-Kernel-Power" and e.event_id == 41]
+    assert [e.data["BugcheckCode"] for e in kp41] == ["159"]  # 0x9F
+    assert kp41[0].data["PowerButtonTimestamp"] == "0"
+    assert any(
+        e.provider == "Microsoft-Windows-WER-SystemErrorReporting" and "0x0000009f" in e.message
+        for e in crash
+    )
+
+    dumps = _recorded_events("rec-002")
+    live = [e for e in dumps if "LiveKernelEvent" in e.message]
+    assert [e.data["P1"] for e in live] == ["1b0", "1b0", "1b0"]
+    assert {e.data["P2"] for e in live} == {"2"}  # start device failed
+    assert not [e for e in dumps if e.provider == "Display" and e.event_id == 4101]
+    assert not [e for e in dumps if e.event_id == 41 and "Kernel-Power" in e.provider]
+
+
+def test_recorded_scenarios_are_scrubbed() -> None:
+    scrubber = Scrubber()
+    for case_id in RECORDED_IDS:
+        sdir = generate.REPO_ROOT / "evals" / "scenarios" / case_id
+        for path in sdir.iterdir():
+            assert scrubber.findings(json.loads(path.read_text("utf-8"))) == [], path
+
+
+def test_generate_and_check_leave_recorded_dirs_alone(tmp_path: Path) -> None:
+    rec = tmp_path / "scenarios" / "rec-900"
+    rec.mkdir(parents=True)
+    (rec / "scenario.json").write_text("hand-made", encoding="utf-8")
+    generate.generate(tmp_path)
+    assert (rec / "scenario.json").read_text(encoding="utf-8") == "hand-made"
+    (rec / "notes.json").write_text("[]", encoding="utf-8")
+    assert generate.check(tmp_path) == []
+
+
+def _recorded_line(**overrides: object) -> str:
+    case: dict[str, object] = {
+        "id": "rec-001",
+        "split": "test",
+        "question": "What happened?",
+        "scenario": "evals/scenarios/rec-001",
+        "expected": {"primary": "power_loss", "acceptable": ["power_loss"]},
+        "tags": [],
+        "source": "recorded",
+    }
+    case.update(overrides)
+    return json.dumps(case) + "\n"
+
+
+@pytest.mark.parametrize(
+    ("overrides", "message"),
+    [
+        ({"split": "dev"}, "split"),
+        ({"source": "synthetic"}, "source"),
+        ({"id": "syn-900", "scenario": "evals/scenarios/syn-900"}, "rec-"),
+        ({"scenario": "evals/scenarios/rec-002"}, "scenario must be"),
+        ({"id": "rec-999", "scenario": "evals/scenarios/rec-999"}, "missing"),
+    ],
+)
+def test_load_recorded_rejects_bad_cases(
+    tmp_path: Path, overrides: dict[str, object], message: str
+) -> None:
+    path = tmp_path / "recorded.jsonl"
+    path.write_text(_recorded_line(**overrides), encoding="utf-8")
+    with pytest.raises(ValueError, match=message):
+        generate.load_recorded(path)
+
+
+def test_load_recorded_without_a_file(tmp_path: Path) -> None:
+    assert generate.load_recorded(tmp_path / "absent.jsonl") == []

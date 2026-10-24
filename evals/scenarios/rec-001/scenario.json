@@ -1,0 +1,24 @@
+{
+  "id": "rec-001",
+  "description": "Recorded window from a Windows 11 laptop (Intel CPU and iGPU, NVIDIA RTX 5070 Ti Laptop GPU).",
+  "now": "2026-10-24T02:23:20.073369Z",
+  "system": {
+    "os_caption": "Microsoft Windows 11 Home",
+    "os_build": "26200.9711",
+    "gpus": [
+      {
+        "name": "Intel(R) Graphics",
+        "vendor": "intel",
+        "driver_version": "32.0.101.8509",
+        "driver_date": "2026-02-05"
+      },
+      {
+        "name": "NVIDIA GeForce RTX 5070 Ti Laptop GPU",
+        "vendor": "nvidia",
+        "driver_version": "32.0.16.1742",
+        "driver_date": "2026-09-30"
+      }
+    ],
+    "utc_offset_minutes": -360
+  }
+}
