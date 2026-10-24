@@ -26,6 +26,7 @@ agent = [
 
 [project.scripts]
 pc-diag-mcp = "pc_diag_mcp.server:main"
+tdr-detective = "tdr_agent.cli:main"
 
 [dependency-groups]
 dev = [
