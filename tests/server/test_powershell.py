@@ -23,7 +23,7 @@ from pc_diag_mcp.collectors.powershell import (
 )
 from pc_diag_mcp.models import EventLevel, EventQuery, GpuVendor, TimeWindow
 
-from .conftest import FakeRunner, envelope, no_lhm, sample, which_all
+from .conftest import FakeRunner, envelope, no_lhm, which_all
 
 NOW = datetime(2026, 10, 23, 12, 0, tzinfo=UTC)
 WINDOW = TimeWindow(start=NOW - timedelta(days=120), end=NOW)
@@ -145,7 +145,7 @@ def test_events_error_paths(
 
 def test_missing_powershell_is_unavailable(runner: FakeRunner) -> None:
     collector = make(runner, which=lambda name: None)
-    with pytest.raises(CollectorUnavailable, match="powershell.exe unavailable: not found on PATH"):
+    with pytest.raises(CollectorUnavailable, match=r"powershell\.exe unavailable: not found"):
         collector.system_info()
 
 
@@ -242,8 +242,10 @@ def test_sensors_prefers_lhm_and_reports_every_failure(runner: FakeRunner) -> No
     assert snapshot.readings[0].hardware == "NVIDIA GeForce RTX 5070 Ti Laptop GPU"
     assert snapshot.unavailable == [
         "nvidia-smi not found on PATH",
-        "ACPI thermal zones (Win32_PerfFormattedData_Counters_ThermalZoneInformation): Invalid class",
-        "GPU engine counters (Win32_PerfFormattedData_GPUPerformanceCounters_GPUEngine): no readings",
+        "ACPI thermal zones (Win32_PerfFormattedData_Counters_ThermalZoneInformation): "
+        "Invalid class",
+        "GPU engine counters (Win32_PerfFormattedData_GPUPerformanceCounters_GPUEngine): "
+        "no readings",
     ]
 
 

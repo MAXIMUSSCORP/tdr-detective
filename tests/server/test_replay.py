@@ -176,7 +176,7 @@ def test_missing_optional_files_are_unavailable(tmp_path: Path) -> None:
 def test_missing_required_or_invalid_files(tmp_path: Path) -> None:
     with pytest.raises(CollectorError, match="not found"):
         ReplayCollector(tmp_path / "nope")
-    with pytest.raises(CollectorError, match="missing events.json"):
+    with pytest.raises(CollectorError, match=r"missing events\.json"):
         ReplayCollector(write_replay(tmp_path / "noevents"))
-    with pytest.raises(CollectorError, match="invalid events.json"):
+    with pytest.raises(CollectorError, match=r"invalid events\.json"):
         ReplayCollector(write_replay(tmp_path / "bad", events=[{"record_id": "x"}]))
