@@ -4,6 +4,8 @@ from __future__ import annotations
 
 from datetime import datetime
 
+from pydantic import Field
+
 from pc_diag_mcp.collectors.base import CollectionManifest, Collector, collect
 from pc_diag_mcp.collectors.eventxml import sanitize_label, sanitize_text
 from pc_diag_mcp.collectors.parsers import PROCESS_SORT_KEYS
@@ -14,6 +16,7 @@ from pc_diag_mcp.models import (
     SensorSnapshot,
     SystemInfo,
     TimeWindow,
+    UtcDatetime,
 )
 from pc_diag_mcp.tools.params import (
     DriverInventoryParams,
@@ -48,6 +51,10 @@ class DxDiagResult(UntrustedResult):
 
 class SystemInfoResult(UntrustedResult):
     system: SystemInfo
+    now: UtcDatetime = Field(
+        description="The host's current time (UTC); resolve relative times such as 'tonight' "
+        "or 'at 9:42' against it, not your own clock."
+    )
     collection: CollectionManifest
 
 
@@ -169,4 +176,4 @@ def system_info(collector: Collector) -> SystemInfoResult:
     """OS caption and build, GPUs with driver versions, and the local UTC offset."""
     info, manifest = collect(collector, collector.system_info)
     info = _sanitize_system(info)
-    return SystemInfoResult(system=info, collection=manifest)
+    return SystemInfoResult(system=info, now=collector.now(), collection=manifest)

@@ -510,6 +510,9 @@ class PowerShellCollector:
         except ValidationError as exc:
             raise CollectorError(f"drivers.ps1 returned malformed data: {exc}") from exc
 
+    def now(self) -> datetime:
+        return datetime.now(UTC)
+
     def system_info(self) -> SystemInfo:
         data = self._invoke("system_info.ps1", {})
         try:

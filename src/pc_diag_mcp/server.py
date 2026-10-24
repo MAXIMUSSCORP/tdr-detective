@@ -133,9 +133,10 @@ def create_server(collector: Collector) -> FastMCP:
 
     @register(
         "system_info",
-        "OS caption and build (with UBR), every GPU with vendor and driver version/date, and "
-        "utc_offset_minutes (local = UTC + offset). Call this first: convert a user's local "
-        "time to UTC with UTC = local - offset before querying any window.",
+        "OS caption and build (with UBR), every GPU with vendor and driver version/date, "
+        "utc_offset_minutes (local = UTC + offset), and now: the host's current time in UTC. "
+        "Call this first. Take today's date from now, never from your own clock, then convert "
+        "the user's local time to UTC with UTC = local - offset before querying any window.",
     )
     def system_info() -> tools.SystemInfoResult:
         return tools.system_info(collector)
