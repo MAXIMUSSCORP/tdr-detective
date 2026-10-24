@@ -1,14 +1,18 @@
 """Run one triage question through Claude with the pc-stability-triage skill.
 
 The agent sees exactly three capabilities: the ``pc-diag`` MCP tools, the project skill,
-and ``python <skill>/scripts/compress_events.py``. The base tool set is limited to Bash and
-Skill, every editing/network/subagent tool is disallowed, the allow rules cover only the
-three capabilities, and ``can_use_tool`` denies anything else that reaches a permission
-prompt. Nothing in a triage run can change the machine.
+and ``python <skill>/scripts/compress_events.py <saved files>``. The base tool set is
+limited to Bash and Skill and every editing/network/subagent tool is disallowed. Allow rules
+cover only the MCP tools and the skill. Bash deliberately has no allow rule: a CLI prefix
+rule would also admit the compressor's ``--map PATH`` (an arbitrary file write), so every
+Bash call reaches ``can_use_tool``, which parses it strictly and denies anything else. A
+``PreToolUse`` hook applies the same check to every call, including any the CLI would
+auto-approve on its own.
 """
 
 from __future__ import annotations
 
+import json
 import os
 import re
 import shlex
@@ -22,6 +26,10 @@ from claude_agent_sdk import (
     AssistantMessage,
     ClaudeAgentOptions,
     ClaudeSDKError,
+    HookContext,
+    HookInput,
+    HookJSONOutput,
+    HookMatcher,
     PermissionResultAllow,
     PermissionResultDeny,
     ResultMessage,
@@ -44,11 +52,7 @@ COMPRESSOR = f".claude/skills/{SKILL_NAME}/scripts/compress_events.py"
 MCP_PREFIX = f"mcp__{SERVER_NAME}__"
 
 BASE_TOOLS = ["Bash", "Skill"]
-ALLOWED_TOOLS = [
-    f"{MCP_PREFIX}*",
-    f"Skill({SKILL_NAME})",
-    f"Bash(python {COMPRESSOR}:*)",
-]
+ALLOWED_TOOLS = [f"{MCP_PREFIX}*", f"Skill({SKILL_NAME})"]
 DISALLOWED_TOOLS = [
     "Write",
     "Edit",
@@ -76,9 +80,18 @@ SYSTEM_PROMPT = (
     f"`python {COMPRESSOR} <files>`. You cannot change the system and must never try."
 )
 
-# Arguments to the compressor: paths and flags only, no shell syntax of any kind.
-_SAFE_ARG = re.compile(r"^[A-Za-z0-9_./:\\=+,@%-]+$")
+# Compressor arguments: input paths plus the flags that only tune the digest. --map is left
+# out on purpose because it writes a file. Values are validated; argparse prefix
+# abbreviations (e.g. --ma for --map) never match because flags must be exact.
+_PATH_ARG = re.compile(r"^[A-Za-z0-9_./:\\+,@%][A-Za-z0-9_./:\\+,@%=-]*$")
+_FLAG_VALUES = {
+    "--prefix": re.compile(r"^[A-Za-z]{1,8}$"),
+    "--burst-gap": re.compile(r"^[0-9]{1,5}(\.[0-9]{1,3})?$"),
+    "--max-noise-lines": re.compile(r"^[0-9]{1,4}$"),
+}
+_HELP_FLAGS = ("-h", "--help")
 _SHELL_META = re.compile(r"[;&|`$<>(){}\[\]*?!~#'\"\n\r]")
+_DATE_SUFFIX = re.compile(r"^-\d{8}$")
 
 
 class TriageSetupError(RuntimeError):
@@ -96,18 +109,36 @@ class TriageResult(BaseModel):
     error: str | None
 
 
-def _deny(tool_name: str) -> PermissionResultDeny:
-    return PermissionResultDeny(
-        message=(
-            f"{tool_name} is not permitted: TDR Detective is read-only. Use the "
-            f"{MCP_PREFIX}* tools, the {SKILL_NAME} skill, or exactly "
-            f"`python {COMPRESSOR} <saved event files>`."
-        )
+def _denial(tool_name: str) -> str:
+    return (
+        f"{tool_name} is not permitted: TDR Detective is read-only. Use the "
+        f"{MCP_PREFIX}* tools, the {SKILL_NAME} skill, or exactly "
+        f"`python {COMPRESSOR} <saved event files>`."
     )
 
 
+def _compressor_args_ok(args: list[str]) -> bool:
+    i = 0
+    while i < len(args):
+        arg = args[i]
+        flag, eq, inline = arg.partition("=")
+        if arg in _HELP_FLAGS:
+            i += 1
+        elif flag in _FLAG_VALUES:
+            value = inline if eq else (args[i + 1] if i + 1 < len(args) else "")
+            if not _FLAG_VALUES[flag].match(value):
+                return False
+            i += 1 if eq else 2
+        elif arg.startswith("-") or not _PATH_ARG.match(arg):
+            return False
+        else:
+            i += 1
+    return True
+
+
 def is_compressor_command(command: str) -> bool:
-    """True only for ``python[3] <COMPRESSOR> <path-or-flag>...`` with no shell syntax."""
+    """True only for ``python[3] <COMPRESSOR> [files] [digest flags]`` with no shell syntax
+    and no option that writes a file."""
     if _SHELL_META.search(command):
         return False
     try:
@@ -116,21 +147,45 @@ def is_compressor_command(command: str) -> bool:
         return False
     if len(argv) < 2 or argv[0] not in ("python", "python3") or argv[1] != COMPRESSOR:
         return False
-    return all(_SAFE_ARG.match(arg) for arg in argv[2:])
+    return _compressor_args_ok(argv[2:])
+
+
+def is_permitted(tool_name: str, tool_input: dict[str, Any]) -> bool:
+    """The read-only surface: pc-diag tools, this skill, and the compressor."""
+    if tool_name.startswith(MCP_PREFIX):
+        return True
+    if tool_name == "Skill":
+        return SKILL_NAME in (tool_input.get("skill"), tool_input.get("command"))
+    command = tool_input.get("command")
+    return tool_name == "Bash" and isinstance(command, str) and is_compressor_command(command)
 
 
 async def can_use_tool(
     tool_name: str, tool_input: dict[str, Any], context: ToolPermissionContext
 ) -> PermissionResultAllow | PermissionResultDeny:
     """Permission prompt replacement: allow the read-only surface, deny everything else."""
-    if tool_name.startswith(MCP_PREFIX):
+    if is_permitted(tool_name, tool_input):
         return PermissionResultAllow()
-    if tool_name == "Skill" and SKILL_NAME in (tool_input.get("skill"), tool_input.get("command")):
-        return PermissionResultAllow()
-    command = tool_input.get("command")
-    if tool_name == "Bash" and isinstance(command, str) and is_compressor_command(command):
-        return PermissionResultAllow()
-    return _deny(tool_name)
+    return PermissionResultDeny(message=_denial(tool_name))
+
+
+async def pre_tool_use_guard(
+    hook_input: HookInput, tool_use_id: str | None, context: HookContext
+) -> HookJSONOutput:
+    """Runs before every tool call, even ones the CLI would auto-approve (its built-in
+    read-only commands, settings rules), and denies anything outside the surface."""
+    if hook_input["hook_event_name"] != "PreToolUse":
+        return {}
+    tool_name = hook_input["tool_name"]
+    if is_permitted(tool_name, hook_input["tool_input"]):
+        return {}  # no decision: the normal permission flow still applies
+    return {
+        "hookSpecificOutput": {
+            "hookEventName": "PreToolUse",
+            "permissionDecision": "deny",
+            "permissionDecisionReason": _denial(tool_name),
+        }
+    }
 
 
 def build_options(
@@ -158,6 +213,7 @@ def build_options(
         allowed_tools=list(ALLOWED_TOOLS),
         disallowed_tools=list(DISALLOWED_TOOLS),
         can_use_tool=can_use_tool,
+        hooks={"PreToolUse": [HookMatcher(matcher=None, hooks=[pre_tool_use_guard])]},
         permission_mode="default",
         setting_sources=["project"],
         skills=[SKILL_NAME],
@@ -173,7 +229,40 @@ def build_options(
 
 
 def _same_model(requested: str, reported: str | None) -> bool:
-    return reported is not None and (reported == requested or reported.startswith(requested + "-"))
+    """Exact id, or the same id with a dated snapshot suffix (``-YYYYMMDD``)."""
+    if reported is None or not reported.startswith(requested):
+        return False
+    rest = reported[len(requested) :]
+    return rest == "" or bool(_DATE_SUFFIX.match(rest))
+
+
+def check_project_settings(cwd: Path) -> None:
+    """``setting_sources=["project"]`` loads ``<cwd>/.claude/settings.json``; its allow rules,
+    permission mode or hooks would widen the guardrail, so refuse to run with any of them."""
+    path = cwd / ".claude" / "settings.json"
+    if not path.is_file():
+        return
+    try:
+        settings = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, ValueError) as exc:
+        raise TriageSetupError(f"cannot read {path}: {exc}") from exc
+    permissions = settings.get("permissions") or {}
+    widening = [
+        name
+        for name, present in (
+            ("permissions.allow", bool(permissions.get("allow"))),
+            ("permissions.ask", bool(permissions.get("ask"))),
+            ("permissions.defaultMode", "defaultMode" in permissions),
+            ("permissions.additionalDirectories", bool(permissions.get("additionalDirectories"))),
+            ("hooks", bool(settings.get("hooks"))),
+        )
+        if present
+    ]
+    if widening:
+        raise TriageSetupError(
+            f"{path} sets {', '.join(widening)}, which would widen the read-only guardrail; "
+            "remove them or run from a clean checkout"
+        )
 
 
 def _check_init(data: dict[str, Any], model: str) -> None:
@@ -241,6 +330,7 @@ async def run_triage(
     options = build_options(
         replay_dir=replay_dir, model=model, effort=effort, max_budget_usd=max_budget_usd, cwd=cwd
     )
+    check_project_settings(cwd)
     texts: list[str] = []
     tool_calls: list[str] = []
     errors: list[str] = []
