@@ -157,11 +157,9 @@ def test_options(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> None:
     assert o.skills == [triage.SKILL_NAME]
     assert o.strict_mcp_config is True
     assert o.tools == ["Bash", "Skill"]
-    assert o.allowed_tools == [
-        "mcp__pc-diag__*",
-        "Skill(pc-stability-triage)",
-        "Bash(python .claude/skills/pc-stability-triage/scripts/compress_events.py:*)",
-    ]
+    assert o.allowed_tools == ["mcp__pc-diag__*", "Skill(pc-stability-triage)"]
+    # No Bash allow rule: every Bash call must reach the strict can_use_tool parser.
+    assert not [rule for rule in o.allowed_tools if rule.startswith("Bash")]
     assert {"Write", "Edit", "WebFetch", "WebSearch", "Read", "Agent"} <= set(o.disallowed_tools)
     assert o.permission_mode == "default"
     assert o.can_use_tool is not None
@@ -200,6 +198,19 @@ def decide(name: str, inp: dict[str, Any]) -> PermissionResultAllow | Permission
     return asyncio.run(go())
 
 
+def hook(name: str, inp: dict[str, Any]) -> Any:
+    hook_input: Any = {
+        "hook_event_name": "PreToolUse",
+        "session_id": "s-1",
+        "transcript_path": "transcript.jsonl",
+        "cwd": ".",
+        "tool_name": name,
+        "tool_input": inp,
+        "tool_use_id": "t1",
+    }
+    return asyncio.run(triage.pre_tool_use_guard(hook_input, "t1", {"signal": None}))
+
+
 @pytest.mark.parametrize(
     ("name", "inp"),
     [
@@ -208,10 +219,13 @@ def decide(name: str, inp: dict[str, Any]) -> PermissionResultAllow | Permission
         ("Bash", {"command": f"python {triage.COMPRESSOR} /tmp/tdr-detective/events-1.json"}),
         ("Bash", {"command": f"python {triage.COMPRESSOR} /tmp/a.json /tmp/b.json"}),
         ("Bash", {"command": f"python {triage.COMPRESSOR} --help"}),
+        ("Bash", {"command": f"python3 {triage.COMPRESSOR} a.json --prefix F --burst-gap 30"}),
+        ("Bash", {"command": f"python {triage.COMPRESSOR} a.json --max-noise-lines=40"}),
     ],
 )
 def test_guardrail_allows_only_the_read_only_surface(name: str, inp: dict[str, Any]) -> None:
     assert isinstance(decide(name, inp), PermissionResultAllow)
+    assert hook(name, inp) == {}  # the PreToolUse hook makes no decision
 
 
 @pytest.mark.parametrize(
@@ -235,6 +249,14 @@ def test_guardrail_allows_only_the_read_only_surface(name: str, inp: dict[str, A
         ("Bash", {"command": f"python {triage.COMPRESSOR} a.json\nrm x"}),
         ("Bash", {"command": f"python -c 'import os' {triage.COMPRESSOR}"}),
         ("Bash", {"command": "python other.py"}),
+        ("Bash", {"command": f"python {triage.COMPRESSOR} a.json --map /tmp/x"}),
+        ("Bash", {"command": f"python {triage.COMPRESSOR} a.json --map=/home/u/profile"}),
+        ("Bash", {"command": f"python {triage.COMPRESSOR} --map x a.json"}),
+        ("Bash", {"command": f"python {triage.COMPRESSOR} a.json --ma x"}),  # argparse prefix
+        ("Bash", {"command": f"python {triage.COMPRESSOR} a.json --prefix --map"}),
+        ("Bash", {"command": f"python {triage.COMPRESSOR} a.json --burst-gap 1e9"}),
+        ("Bash", {"command": f"python {triage.COMPRESSOR} -m"}),
+        ("Bash", {"command": f"python /abs/{triage.COMPRESSOR} a.json"}),
         ("Bash", {}),
     ],
 )
@@ -242,6 +264,19 @@ def test_guardrail_denies_everything_else(name: str, inp: dict[str, Any]) -> Non
     decision = decide(name, inp)
     assert isinstance(decision, PermissionResultDeny)
     assert "read-only" in decision.message
+    # The hook denies the same calls even if the CLI would have auto-approved them.
+    output = hook(name, inp)["hookSpecificOutput"]
+    assert output["permissionDecision"] == "deny"
+    assert "read-only" in output["permissionDecisionReason"]
+
+
+def test_hook_is_registered_for_every_tool(monkeypatch: pytest.MonkeyPatch) -> None:
+    q = fake(monkeypatch, good_run())
+    triage_sync()
+    assert q.options.hooks is not None
+    (matcher,) = q.options.hooks["PreToolUse"]
+    assert matcher.matcher is None
+    assert matcher.hooks == [triage.pre_tool_use_guard]
 
 
 def test_missing_skill_fails_loudly(monkeypatch: pytest.MonkeyPatch) -> None:
@@ -381,3 +416,38 @@ def test_run_stats_fall_back_to_usage(monkeypatch: pytest.MonkeyPatch) -> None:
     fake(monkeypatch, [init(), result(ANSWER, model_usage=None)])
     run = triage_sync().run
     assert (run.input_tokens, run.output_tokens, run.cache_read_tokens) == (1200 + 300, 800, 9000)
+
+
+def test_widening_project_settings_fail_loudly(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    fake(monkeypatch, good_run())
+    settings = tmp_path / ".claude" / "settings.json"
+    settings.parent.mkdir()
+    settings.write_text('{"permissions": {"allow": ["Bash"]}}', encoding="utf-8")
+    with pytest.raises(TriageSetupError, match=r"permissions\.allow"):
+        triage_sync(cwd=tmp_path)
+    settings.write_text('{"hooks": {}, "env": {"X": "1"}}', encoding="utf-8")
+    triage_sync(cwd=tmp_path)  # nothing here widens the guardrail
+    settings.write_text('{"permissions": {"defaultMode": "bypassPermissions"}}', encoding="utf-8")
+    with pytest.raises(TriageSetupError, match="defaultMode"):
+        triage_sync(cwd=tmp_path)
+
+
+def test_repository_project_settings_do_not_widen_the_guardrail() -> None:
+    triage.check_project_settings(triage.REPO_ROOT)
+
+
+@pytest.mark.parametrize(
+    ("reported", "same"),
+    [
+        (MODEL, True),
+        (f"{MODEL}-20261001", True),
+        (f"{MODEL}-5", False),
+        (f"{MODEL}-fast", False),
+        ("claude-sonnet-5", False),
+        (None, False),
+    ],
+)
+def test_model_identity_is_exact(reported: str | None, same: bool) -> None:
+    assert triage._same_model(MODEL, reported) is same
