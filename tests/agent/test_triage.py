@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import asyncio
 import os
+import re
 import sys
 from collections.abc import AsyncIterator
 from pathlib import Path
@@ -509,6 +510,46 @@ def test_run_stats_fall_back_to_usage(monkeypatch: pytest.MonkeyPatch) -> None:
     assert (run.input_tokens, run.output_tokens, run.cache_read_tokens) == (1200 + 300, 800, 9000)
 
 
+@pytest.mark.parametrize(
+    "content",
+    [
+        "{}",
+        '{"$schema": "https://json.schemastore.org/claude-code-settings.json"}',
+        '{"permissions": {"deny": ["WebFetch", "Bash(curl:*)"]}}',
+        '{"$schema": "x", "permissions": {}}',
+    ],
+)
+def test_narrowing_project_settings_are_accepted(tmp_path: Path, content: str) -> None:
+    settings = tmp_path / ".claude" / "settings.json"
+    settings.parent.mkdir()
+    settings.write_text(content, encoding="utf-8")
+    triage.check_project_settings(tmp_path)
+
+
+@pytest.mark.parametrize(
+    ("content", "named"),
+    [
+        ('{"env": {"X": "1"}}', "env"),
+        ('{"hooks": {}}', "hooks"),
+        ('{"model": "claude-haiku-4-5"}', "model"),
+        ('{"apiKeyHelper": "/bin/x"}', "apiKeyHelper"),
+        ('{"enabledPlugins": {}}', "enabledPlugins"),
+        ('{"permissions": {"allow": []}}', "permissions.allow"),
+        ('{"permissions": {"deny": [], "ask": ["Bash"]}}', "permissions.ask"),
+        ('{"permissions": {"deny": "Write"}}', "permissions.deny"),
+        ('{"permissions": []}', "permissions"),
+        ("[]", "not a settings object"),
+        ("{not json", "cannot read"),
+    ],
+)
+def test_other_project_settings_fail_closed(tmp_path: Path, content: str, named: str) -> None:
+    settings = tmp_path / ".claude" / "settings.json"
+    settings.parent.mkdir()
+    settings.write_text(content, encoding="utf-8")
+    with pytest.raises(TriageSetupError, match=re.escape(named)):
+        triage.check_project_settings(tmp_path)
+
+
 def test_widening_project_settings_fail_loudly(
     monkeypatch: pytest.MonkeyPatch, tmp_path: Path
 ) -> None:
@@ -518,8 +559,8 @@ def test_widening_project_settings_fail_loudly(
     settings.write_text('{"permissions": {"allow": ["Bash"]}}', encoding="utf-8")
     with pytest.raises(TriageSetupError, match=r"permissions\.allow"):
         triage_sync(cwd=tmp_path)
-    settings.write_text('{"hooks": {}, "env": {"X": "1"}}', encoding="utf-8")
-    triage_sync(cwd=tmp_path)  # nothing here widens the guardrail
+    settings.write_text('{"permissions": {"deny": ["WebFetch"]}}', encoding="utf-8")
+    triage_sync(cwd=tmp_path)  # deny rules only narrow the guardrail
     settings.write_text('{"permissions": {"defaultMode": "bypassPermissions"}}', encoding="utf-8")
     with pytest.raises(TriageSetupError, match="defaultMode"):
         triage_sync(cwd=tmp_path)

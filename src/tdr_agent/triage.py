@@ -289,33 +289,32 @@ def _same_model(requested: str, reported: str | None) -> bool:
 
 
 def check_project_settings(cwd: Path) -> None:
-    """``setting_sources=["project"]`` loads ``<cwd>/.claude/settings.json``; its allow rules,
-    permission mode or hooks would widen the guardrail, so refuse to run with any of them."""
+    """``setting_sources=["project"]`` loads ``<cwd>/.claude/settings.json``. Allowlist it:
+    the file may be absent or hold only ``$schema`` and ``permissions.deny``, which can only
+    narrow the guardrail. Anything else fails closed."""
     path = cwd / ".claude" / "settings.json"
-    if not path.is_file():
+    if not path.exists():
         return
     try:
         settings = json.loads(path.read_text(encoding="utf-8"))
     except (OSError, ValueError) as exc:
         raise TriageSetupError(f"cannot read {path}: {exc}") from exc
-    if not isinstance(settings, dict) or not isinstance(settings.get("permissions", {}), dict):
+    if not isinstance(settings, dict):
         raise TriageSetupError(f"{path} is not a settings object; refusing to guess its effect")
-    permissions = settings.get("permissions") or {}
-    widening = [
-        name
-        for name, present in (
-            ("permissions.allow", bool(permissions.get("allow"))),
-            ("permissions.ask", bool(permissions.get("ask"))),
-            ("permissions.defaultMode", "defaultMode" in permissions),
-            ("permissions.additionalDirectories", bool(permissions.get("additionalDirectories"))),
-            ("hooks", bool(settings.get("hooks"))),
-        )
-        if present
-    ]
-    if widening:
+    extra = sorted(set(settings) - {"$schema", "permissions"})
+    permissions = settings.get("permissions", {})
+    if isinstance(permissions, dict):
+        extra += sorted(f"permissions.{key}" for key in set(permissions) - {"deny"})
+        deny = permissions.get("deny", [])
+        if not isinstance(deny, list) or not all(isinstance(rule, str) for rule in deny):
+            extra.append("permissions.deny (must be a list of rule strings)")
+    else:
+        extra.append("permissions (must be an object)")
+    if extra:
         raise TriageSetupError(
-            f"{path} sets {', '.join(widening)}, which would widen the read-only guardrail; "
-            "remove them or run from a clean checkout"
+            f"{path} sets {', '.join(extra)}; a triage run allows only $schema and "
+            "permissions.deny there, because anything else could widen the read-only "
+            "guardrail. Remove those keys or run from a clean checkout."
         )
 
 
