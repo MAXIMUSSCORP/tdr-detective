@@ -37,3 +37,6 @@ Thumbs.db
 .idea/
 .vscode/*
 !.vscode/mcp.json
+# Claude Code local state (only the shipped skill is tracked)
+.claude/*
+!.claude/skills/

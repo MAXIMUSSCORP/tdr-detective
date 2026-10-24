@@ -12,16 +12,25 @@ classifiers = [
     "Topic :: System :: Monitoring",
 ]
 dependencies = [
-    "pydantic>=2.9,<3",
-    "defusedxml>=0.7.1",
+    "fastmcp==4.1.0",
+    "pydantic>=2.14,<3",
+    "defusedxml==0.7.1",
+]
+
+[project.optional-dependencies]
+# Agent runner + eval harness (Claude Agent SDK and the Anthropic API).
+agent = [
+    "claude-agent-sdk==0.2.165",
+    "anthropic==1.13.0",
 ]
 
 [dependency-groups]
 dev = [
-    "pytest>=8.3",
+    "pytest==9.1.1",
     "pytest-cov>=6.0",
-    "ruff>=0.9",
-    "mypy>=1.14",
+    "pytest-asyncio>=1.0",
+    "ruff==0.17.0",
+    "mypy==2.4.0",
 ]
 
 [build-system]
