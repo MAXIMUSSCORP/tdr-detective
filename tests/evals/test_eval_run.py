@@ -346,6 +346,95 @@ def test_error_text_never_contains_the_api_key(
     assert "[redacted]" in text
 
 
+def test_whole_rows_are_redacted(
+    cases_file: Path, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    oauth = "oauth-token-0123456789"
+    monkeypatch.setenv("CLAUDE_CODE_OAUTH_TOKEN", oauth)
+    shaped = "sk-ant-api03-AbC_dEf-123"  # not in the environment at all
+
+    class EchoRunner(FakeRunner):
+        def run(self, case: EvalCase) -> ResultRow:
+            row = super().run(case)
+            diagnosis = ANSWER["diagnosis"] | {}
+            diagnosis["next_steps"] = [f"rotate {oauth}"]
+            return row.model_copy(
+                update={
+                    "raw_answer": f"the key {shaped} and {oauth}",
+                    "diagnosis": Diagnosis.model_validate(diagnosis),
+                }
+            )
+
+    out = tmp_path / "out"
+    invoke(EchoRunner(), cases_file, out, "--case", "syn-002")
+    text = results_path(out).read_text(encoding="utf-8")
+    assert oauth not in text and shaped not in text
+    (row,) = read_rows(results_path(out))
+    assert row.raw_answer == "the key [redacted] and [redacted]"
+    assert row.diagnosis is not None
+    assert row.diagnosis.next_steps == ["rotate [redacted]"]
+
+
+def test_google_credential_values_are_redacted(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    key = "-----BEGIN PRIVATE KEY-----\nMIIEabc123\n-----END PRIVATE KEY-----\n"
+    creds = tmp_path / "sa.json"
+    creds.write_text(json.dumps({"private_key": key, "client_email": "x@y.z"}), "utf-8")
+    monkeypatch.setenv("GOOGLE_APPLICATION_CREDENTIALS", str(creds))
+    for env in ("AWS_SECRET_ACCESS_KEY", "AWS_SESSION_TOKEN", "ANTHROPIC_AUTH_TOKEN"):
+        monkeypatch.setenv(env, f"{env.lower()}-value-xyz")
+    text = (
+        f"{key} | {json.dumps(key)} | aws_session_token-value-xyz | anthropic_auth_token-value-xyz"
+    )
+    clean = eval_run.redact(text)
+    assert "MIIEabc123" not in clean
+    assert "value-xyz" not in clean
+
+
+def test_stderr_dump_of_an_unwritable_row_is_redacted(
+    cases_file: Path,
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    capsys: pytest.CaptureFixture[str],
+) -> None:
+    def broken(handle: Any, row: ResultRow) -> None:
+        raise OSError("disk full")
+
+    class Leaky(FakeRunner):
+        def run(self, case: EvalCase) -> ResultRow:
+            row = super().run(case)
+            return row.model_copy(update={"raw_answer": "sk-ant-leaked-key-123"})
+
+    monkeypatch.setattr(eval_run, "_append", broken)
+    invoke(Leaky(), cases_file, tmp_path / "out", "--case", "syn-002")
+    err = capsys.readouterr().err
+    assert "disk full" in err
+    assert "sk-ant-leaked" not in err
+
+
+@pytest.mark.parametrize("flag", ["--max-cost-usd", "--max-case-cost-usd"])
+@pytest.mark.parametrize("value", ["inf", "nan", "-1", "1e999"])
+def test_money_arguments_must_be_finite(
+    cases_file: Path, tmp_path: Path, flag: str, value: str
+) -> None:
+    with pytest.raises(SystemExit) as exc:
+        invoke(FakeRunner(), cases_file, tmp_path / "out", flag, value)
+    assert exc.value.code == 2
+
+
+def test_case_searches_every_split_by_default(cases_file: Path, tmp_path: Path) -> None:
+    runner = FakeRunner()
+    assert invoke(runner, cases_file, tmp_path / "out", "--case", "syn-001") == 0
+    assert runner.ran == ["syn-001"]  # a test-split case
+
+
+def test_explicit_split_still_filters_cases(cases_file: Path, tmp_path: Path) -> None:
+    runner = FakeRunner()
+    assert invoke(runner, cases_file, tmp_path / "out", "--case", "syn-001", "--split", "dev") == 1
+    assert runner.ran == []
+
+
 def test_ceiling_failure_becomes_an_error_row(cases_file: Path, tmp_path: Path) -> None:
     class CountFails(FakeRunner):
         def cost_ceiling_usd(self, case: EvalCase) -> float:
