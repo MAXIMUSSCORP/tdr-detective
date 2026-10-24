@@ -156,11 +156,14 @@ def test_options(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> None:
     assert o.setting_sources == ["project"]
     assert o.skills == [triage.SKILL_NAME]
     assert o.strict_mcp_config is True
-    assert o.tools == ["Bash", "Skill"]
+    assert o.tools == ["Bash", "Skill", "Read"]
     assert o.allowed_tools == ["mcp__pc-diag__*", "Skill(pc-stability-triage)"]
     # No Bash allow rule: every Bash call must reach the strict can_use_tool parser.
     assert not [rule for rule in o.allowed_tools if rule.startswith("Bash")]
-    assert {"Write", "Edit", "WebFetch", "WebSearch", "Read", "Agent"} <= set(o.disallowed_tools)
+    assert {"Write", "Edit", "WebFetch", "WebSearch", "Glob", "Grep", "Agent"} <= set(
+        o.disallowed_tools
+    )
+    assert "Read" not in o.disallowed_tools  # gated to the skill directory instead
     assert o.permission_mode == "default"
     assert o.can_use_tool is not None
     assert isinstance(o.mcp_servers, dict)
@@ -191,14 +194,17 @@ def test_rejects_unknown_effort(monkeypatch: pytest.MonkeyPatch) -> None:
         triage_sync(effort="turbo")
 
 
-def decide(name: str, inp: dict[str, Any]) -> PermissionResultAllow | PermissionResultDeny:
+def decide(
+    name: str, inp: dict[str, Any], cwd: Path = triage.REPO_ROOT
+) -> PermissionResultAllow | PermissionResultDeny:
     async def go() -> PermissionResultAllow | PermissionResultDeny:
-        return await triage.can_use_tool(name, inp, ToolPermissionContext(tool_use_id="t1"))
+        guard = triage.Guard(cwd)
+        return await guard.can_use_tool(name, inp, ToolPermissionContext(tool_use_id="t1"))
 
     return asyncio.run(go())
 
 
-def hook(name: str, inp: dict[str, Any]) -> Any:
+def hook(name: str, inp: dict[str, Any], cwd: Path = triage.REPO_ROOT) -> Any:
     hook_input: Any = {
         "hook_event_name": "PreToolUse",
         "session_id": "s-1",
@@ -208,7 +214,7 @@ def hook(name: str, inp: dict[str, Any]) -> Any:
         "tool_input": inp,
         "tool_use_id": "t1",
     }
-    return asyncio.run(triage.pre_tool_use_guard(hook_input, "t1", {"signal": None}))
+    return asyncio.run(triage.Guard(cwd).pre_tool_use(hook_input, "t1", {"signal": None}))
 
 
 @pytest.mark.parametrize(
@@ -279,7 +285,11 @@ def test_hook_is_registered_for_every_tool(monkeypatch: pytest.MonkeyPatch) -> N
     assert q.options.hooks is not None
     (matcher,) = q.options.hooks["PreToolUse"]
     assert matcher.matcher is None
-    assert matcher.hooks == [triage.pre_tool_use_guard]
+    (callback,) = matcher.hooks
+    guard = triage.Guard(triage.REPO_ROOT)
+    assert callback.__self__ == guard  # type: ignore[attr-defined]
+    assert q.options.can_use_tool is not None
+    assert q.options.can_use_tool.__self__ == guard  # type: ignore[attr-defined]
 
 
 def test_missing_skill_fails_loudly(monkeypatch: pytest.MonkeyPatch) -> None:
@@ -457,3 +467,67 @@ def test_repository_project_settings_do_not_widen_the_guardrail() -> None:
 )
 def test_model_identity_is_exact(reported: str | None, same: bool) -> None:
     assert triage._same_model(MODEL, reported) is same
+
+
+SKILL_DIR = triage.REPO_ROOT / ".claude" / "skills" / triage.SKILL_NAME
+
+
+def _read_decisions(path: str, cwd: Path = triage.REPO_ROOT) -> tuple[bool, bool]:
+    """(can_use_tool allows, hook stays silent) for a Read of ``path``."""
+    inp = {"file_path": path}
+    return isinstance(decide("Read", inp, cwd), PermissionResultAllow), hook("Read", inp, cwd) == {}
+
+
+@pytest.mark.parametrize(
+    "path",
+    [
+        str(SKILL_DIR / "reference" / "bugcheck_table.md"),
+        str(SKILL_DIR / "reference" / "tdr_checklist.md"),
+        f".claude/skills/{triage.SKILL_NAME}/reference/tdr_checklist.md",
+        str(SKILL_DIR / "reference" / ".." / "SKILL.md"),  # still inside the skill
+    ],
+)
+def test_read_allows_the_skill_reference_files(path: str) -> None:
+    assert _read_decisions(path) == (True, True)
+
+
+@pytest.mark.parametrize(
+    "path",
+    [
+        str(SKILL_DIR / "reference" / ".." / ".." / ".." / ".." / "pyproject.toml"),
+        f".claude/skills/{triage.SKILL_NAME}/../../../evals/cases.jsonl",
+        str(SKILL_DIR) + "-evil/reference/x.md",  # sibling sharing the prefix
+        "/etc/passwd",
+        str(triage.REPO_ROOT / "evals" / "cases.jsonl"),
+        "",
+        "relative/elsewhere.md",
+    ],
+)
+def test_read_denies_paths_outside_the_skill(path: str) -> None:
+    assert _read_decisions(path) == (False, False)
+
+
+def test_read_denies_symlink_escaping_the_skill(tmp_path: Path) -> None:
+    skill = tmp_path / ".claude" / "skills" / triage.SKILL_NAME / "reference"
+    skill.mkdir(parents=True)
+    (skill / "ok.md").write_text("fine", encoding="utf-8")
+    secret = tmp_path / "secret.txt"
+    secret.write_text("outside", encoding="utf-8")
+    (skill / "link.md").symlink_to(secret)
+    (skill.parent / "linkdir").symlink_to(tmp_path)
+    assert _read_decisions(str(skill / "ok.md"), tmp_path) == (True, True)
+    assert _read_decisions(str(skill / "link.md"), tmp_path) == (False, False)
+    assert _read_decisions(str(skill.parent / "linkdir" / "secret.txt"), tmp_path) == (False, False)
+
+
+@pytest.mark.parametrize(
+    ("name", "inp"),
+    [
+        ("Glob", {"pattern": f".claude/skills/{triage.SKILL_NAME}/**"}),
+        ("Grep", {"pattern": "x", "path": str(SKILL_DIR)}),
+        ("Read", {"path": str(SKILL_DIR / "SKILL.md")}),  # wrong key: no file_path
+    ],
+)
+def test_search_tools_stay_denied_even_inside_the_skill(name: str, inp: dict[str, Any]) -> None:
+    assert isinstance(decide(name, inp), PermissionResultDeny)
+    assert hook(name, inp)["hookSpecificOutput"]["permissionDecision"] == "deny"
