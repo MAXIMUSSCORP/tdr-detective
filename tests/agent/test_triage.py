@@ -348,3 +348,36 @@ def test_sdk_errors_are_reported(monkeypatch: pytest.MonkeyPatch) -> None:
     out = triage_sync()
     assert out.error is not None
     assert "CLI exited" in out.error
+
+
+def _model_usage(inp: int, out: int, read: int, write: int, cost: float) -> dict[str, Any]:
+    return {
+        "inputTokens": inp,
+        "outputTokens": out,
+        "cacheReadInputTokens": read,
+        "cacheCreationInputTokens": write,
+        "webSearchRequests": 0,
+        "costUSD": cost,
+        "contextWindow": 200000,
+        "maxOutputTokens": 32000,
+    }
+
+
+def test_run_stats_sum_model_usage_over_all_models(monkeypatch: pytest.MonkeyPatch) -> None:
+    model_usage = {
+        MODEL: _model_usage(1000, 700, 20000, 4000, 0.3),
+        # The harness's own helper calls count too: no overhead is subtracted.
+        "claude-haiku-4-5": _model_usage(50, 10, 0, 5, 0.001),
+    }
+    fake(monkeypatch, [init(), result(ANSWER, model_usage=model_usage, total_cost_usd=0.301)])
+    run = triage_sync().run
+    assert run.input_tokens == 1000 + 4000 + 50 + 5  # uncached input + cache writes
+    assert run.output_tokens == 700 + 10
+    assert run.cache_read_tokens == 20000
+    assert run.cost_usd == pytest.approx(0.301)  # total_cost_usd, not the per-model sum
+
+
+def test_run_stats_fall_back_to_usage(monkeypatch: pytest.MonkeyPatch) -> None:
+    fake(monkeypatch, [init(), result(ANSWER, model_usage=None)])
+    run = triage_sync().run
+    assert (run.input_tokens, run.output_tokens, run.cache_read_tokens) == (1200 + 300, 800, 9000)
