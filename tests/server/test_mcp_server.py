@@ -15,6 +15,7 @@ from fastmcp.client.client import CallToolResult
 from fastmcp.client.transports import StdioTransport
 
 from pc_diag_mcp import server
+from pc_diag_mcp import tools as pc_tools
 from pc_diag_mcp.collectors import PowerShellCollector, ReplayCollector
 from pc_diag_mcp.collectors.base import CollectorError, CollectorUnavailable
 from pc_diag_mcp.tools.describe import TOOL_NAMES
@@ -62,6 +63,18 @@ def test_query_events_schema_constrains_inputs() -> None:
     props = tools["query_events"].input_schema["properties"]
     assert set(props) >= {"start", "end", "logs", "providers", "save_to", "max_events"}
     assert "tempfile" in json.dumps(props["save_to"])
+
+
+def test_query_events_output_schema_tracks_the_result_models() -> None:
+    tools = {t.name: t for t in run(lambda c: c.list_tools())}
+    schema = tools["query_events"].output_schema
+    assert schema is not None
+    assert schema["type"] == "object"
+    # FastMCP inlines $refs, so each union member is an object in anyOf.
+    members = [set(m["properties"]) for m in schema["anyOf"]]
+    for model in (pc_tools.QueryEventsResult, pc_tools.SavedEventsResult):
+        assert set(model.model_fields) in members, model.__name__
+        assert {"untrusted_text", "note"} <= set(model.model_fields)
 
 
 def test_system_info() -> None:
