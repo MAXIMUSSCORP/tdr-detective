@@ -21,8 +21,16 @@ try {
     $response = $request.GetResponse()
     try {
         if ([int]$response.StatusCode -ne 200) { throw "unexpected HTTP status $([int]$response.StatusCode)" }
-        $reader = New-Object System.IO.StreamReader($response.GetResponseStream(), [System.Text.Encoding]::UTF8)
-        Write-Result @{ body = $reader.ReadToEnd() }
+        # Bounded read: never buffer more than 16 MB, whatever the server sends.
+        $limit = 16MB
+        $stream = $response.GetResponseStream()
+        $buffer = New-Object System.IO.MemoryStream
+        $chunk = New-Object byte[] 65536
+        while (($read = $stream.Read($chunk, 0, $chunk.Length)) -gt 0) {
+            if ($buffer.Length + $read -gt $limit) { throw 'data.json is larger than 16 MB' }
+            $buffer.Write($chunk, 0, $read)
+        }
+        Write-Result @{ body = [System.Text.Encoding]::UTF8.GetString($buffer.ToArray()) }
     } finally {
         $response.Close()
     }

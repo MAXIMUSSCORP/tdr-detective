@@ -25,7 +25,7 @@ from pc_diag_mcp.signatures import match_event
 from pc_diag_mcp.tools import query_events
 from pc_diag_mcp.tools.events import save_events_tempfile
 
-from .conftest import FakeRunner, envelope, no_lhm, sample, which_all
+from .conftest import FakeRunner, envelope, live, sample
 from .test_replay import NOW, write_replay
 from .test_signatures import ev
 from .test_tools import T0, StubCollector, rec
@@ -194,9 +194,7 @@ def test_profile_paths_in_wsl_and_posix_forms() -> None:
 
 
 def _live(runner: FakeRunner, **kwargs: object) -> PowerShellCollector:
-    options: dict[str, object] = {"runner": runner, "which": which_all, "http_get": no_lhm}
-    options.update(kwargs)
-    return PowerShellCollector(**options)  # type: ignore[arg-type]
+    return live(runner, **kwargs)
 
 
 def test_one_bad_event_is_skipped_but_all_bad_is_an_error(runner: FakeRunner) -> None:
