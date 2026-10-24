@@ -68,4 +68,4 @@ ignore = ["S603"]  # subprocess calls are deliberate and use fixed argument list
 python_version = "3.12"
 strict = true
 plugins = ["pydantic.mypy"]
-files = ["src"]
+files = ["src", "evals"]

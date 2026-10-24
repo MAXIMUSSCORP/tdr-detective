@@ -1918,7 +1918,7 @@ def build(spec: CaseSpec, split: str = "dev") -> Bundle:
         tags.append("ambiguous")
     case = EvalCase(
         id=spec.id,
-        split=split,  # type: ignore[arg-type]
+        split=split,
         question=spec.question,
         scenario=f"evals/scenarios/{spec.id}",
         expected=Expected(primary=spec.primary, acceptable=acceptable),
