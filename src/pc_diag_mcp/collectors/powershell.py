@@ -26,7 +26,7 @@ import urllib.parse
 import urllib.request
 from collections.abc import Callable, Mapping, Sequence
 from datetime import UTC, datetime
-from pathlib import Path
+from pathlib import Path, PureWindowsPath
 from typing import IO, Any
 
 from pydantic import TypeAdapter, ValidationError
@@ -281,13 +281,14 @@ class PowerShellCollector:
         root = self._windows_root
         if root is not None:
             candidates.append(root / "System32" / "nvidia-smi.exe")
-            if self._wsl or sys.platform != "win32":
-                program_files = root.parent / "Program Files"
+            nvsmi = ("Program Files", "NVIDIA Corporation", "NVSMI", "nvidia-smi.exe")
+            if self._wsl:
+                candidates.append(root.parent.joinpath(*nvsmi))  # /mnt/c/Program Files/...
             else:
-                program_files = Path(
-                    os.environ.get("PROGRAMFILES") or root.anchor + "Program Files"
-                )
-            candidates.append(program_files / "NVIDIA Corporation" / "NVSMI" / "nvidia-smi.exe")
+                # Native Windows: Program Files on the Windows directory's drive, built with
+                # Windows path rules so the result is the same on any OS (and %PROGRAMFILES%,
+                # which 32-bit Python redirects to "Program Files (x86)", cannot steer it).
+                candidates.append(Path(str(PureWindowsPath(root).parent.joinpath(*nvsmi))))
         if self._wsl:
             candidates.append(Path("/usr/lib/wsl/lib/nvidia-smi"))
         for candidate in candidates:

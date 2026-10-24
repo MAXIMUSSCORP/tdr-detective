@@ -5,7 +5,7 @@ from __future__ import annotations
 import re
 import subprocess
 import sys
-from pathlib import Path
+from pathlib import Path, PureWindowsPath
 
 import pytest
 
@@ -20,7 +20,14 @@ from pc_diag_mcp.collectors.powershell import (
 
 from .conftest import POWERSHELL, WIN_ROOT, FakeRunner, live
 
-NVSMI = WIN_ROOT.parent / "Program Files" / "NVIDIA Corporation" / "NVSMI" / "nvidia-smi.exe"
+# The native branch follows Windows path rules on every OS.
+NVSMI = Path(
+    str(
+        PureWindowsPath(WIN_ROOT).parent.joinpath(
+            "Program Files", "NVIDIA Corporation", "NVSMI", "nvidia-smi.exe"
+        )
+    )
+)
 
 
 def only(*allowed: str | Path) -> ps.Exists:
@@ -58,6 +65,20 @@ def test_nvidia_smi_candidates(
     collector.sensors(None)
     smi = [c for c in runner.calls if "nvidia-smi" in c.argv[0]]
     assert [c.argv[0] for c in smi] == [str(expected)]
+
+
+def test_native_nvsmi_is_on_the_windows_drive(
+    runner: FakeRunner, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    # %PROGRAMFILES% must not steer it (32-bit Python sees "Program Files (x86)").
+    monkeypatch.setenv("PROGRAMFILES", "D:\\Elsewhere")
+    root = Path("E:/Windows")
+    powershell = str(root / "System32" / "WindowsPowerShell" / "v1.0" / "powershell.exe")
+    expected = "E:\\Program Files\\NVIDIA Corporation\\NVSMI\\nvidia-smi.exe"
+    runner.responses[Path(expected).stem] = runner.responses["nvidia-smi"]
+    collector = live(runner, windows_root=root, exists=only(powershell, expected))
+    collector.sensors(None)
+    assert [c.argv[0] for c in runner.calls if "nvidia-smi" in c.argv[0]] == [expected]
 
 
 def test_nvidia_smi_absent_is_unavailable(runner: FakeRunner) -> None:
