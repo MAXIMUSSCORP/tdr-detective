@@ -1,0 +1,33 @@
+{
+  "name": "tdr-timeline",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Incident timeline for TDR Detective: Express + SQLite API and a React viewer.",
+  "author": "Zaid",
+  "license": "MIT",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "workspaces": [
+    "api",
+    "web"
+  ],
+  "scripts": {
+    "dev": "concurrently --kill-others-on-fail --names api,web \"npm run dev -w api\" \"npm run dev -w web\"",
+    "build": "npm run build -w web",
+    "start": "npm start -w api",
+    "test": "npm test --workspaces",
+    "lint": "eslint .",
+    "typecheck": "npm run typecheck --workspaces",
+    "seed": "npm run seed -w api"
+  },
+  "devDependencies": {
+    "@eslint/js": "10.0.1",
+    "concurrently": "10.0.6",
+    "eslint": "10.12.0",
+    "eslint-plugin-react-hooks": "7.1.1",
+    "globals": "17.13.0",
+    "typescript": "6.0.3",
+    "typescript-eslint": "8.71.1"
+  }
+}
