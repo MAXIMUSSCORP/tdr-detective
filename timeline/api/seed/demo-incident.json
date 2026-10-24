@@ -317,13 +317,5 @@
       "severity": "error"
     }
   ],
-  "run": {
-    "config": "skill_tools",
-    "model": "claude-sonnet-4-5",
-    "input_tokens": 18420,
-    "output_tokens": 1310,
-    "cache_read_tokens": 9800,
-    "cost_usd": 0.0779,
-    "latency_ms": 21400
-  }
+  "run": null
 }
