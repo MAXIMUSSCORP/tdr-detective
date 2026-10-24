@@ -3,12 +3,14 @@ from __future__ import annotations
 import json
 import shutil
 import subprocess
-from collections.abc import Callable, Sequence
+from collections.abc import Callable, Mapping, Sequence
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
 import pytest
+
+from pc_diag_mcp.collectors.powershell import PowerShellCollector
 
 DATA = Path(__file__).parent / "data"
 
@@ -26,6 +28,7 @@ class Call:
     argv: list[str]
     stdin: str | None
     timeout: float
+    env: Mapping[str, str] | None = None
 
 
 Response = str | subprocess.CompletedProcess[str] | BaseException | Callable[[Call], str]
@@ -39,12 +42,16 @@ class FakeRunner:
     calls: list[Call] = field(default_factory=list)
 
     def __call__(
-        self, argv: Sequence[str], stdin: str | None, timeout: float
+        self,
+        argv: Sequence[str],
+        stdin: str | None,
+        timeout: float,
+        env: Mapping[str, str] | None = None,
     ) -> subprocess.CompletedProcess[str]:
-        call = Call(list(argv), stdin, timeout)
+        call = Call(list(argv), stdin, timeout, env)
         self.calls.append(call)
-        key = Path(argv[-1]).name if argv[0].endswith("powershell.exe") else Path(argv[0]).name
-        if argv[0] == "wslpath":
+        key = Path(argv[-1]).name if argv[0].endswith("powershell.exe") else Path(argv[0]).stem
+        if Path(argv[0]).name == "wslpath":
             return subprocess.CompletedProcess(argv, 0, "\\\\wsl.localhost\\X" + argv[-1], "")
         response = self.responses[key]
         if isinstance(response, BaseException):
@@ -61,8 +68,25 @@ class FakeRunner:
         raise AssertionError(f"{script} was not run")
 
 
-def which_all(name: str) -> str | None:
-    return {"powershell.exe": "/win/powershell.exe", "nvidia-smi": "/usr/bin/nvidia-smi"}.get(name)
+WIN_ROOT = Path("/win/Windows")
+POWERSHELL = str(WIN_ROOT / "System32" / "WindowsPowerShell" / "v1.0" / "powershell.exe")
+
+
+def exists_all(path: Path) -> bool:
+    return True
+
+
+def live(fake: FakeRunner, **kwargs: Any) -> PowerShellCollector:
+    """A collector wired to the fake runner, with every pinned executable "present"."""
+    options: dict[str, Any] = {
+        "runner": fake,
+        "http_get": no_lhm,
+        "wsl": False,
+        "windows_root": WIN_ROOT,
+        "exists": exists_all,
+    }
+    options.update(kwargs)
+    return PowerShellCollector(**options)
 
 
 def no_lhm(url: str, timeout: float) -> bytes:
@@ -81,6 +105,9 @@ def runner() -> FakeRunner:
             "dxdiag.ps1": envelope(sample("dxdiag_raw.json")),
             "identity.ps1": envelope({"computer_name": "HOST", "user_name": "someone"}),
             "nvidia-smi": sample("nvidia_smi_raw.json")["stdout"],
+            "lhm_http.ps1": json.dumps(
+                {"ok": False, "kind": "unavailable", "error": "Unable to connect"}
+            ),
         }
     )
 

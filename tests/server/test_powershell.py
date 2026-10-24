@@ -17,27 +17,21 @@ from pc_diag_mcp.collectors.powershell import (
     LHM_UNREACHABLE,
     LHM_URL,
     NO_EVENTS,
+    NVIDIA_SMI_MISSING,
     PS_DIR,
     SCRIPTS_BY_METHOD,
     http_get_localhost,
 )
 from pc_diag_mcp.models import EventLevel, EventQuery, GpuVendor, TimeWindow
 
-from .conftest import FakeRunner, envelope, no_lhm, which_all
+from .conftest import POWERSHELL, WIN_ROOT, FakeRunner, envelope, live
 
 NOW = datetime(2026, 10, 23, 12, 0, tzinfo=UTC)
 WINDOW = TimeWindow(start=NOW - timedelta(days=120), end=NOW)
 
 
 def make(runner: FakeRunner, **kwargs: object) -> PowerShellCollector:
-    options: dict[str, object] = {
-        "runner": runner,
-        "which": which_all,
-        "http_get": no_lhm,
-        "wsl": False,
-    }
-    options.update(kwargs)
-    return PowerShellCollector(**options)  # type: ignore[arg-type]
+    return live(runner, **kwargs)
 
 
 def test_invocation_uses_fixed_argument_list_and_json_stdin(runner: FakeRunner) -> None:
@@ -45,7 +39,7 @@ def test_invocation_uses_fixed_argument_list_and_json_stdin(runner: FakeRunner) 
     collector.system_info()
     call = runner.calls[-1]
     assert call.argv == [
-        "/win/powershell.exe",
+        POWERSHELL,
         "-NoProfile",
         "-NonInteractive",
         "-ExecutionPolicy",
@@ -61,20 +55,20 @@ def test_wsl_converts_script_path_once(runner: FakeRunner) -> None:
     collector = make(runner, wsl=True)
     collector.system_info()
     collector.system_info()
-    wslpath_calls = [c for c in runner.calls if c.argv[0] == "wslpath"]
+    wslpath_calls = [c for c in runner.calls if c.argv[0] == "/usr/bin/wslpath"]
     assert len(wslpath_calls) == 1
-    assert wslpath_calls[0].argv[:2] == ["wslpath", "-w"]
+    assert wslpath_calls[0].argv[:2] == ["/usr/bin/wslpath", "-w"]
     assert runner.calls[-1].argv[-1].startswith("\\\\wsl.localhost\\")
 
 
 def test_wslpath_failure_is_a_collector_error(runner: FakeRunner) -> None:
     def broken(
-        argv: list[str], stdin: str | None, timeout: float
+        argv: list[str], stdin: str | None, timeout: float, env: object = None
     ) -> subprocess.CompletedProcess[str]:
         return subprocess.CompletedProcess(argv, 1, "", "nope")
 
     with pytest.raises(CollectorError, match="wslpath"):
-        PowerShellCollector(runner=broken, which=which_all, wsl=True).system_info()
+        live(runner, runner=broken, wsl=True).system_info()
 
 
 def test_events_passes_filter_xml_per_log_and_parses_samples(runner: FakeRunner) -> None:
@@ -144,7 +138,7 @@ def test_events_error_paths(
 
 
 def test_missing_powershell_is_unavailable(runner: FakeRunner) -> None:
-    collector = make(runner, which=lambda name: None)
+    collector = make(runner, exists=lambda path: False)
     with pytest.raises(CollectorUnavailable, match=r"powershell\.exe unavailable: not found"):
         collector.system_info()
 
@@ -184,7 +178,8 @@ def test_sensors_order_and_unavailable_reasons(runner: FakeRunner) -> None:
     assert all(0 < r.value < 120 and r.unit == "°C" for r in thermal)
     assert any("no history" in note for note in manifest.notes)
     assert f"GET {LHM_URL}" in manifest.scripts
-    smi = runner.calls[[c.argv[0] for c in runner.calls].index("/usr/bin/nvidia-smi")]
+    smi = next(c for c in runner.calls if c.argv[0].endswith("nvidia-smi.exe"))
+    assert smi.argv[0] == str(WIN_ROOT / "System32" / "nvidia-smi.exe")
     assert smi.argv[-1] == "--format=csv,noheader,nounits"
     assert smi.argv[1].startswith("--query-gpu=name,temperature.gpu")
 
@@ -234,14 +229,14 @@ def test_sensors_prefers_lhm_and_reports_every_failure(runner: FakeRunner) -> No
     collector = make(
         runner,
         http_get=lambda url, timeout: json.dumps(lhm).encode(),
-        which=lambda name: "/win/powershell.exe" if name == "powershell.exe" else None,
+        exists=lambda path: path.name == "powershell.exe",
     )
     snapshot = collector.sensors(None)[0]
     assert snapshot.readings[0].source == "librehardwaremonitor:http"
     assert snapshot.readings[0].value == 61.5
     assert snapshot.readings[0].hardware == "NVIDIA GeForce RTX 5070 Ti Laptop GPU"
     assert snapshot.unavailable == [
-        "nvidia-smi not found on PATH",
+        NVIDIA_SMI_MISSING,
         "ACPI thermal zones (Win32_PerfFormattedData_Counters_ThermalZoneInformation): "
         "Invalid class",
         "GPU engine counters (Win32_PerfFormattedData_GPUPerformanceCounters_GPUEngine): "
@@ -298,7 +293,8 @@ def test_system_info_parses_sample(runner: FakeRunner) -> None:
 
 def test_dxdiag_waits_and_parses(runner: FakeRunner) -> None:
     summary = make(runner).dxdiag()
-    assert runner.stdin_for("dxdiag.ps1") == {"wait_seconds": 90}
+    params = runner.stdin_for("dxdiag.ps1")
+    assert params["wait_seconds"] == 90 and len(params["token"]) == 16
     assert runner.calls[-1].timeout == 120
     assert summary.directx_version == "DirectX 12"
     assert any("NVIDIA" in d.name for d in summary.display_devices)
