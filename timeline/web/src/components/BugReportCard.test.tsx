@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it } from "vitest";
-import { bugReportToMarkdown } from "../markdown";
+import { bugReportToMarkdown, escapeInline } from "../markdown";
 import { demoIncident } from "../test/fixtures";
 import type { BugReport } from "../types";
 import { BugReportCard } from "./BugReportCard";
@@ -12,30 +12,44 @@ const offset = demoIncident.system.utc_offset_minutes;
 describe("bugReportToMarkdown", () => {
   it("renders headings, a facts table, numbered steps and resolved evidence", () => {
     const md = bugReportToMarkdown(report, demoIncident.evidence, offset);
-    expect(md.startsWith(`## ${report.title}\n\n${report.summary}\n`)).toBe(true);
-    expect(md).toContain("| Occurred | 2026-10-20 09:42:07 (UTC−04:00) |");
+    expect(md.startsWith(`## ${escapeInline(report.title)}\n\n\`\`\`text\n${report.summary}\n\`\`\`\n`)).toBe(true);
+    expect(md).toContain("| Occurred | 2026-10-20 09:42:07 (UTC\u221204:00) |");
     expect(md).toContain("| Driver | 32.0.21013.1000 |");
     expect(md).toContain("### Steps to reproduce\n\n1. Boot Windows 11");
     expect(md).toContain("\n3. Watch for the display going black and recovering.\n");
+    expect(md).toContain("### Actual\n\n```text\nFrame time spiked");
     expect(md).toContain(
-      "- `ev-lke-141` 2026-10-20 09:42:09: LiveKernelEvent 141 (VIDEO_ENGINE_TIMEOUT_DETECTED)",
+      "- `ev-lke-141` 2026-10-20 09:42:09: LiveKernelEvent 141 \\(VIDEO\\_ENGINE\\_TIMEOUT\\_DETECTED\\)",
     );
     expect(md.endsWith("\n")).toBe(true);
   });
 
-  it("escapes table pipes, flattens multi-line text and keeps unknown evidence ids", () => {
-    const custom: BugReport = {
+  it("neutralises hostile content: images, links, HTML, pipes and backtick runs", () => {
+    const hostile: BugReport = {
       ...report,
-      title: "Driver\nreset",
-      gpu: "GPU | with pipe",
-      evidence: ["multi", "not-in-incident"],
+      title: "![x](http://evil/p.png) <img src=x onerror=alert(1)>",
+      summary: "line one\n```\n<script>alert(1)</script>\n````",
+      gpu: "GPU | [click](http://evil)",
+      steps_to_reproduce: ["# not a heading\n![y](http://evil/q.png)"],
+      expected: "fine",
+      actual: "`code` and ``more``",
+      evidence: ["ev`1`", "not-in-incident"],
     };
-    const evidence = [{ id: "multi", kind: "event" as const, time: report.occurred_at, label: "line one\n- line two" }];
-    const md = bugReportToMarkdown(custom, evidence, 0);
-    expect(md.startsWith("## Driver reset\n")).toBe(true);
-    expect(md).toContain("| GPU | GPU \\| with pipe |");
-    expect(md).toContain(": line one - line two\n");
+    const evidence = [{ id: "ev`1`", kind: "event" as const, time: report.occurred_at, label: "<b>bold</b> [x](y)\n- item" }];
+    const md = bugReportToMarkdown(hostile, evidence, 0);
+
+    expect(md).toContain("## \\!\\[x\\]\\(http://evil/p.png\\) \\<img src=x onerror=alert\\(1\\)\\>\n");
+    // The summary contains runs of up to four backticks, so its fence is five long.
+    expect(md).toContain("`````text\nline one\n```\n<script>alert(1)</script>\n````\n`````");
+    expect(md).toContain("| GPU | GPU \\| \\[click\\]\\(http://evil\\) |");
+    expect(md).toContain("1. \\# not a heading \\!\\[y\\]\\(http://evil/q.png\\)\n");
+    expect(md).toContain("```text\n`code` and ``more``\n```");
+    expect(md).toContain("- `` ev`1` `` 2026-10-20 13:42:07: ");
+    expect(md).toContain(": \\<b\\>bold\\</b\\> \\[x\\]\\(y\\) - item\n");
     expect(md).toContain("- `not-in-incident`\n");
+    // No live image syntax or <img> tag survives anywhere in the output.
+    expect(md).not.toMatch(/(?<!\\)!(?<!\\)\[/);
+    expect(md).not.toMatch(/(?<!\\)<img/);
   });
 });
 

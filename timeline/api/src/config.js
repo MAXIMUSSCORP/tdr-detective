@@ -27,6 +27,7 @@ function loadConfig(env = process.env) {
   return {
     host: env.HOST || DEFAULT_HOST,
     port,
+    allowRemote: env.TDR_ALLOW_REMOTE === "1",
     dbPath: env.TDR_DB ? path.resolve(env.TDR_DB) : path.join(TIMELINE_DIR, "data", "tdr.db"),
     evalSummaryPath: env.TDR_EVAL_SUMMARY
       ? path.resolve(env.TDR_EVAL_SUMMARY)
@@ -36,4 +37,11 @@ function loadConfig(env = process.env) {
   };
 }
 
-module.exports = { loadConfig, TIMELINE_DIR, REPO_DIR };
+const LOOPBACK_HOSTS = new Set(["127.0.0.1", "::1", "localhost"]);
+
+/** @param {string} host */
+function isLoopback(host) {
+  return LOOPBACK_HOSTS.has(host.toLowerCase());
+}
+
+module.exports = { loadConfig, isLoopback, TIMELINE_DIR, REPO_DIR };
