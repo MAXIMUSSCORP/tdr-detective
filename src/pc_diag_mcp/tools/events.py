@@ -10,7 +10,7 @@ from collections import Counter
 from datetime import datetime, timedelta
 from pathlib import Path
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import Field
 
 from pc_diag_mcp.collectors.base import (
     CollectionManifest,
@@ -18,6 +18,7 @@ from pc_diag_mcp.collectors.base import (
     collect,
     record_note,
 )
+from pc_diag_mcp.collectors.eventxml import sanitize_record
 from pc_diag_mcp.models import EventLevel, EventQuery, EventRecord, GpuVendor, TimeWindow
 from pc_diag_mcp.signatures import (
     INTEL_QUERY_PROVIDERS,
@@ -28,14 +29,12 @@ from pc_diag_mcp.signatures import (
     match_event,
 )
 from pc_diag_mcp.tools.params import IncidentParams, LogName, QueryEventsParams, SaveMode
+from pc_diag_mcp.tools.results import Result as _Result
+from pc_diag_mcp.tools.results import UntrustedResult
 
 INCIDENT_GAP = timedelta(minutes=10)
 MAX_SIGNALS_PER_INCIDENT = 50
 SCAN_MAX_EVENTS = 5000
-
-
-class _Result(BaseModel):
-    model_config = ConfigDict(extra="forbid", frozen=True)
 
 
 class EventCount(_Result):
@@ -44,7 +43,7 @@ class EventCount(_Result):
     count: int
 
 
-class QueryEventsResult(_Result):
+class QueryEventsResult(UntrustedResult):
     window: TimeWindow
     count: int
     events: list[EventRecord]
@@ -52,7 +51,7 @@ class QueryEventsResult(_Result):
     collection: CollectionManifest
 
 
-class SavedEventsResult(_Result):
+class SavedEventsResult(UntrustedResult):
     """Returned instead of the records when ``save_to='tempfile'``."""
 
     path: str = Field(description="JSON file holding list[EventRecord].")
@@ -140,7 +139,7 @@ def query_events(
     )
 
     def run() -> list[EventRecord]:
-        found = collector.events(query)
+        found = [sanitize_record(r) for r in collector.events(query)]
         if len(found) >= query.max_events:
             record_note(
                 f"returned the max_events cap ({query.max_events}); older events in the window "
@@ -187,7 +186,7 @@ class TdrIncident(_Result):
     summary: str
 
 
-class IncidentsResult(_Result):
+class IncidentsResult(UntrustedResult):
     window: TimeWindow
     incidents: list[TdrIncident]
     signals_total: int
@@ -269,7 +268,7 @@ def list_tdr_incidents(collector: Collector, start: datetime, end: datetime) -> 
     def scan() -> list[EventRecord]:
         records: dict[tuple[str, int], EventRecord] = {}
         for query in _scan_queries(window):
-            batch = collector.events(query)
+            batch = [sanitize_record(r) for r in collector.events(query)]
             if len(batch) >= query.max_events:
                 record_note(
                     f"a scan query returned the {query.max_events}-event cap; "

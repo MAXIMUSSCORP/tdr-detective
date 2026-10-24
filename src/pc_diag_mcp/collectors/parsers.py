@@ -65,6 +65,14 @@ NVIDIA_SMI_FIELDS: tuple[tuple[str, SensorKind, str], ...] = (
 NVIDIA_SMI_QUERY = "name," + ",".join(f for f, _, _ in NVIDIA_SMI_FIELDS)
 
 
+_LABEL_UNSAFE = re.compile(r"[^\w .:/()%+-]")
+
+
+def sensor_label(text: str) -> str:
+    """Names reported by other programs (LHM, nvidia-smi) are untrusted: restrict and cap."""
+    return _LABEL_UNSAFE.sub("_", text)[:64]
+
+
 def _number(text: str) -> float | None:
     match = re.search(r"-?\d+(?:[.,]\d+)?", text)
     return float(match.group(0).replace(",", ".")) if match else None
@@ -84,7 +92,7 @@ def parse_nvidia_smi(stdout: str) -> list[SensorReading]:
             if value is not None:
                 readings.append(
                     SensorReading(
-                        hardware=name,
+                        hardware=sensor_label(name),
                         sensor=field,
                         kind=kind,
                         value=value,
@@ -163,14 +171,14 @@ _LHM_KINDS: dict[str, tuple[SensorKind, str]] = {
 
 def _walk_lhm(node: Mapping[str, Any], hardware: str) -> Iterator[SensorReading]:
     if node.get("HardwareId"):
-        hardware = str(node.get("Text") or hardware)
+        hardware = sensor_label(str(node.get("Text") or hardware))
     kind_unit = _LHM_KINDS.get(str(node.get("Type") or ""))
     if node.get("SensorId") and kind_unit is not None:
         value = _number(str(node.get("RawValue") or node.get("Value") or ""))
         if value is not None:
             yield SensorReading(
                 hardware=hardware,
-                sensor=str(node.get("Text") or node["SensorId"]),
+                sensor=sensor_label(str(node.get("Text") or node["SensorId"])),
                 kind=kind_unit[0],
                 value=value,
                 unit=kind_unit[1],
