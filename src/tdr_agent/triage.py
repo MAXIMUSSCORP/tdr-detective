@@ -1,9 +1,11 @@
 """Run one triage question through Claude with the pc-stability-triage skill.
 
-The agent sees exactly three capabilities: the ``pc-diag`` MCP tools, the project skill,
-and ``python <skill>/scripts/compress_events.py <saved files>``. The base tool set is
-limited to Bash and Skill and every editing/network/subagent tool is disallowed. Allow rules
-cover only the MCP tools and the skill. Bash deliberately has no allow rule: a CLI prefix
+The agent sees exactly four capabilities: the ``pc-diag`` MCP tools, the project skill,
+``Read`` of the skill's own files (its ``reference/`` pages), and
+``python <skill>/scripts/compress_events.py <saved files>``. The base tool set is limited
+to Bash, Skill and Read, and every editing/network/search/subagent tool is disallowed. Allow
+rules cover only the MCP tools and the skill; Read is checked by real path, so ``..`` or a
+symlink cannot leave the skill directory. Bash deliberately has no allow rule: a CLI prefix
 rule would also admit the compressor's ``--map PATH`` (an arbitrary file write), so every
 Bash call reaches ``can_use_tool``, which parses it strictly and denies anything else. A
 ``PreToolUse`` hook applies the same check to every call, including any the CLI would
@@ -18,6 +20,7 @@ import re
 import shlex
 import sys
 import time
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, cast, get_args
 
@@ -51,14 +54,13 @@ SERVER_NAME = "pc-diag"
 COMPRESSOR = f".claude/skills/{SKILL_NAME}/scripts/compress_events.py"
 MCP_PREFIX = f"mcp__{SERVER_NAME}__"
 
-BASE_TOOLS = ["Bash", "Skill"]
+BASE_TOOLS = ["Bash", "Skill", "Read"]
 ALLOWED_TOOLS = [f"{MCP_PREFIX}*", f"Skill({SKILL_NAME})"]
 DISALLOWED_TOOLS = [
     "Write",
     "Edit",
     "MultiEdit",
     "NotebookEdit",
-    "Read",
     "Glob",
     "Grep",
     "LS",
@@ -77,7 +79,8 @@ SYSTEM_PROMPT = (
     f"question with the {SKILL_NAME} skill: load it with the Skill tool first, then follow "
     "its runbook and output contract exactly. Your only data sources are the "
     f"{MCP_PREFIX}* tools and the skill's event compressor, run as "
-    f"`python {COMPRESSOR} <files>`. You cannot change the system and must never try."
+    f"`python {COMPRESSOR} <files>`; Read works only for files inside the skill directory. "
+    "You cannot change the system and must never try."
 )
 
 # Compressor arguments: input paths plus the flags that only tune the digest. --map is left
@@ -112,8 +115,8 @@ class TriageResult(BaseModel):
 def _denial(tool_name: str) -> str:
     return (
         f"{tool_name} is not permitted: TDR Detective is read-only. Use the "
-        f"{MCP_PREFIX}* tools, the {SKILL_NAME} skill, or exactly "
-        f"`python {COMPRESSOR} <saved event files>`."
+        f"{MCP_PREFIX}* tools, the {SKILL_NAME} skill, Read of files under "
+        f".claude/skills/{SKILL_NAME}/, or exactly `python {COMPRESSOR} <saved event files>`."
     )
 
 
@@ -150,42 +153,60 @@ def is_compressor_command(command: str) -> bool:
     return _compressor_args_ok(argv[2:])
 
 
-def is_permitted(tool_name: str, tool_input: dict[str, Any]) -> bool:
-    """The read-only surface: pc-diag tools, this skill, and the compressor."""
+def is_skill_file(file_path: object, cwd: Path) -> bool:
+    """True when ``file_path`` resolves (symlinks too) inside ``<cwd>/.claude/skills/<skill>``."""
+    if not isinstance(file_path, str) or not file_path or "\0" in file_path:
+        return False
+    root = Path(os.path.realpath(cwd / ".claude" / "skills" / SKILL_NAME))
+    target = Path(file_path)
+    resolved = Path(os.path.realpath(target if target.is_absolute() else cwd / target))
+    return resolved.is_relative_to(root)
+
+
+def is_permitted(tool_name: str, tool_input: dict[str, Any], cwd: Path) -> bool:
+    """The read-only surface: pc-diag tools, this skill and its files, and the compressor."""
     if tool_name.startswith(MCP_PREFIX):
         return True
     if tool_name == "Skill":
         return SKILL_NAME in (tool_input.get("skill"), tool_input.get("command"))
+    if tool_name == "Read":
+        return is_skill_file(tool_input.get("file_path"), cwd)
     command = tool_input.get("command")
     return tool_name == "Bash" and isinstance(command, str) and is_compressor_command(command)
 
 
-async def can_use_tool(
-    tool_name: str, tool_input: dict[str, Any], context: ToolPermissionContext
-) -> PermissionResultAllow | PermissionResultDeny:
-    """Permission prompt replacement: allow the read-only surface, deny everything else."""
-    if is_permitted(tool_name, tool_input):
-        return PermissionResultAllow()
-    return PermissionResultDeny(message=_denial(tool_name))
+@dataclass(frozen=True)
+class Guard:
+    """The permission callback and PreToolUse hook for one run, bound to its cwd."""
 
+    cwd: Path
 
-async def pre_tool_use_guard(
-    hook_input: HookInput, tool_use_id: str | None, context: HookContext
-) -> HookJSONOutput:
-    """Runs before every tool call, even ones the CLI would auto-approve (its built-in
-    read-only commands, settings rules), and denies anything outside the surface."""
-    if hook_input["hook_event_name"] != "PreToolUse":
-        return {}
-    tool_name = hook_input["tool_name"]
-    if is_permitted(tool_name, hook_input["tool_input"]):
-        return {}  # no decision: the normal permission flow still applies
-    return {
-        "hookSpecificOutput": {
-            "hookEventName": "PreToolUse",
-            "permissionDecision": "deny",
-            "permissionDecisionReason": _denial(tool_name),
+    async def can_use_tool(
+        self, tool_name: str, tool_input: dict[str, Any], context: ToolPermissionContext
+    ) -> PermissionResultAllow | PermissionResultDeny:
+        """Permission prompt replacement: allow the read-only surface, deny everything else."""
+        if is_permitted(tool_name, tool_input, self.cwd):
+            return PermissionResultAllow()
+        return PermissionResultDeny(message=_denial(tool_name))
+
+    async def pre_tool_use(
+        self, hook_input: HookInput, tool_use_id: str | None, context: HookContext
+    ) -> HookJSONOutput:
+        """Runs before every tool call, even ones the CLI would auto-approve (its built-in
+        read-only commands, reads under cwd, settings rules), and denies anything outside the
+        surface."""
+        if hook_input["hook_event_name"] != "PreToolUse":
+            return {}
+        tool_name = hook_input["tool_name"]
+        if is_permitted(tool_name, hook_input["tool_input"], self.cwd):
+            return {}  # no decision: the normal permission flow still applies
+        return {
+            "hookSpecificOutput": {
+                "hookEventName": "PreToolUse",
+                "permissionDecision": "deny",
+                "permissionDecisionReason": _denial(tool_name),
+            }
         }
-    }
 
 
 def build_options(
@@ -207,13 +228,14 @@ def build_options(
         server["env"] = {"PC_DIAG_REPLAY": str(replay_dir.resolve())}
     # The skill runs `python ...`; make that resolve to this interpreter's environment.
     path = os.pathsep.join([str(Path(sys.executable).parent), os.environ.get("PATH", "")])
+    guard = Guard(cwd)
     return ClaudeAgentOptions(
         system_prompt=SYSTEM_PROMPT,
         tools=list(BASE_TOOLS),
         allowed_tools=list(ALLOWED_TOOLS),
         disallowed_tools=list(DISALLOWED_TOOLS),
-        can_use_tool=can_use_tool,
-        hooks={"PreToolUse": [HookMatcher(matcher=None, hooks=[pre_tool_use_guard])]},
+        can_use_tool=guard.can_use_tool,
+        hooks={"PreToolUse": [HookMatcher(matcher=None, hooks=[guard.pre_tool_use])]},
         permission_mode="default",
         setting_sources=["project"],
         skills=[SKILL_NAME],
