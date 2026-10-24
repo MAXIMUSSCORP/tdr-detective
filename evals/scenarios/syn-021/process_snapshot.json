@@ -1,0 +1,119 @@
+{
+  "taken_at": "2026-10-22T07:13:33Z",
+  "memory": {
+    "total_bytes": 34359738368,
+    "available_bytes": 966367641,
+    "commit_used_bytes": 37688338022,
+    "commit_limit_bytes": 39460012032
+  },
+  "disks": [
+    {
+      "name": "0 C:",
+      "queue_length": 0.19,
+      "percent_busy": 2.1,
+      "read_bytes_per_sec": 2228292.0,
+      "write_bytes_per_sec": 2672022.0
+    }
+  ],
+  "top_processes": [
+    {
+      "pid": 27444,
+      "name": "MediaIndexerPro.exe",
+      "working_set_bytes": 3435973836,
+      "private_bytes": 25125558681,
+      "page_faults": 9120442,
+      "read_bytes": 19094568960,
+      "write_bytes": 2348810240,
+      "cpu_seconds": 5120.0,
+      "started": "2026-10-22T03:28:59.093204Z"
+    },
+    {
+      "pid": 20932,
+      "name": "chrome.exe",
+      "working_set_bytes": 1503238553,
+      "private_bytes": 2576980377,
+      "page_faults": 8870100,
+      "read_bytes": 671088640,
+      "write_bytes": 859832320,
+      "cpu_seconds": 780.0,
+      "started": "2026-10-22T03:34:14.115220Z"
+    },
+    {
+      "pid": 20224,
+      "name": "Discord.exe",
+      "working_set_bytes": 429496729,
+      "private_bytes": 858993459,
+      "page_faults": 2010550,
+      "read_bytes": 167772160,
+      "write_bytes": 125829120,
+      "cpu_seconds": 260.0,
+      "started": "2026-10-22T00:21:38.348457Z"
+    },
+    {
+      "pid": 21364,
+      "name": "steam.exe",
+      "working_set_bytes": 322122547,
+      "private_bytes": 429496729,
+      "page_faults": 1204118,
+      "read_bytes": 220200960,
+      "write_bytes": 346030080,
+      "cpu_seconds": 120.0,
+      "started": "2026-10-22T00:19:09.635285Z"
+    },
+    {
+      "pid": 28008,
+      "name": "dwm.exe",
+      "working_set_bytes": 152708414,
+      "private_bytes": 318142531,
+      "page_faults": 863008,
+      "read_bytes": 619984587,
+      "write_bytes": 148476279,
+      "cpu_seconds": 123.2,
+      "started": "2026-10-22T02:57:38.109614Z"
+    },
+    {
+      "pid": 4916,
+      "name": "MsMpEng.exe",
+      "working_set_bytes": 220113824,
+      "private_bytes": 310160389,
+      "page_faults": 1492939,
+      "read_bytes": 114176474,
+      "write_bytes": 120245873,
+      "cpu_seconds": 104.9,
+      "started": "2026-10-22T05:21:46.512248Z"
+    },
+    {
+      "pid": 6096,
+      "name": "explorer.exe",
+      "working_set_bytes": 242684156,
+      "private_bytes": 148306984,
+      "page_faults": 1615043,
+      "read_bytes": 605858333,
+      "write_bytes": 373534104,
+      "cpu_seconds": 46.2,
+      "started": "2026-10-22T03:30:33.958047Z"
+    },
+    {
+      "pid": 25676,
+      "name": "SearchHost.exe",
+      "working_set_bytes": 154408710,
+      "private_bytes": 92645226,
+      "page_faults": 3096402,
+      "read_bytes": 55528116,
+      "write_bytes": 416483783,
+      "cpu_seconds": 140.5,
+      "started": "2026-10-22T01:52:38.937748Z"
+    },
+    {
+      "pid": 16996,
+      "name": "svchost.exe",
+      "working_set_bytes": 77344396,
+      "private_bytes": 51562930,
+      "page_faults": 3040023,
+      "read_bytes": 67364868,
+      "write_bytes": 195626818,
+      "cpu_seconds": 365.6,
+      "started": "2026-10-22T00:47:38.634434Z"
+    }
+  ]
+}

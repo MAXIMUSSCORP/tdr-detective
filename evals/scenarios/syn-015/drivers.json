@@ -1,0 +1,47 @@
+[
+  {
+    "device_name": "NVIDIA GeForce GTX 1660 SUPER",
+    "device_class": "Display",
+    "provider": "NVIDIA",
+    "version": "32.0.15.6094",
+    "date": "2024-08-14",
+    "inf_name": "oem54.inf",
+    "signed": true
+  },
+  {
+    "device_name": "Realtek(R) Audio",
+    "device_class": "MEDIA",
+    "provider": "Realtek Semiconductor Corp.",
+    "version": "6.0.9580.1",
+    "date": "2023-09-18",
+    "inf_name": "oem31.inf",
+    "signed": true
+  },
+  {
+    "device_name": "Realtek Gaming 2.5GbE Family Controller",
+    "device_class": "Net",
+    "provider": "Realtek",
+    "version": "10.68.815.2023",
+    "date": "2023-08-15",
+    "inf_name": "oem18.inf",
+    "signed": true
+  },
+  {
+    "device_name": "Standard SATA AHCI Controller",
+    "device_class": "HDC",
+    "provider": "Microsoft",
+    "version": "10.0.19041.3636",
+    "date": "2006-06-21",
+    "inf_name": "mshdc.inf",
+    "signed": true
+  },
+  {
+    "device_name": "Intel(R) Management Engine Interface #1",
+    "device_class": "System",
+    "provider": "Intel",
+    "version": "2406.5.5.0",
+    "date": "2024-03-18",
+    "inf_name": "oem7.inf",
+    "signed": true
+  }
+]

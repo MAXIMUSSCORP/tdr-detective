@@ -1,0 +1,47 @@
+[
+  {
+    "device_name": "NVIDIA GeForce RTX 4080 SUPER",
+    "device_class": "Display",
+    "provider": "NVIDIA",
+    "version": "32.0.15.6094",
+    "date": "2024-08-14",
+    "inf_name": "oem66.inf",
+    "signed": true
+  },
+  {
+    "device_name": "Realtek(R) Audio",
+    "device_class": "MEDIA",
+    "provider": "Realtek Semiconductor Corp.",
+    "version": "6.0.9580.1",
+    "date": "2023-09-18",
+    "inf_name": "oem31.inf",
+    "signed": true
+  },
+  {
+    "device_name": "Intel(R) Ethernet Controller I225-V",
+    "device_class": "Net",
+    "provider": "Intel",
+    "version": "1.1.4.43",
+    "date": "2023-08-04",
+    "inf_name": "oem12.inf",
+    "signed": true
+  },
+  {
+    "device_name": "Standard NVM Express Controller",
+    "device_class": "SCSIAdapter",
+    "provider": "Microsoft",
+    "version": "10.0.22621.4111",
+    "date": "2006-06-21",
+    "inf_name": "stornvme.inf",
+    "signed": true
+  },
+  {
+    "device_name": "Intel(R) Management Engine Interface #1",
+    "device_class": "System",
+    "provider": "Intel",
+    "version": "2406.5.5.0",
+    "date": "2024-03-18",
+    "inf_name": "oem7.inf",
+    "signed": true
+  }
+]

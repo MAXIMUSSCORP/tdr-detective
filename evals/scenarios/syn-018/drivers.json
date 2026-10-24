@@ -1,0 +1,56 @@
+[
+  {
+    "device_name": "Intel(R) Iris(R) Xe Graphics",
+    "device_class": "Display",
+    "provider": "Intel Corporation",
+    "version": "31.0.101.5592",
+    "date": "2024-06-27",
+    "inf_name": "oem38.inf",
+    "signed": true
+  },
+  {
+    "device_name": "Realtek(R) Audio",
+    "device_class": "MEDIA",
+    "provider": "Realtek Semiconductor Corp.",
+    "version": "6.0.9580.1",
+    "date": "2023-09-18",
+    "inf_name": "oem31.inf",
+    "signed": true
+  },
+  {
+    "device_name": "Intel(R) Wi-Fi 6E AX211 160MHz",
+    "device_class": "Net",
+    "provider": "Intel",
+    "version": "23.30.0.6",
+    "date": "2024-04-02",
+    "inf_name": "oem44.inf",
+    "signed": true
+  },
+  {
+    "device_name": "Standard NVM Express Controller",
+    "device_class": "SCSIAdapter",
+    "provider": "Microsoft",
+    "version": "10.0.22621.4111",
+    "date": "2006-06-21",
+    "inf_name": "stornvme.inf",
+    "signed": true
+  },
+  {
+    "device_name": "Intel(R) Management Engine Interface #1",
+    "device_class": "System",
+    "provider": "Intel",
+    "version": "2406.5.5.0",
+    "date": "2024-03-18",
+    "inf_name": "oem7.inf",
+    "signed": true
+  },
+  {
+    "device_name": "Intel(R) Serial IO I2C Host Controller - 51E8",
+    "device_class": "System",
+    "provider": "Intel Corporation",
+    "version": "30.100.2237.25",
+    "date": "2022-09-11",
+    "inf_name": "oem22.inf",
+    "signed": true
+  }
+]

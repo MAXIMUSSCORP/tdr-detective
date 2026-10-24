@@ -1,0 +1,18 @@
+{
+  "id": "syn-010",
+  "description": "Synthetic replay syn-010: Desktop (AMD Ryzen 7 5800X3D 8-Core Processor; AMD Radeon RX 6800 XT; 32 GB RAM), Microsoft Windows 11 Pro build 22631.4317. Event window 2026-10-05T10:10:40Z to 2026-10-05T15:37:40Z.",
+  "now": "2026-10-05T15:37:40Z",
+  "system": {
+    "os_caption": "Microsoft Windows 11 Pro",
+    "os_build": "22631.4317",
+    "gpus": [
+      {
+        "name": "AMD Radeon RX 6800 XT",
+        "vendor": "amd",
+        "driver_version": "31.0.24033.1003",
+        "driver_date": "2024-03-07"
+      }
+    ],
+    "utc_offset_minutes": 60
+  }
+}

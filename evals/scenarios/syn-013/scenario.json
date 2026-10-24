@@ -1,0 +1,18 @@
+{
+  "id": "syn-013",
+  "description": "Synthetic replay syn-013: Desktop (AMD Ryzen 7 7800X3D 8-Core Processor; AMD Radeon RX 7900 XTX; 32 GB RAM), Microsoft Windows 11 Pro build 26100.2033. Event window 2026-10-06T17:20:13Z to 2026-10-06T20:32:13Z.",
+  "now": "2026-10-06T20:32:13Z",
+  "system": {
+    "os_caption": "Microsoft Windows 11 Pro",
+    "os_build": "26100.2033",
+    "gpus": [
+      {
+        "name": "AMD Radeon RX 7900 XTX",
+        "vendor": "amd",
+        "driver_version": "32.0.12011.1036",
+        "driver_date": "2024-09-12"
+      }
+    ],
+    "utc_offset_minutes": 120
+  }
+}

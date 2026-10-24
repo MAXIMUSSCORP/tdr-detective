@@ -1,0 +1,20 @@
+{
+  "directx_version": "DirectX 12",
+  "display_devices": [
+    {
+      "name": "Intel(R) Iris(R) Xe Graphics",
+      "manufacturer": "Intel Corporation",
+      "driver_version": "31.0.101.5592",
+      "driver_date": "2024-06-27",
+      "dedicated_memory_mb": 128,
+      "feature_levels": [
+        "12_2",
+        "12_1",
+        "12_0",
+        "11_1",
+        "11_0"
+      ]
+    }
+  ],
+  "problems": []
+}

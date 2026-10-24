@@ -1,0 +1,108 @@
+{
+  "taken_at": "2026-10-13T14:42:41Z",
+  "memory": {
+    "total_bytes": 34359738368,
+    "available_bytes": 17028371958,
+    "commit_used_bytes": 16874839321,
+    "commit_limit_bytes": 39460012032
+  },
+  "disks": [
+    {
+      "name": "0 C:",
+      "queue_length": 0.06,
+      "percent_busy": 0.8,
+      "read_bytes_per_sec": 664852.0,
+      "write_bytes_per_sec": 2650728.0
+    }
+  ],
+  "top_processes": [
+    {
+      "pid": 14316,
+      "name": "chrome.exe",
+      "working_set_bytes": 1026363607,
+      "private_bytes": 1667840861,
+      "page_faults": 403819,
+      "read_bytes": 659665578,
+      "write_bytes": 412823864,
+      "cpu_seconds": 193.4,
+      "started": "2026-10-13T10:35:39.791191Z"
+    },
+    {
+      "pid": 27252,
+      "name": "Spotify.exe",
+      "working_set_bytes": 217510184,
+      "private_bytes": 326265276,
+      "page_faults": 3451698,
+      "read_bytes": 478853051,
+      "write_bytes": 372359085,
+      "cpu_seconds": 63.7,
+      "started": "2026-10-13T07:50:28.159195Z"
+    },
+    {
+      "pid": 10248,
+      "name": "dwm.exe",
+      "working_set_bytes": 142495323,
+      "private_bytes": 296865256,
+      "page_faults": 2596728,
+      "read_bytes": 905040259,
+      "write_bytes": 133168640,
+      "cpu_seconds": 249.8,
+      "started": "2026-10-13T12:27:51.989291Z"
+    },
+    {
+      "pid": 16944,
+      "name": "MsMpEng.exe",
+      "working_set_bytes": 202583790,
+      "private_bytes": 285458976,
+      "page_faults": 3994025,
+      "read_bytes": 424387820,
+      "write_bytes": 31502809,
+      "cpu_seconds": 172.5,
+      "started": "2026-10-13T09:11:03.300612Z"
+    },
+    {
+      "pid": 6164,
+      "name": "explorer.exe",
+      "working_set_bytes": 237908255,
+      "private_bytes": 145388378,
+      "page_faults": 3903298,
+      "read_bytes": 447817950,
+      "write_bytes": 265233955,
+      "cpu_seconds": 68.4,
+      "started": "2026-10-13T02:32:08.027023Z"
+    },
+    {
+      "pid": 13444,
+      "name": "SearchHost.exe",
+      "working_set_bytes": 200372086,
+      "private_bytes": 120223252,
+      "page_faults": 4199054,
+      "read_bytes": 338374257,
+      "write_bytes": 398764286,
+      "cpu_seconds": 171.9,
+      "started": "2026-10-13T01:07:59.994866Z"
+    },
+    {
+      "pid": 26060,
+      "name": "OneDrive.exe",
+      "working_set_bytes": 73946063,
+      "private_bytes": 55459547,
+      "page_faults": 776657,
+      "read_bytes": 896614168,
+      "write_bytes": 111651308,
+      "cpu_seconds": 381.2,
+      "started": "2026-10-13T07:53:26.684189Z"
+    },
+    {
+      "pid": 6072,
+      "name": "svchost.exe",
+      "working_set_bytes": 66693279,
+      "private_bytes": 44462186,
+      "page_faults": 2239318,
+      "read_bytes": 67558317,
+      "write_bytes": 27356453,
+      "cpu_seconds": 19.9,
+      "started": "2026-10-13T10:07:39.480314Z"
+    }
+  ]
+}

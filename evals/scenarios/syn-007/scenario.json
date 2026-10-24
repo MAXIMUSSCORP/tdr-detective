@@ -1,0 +1,24 @@
+{
+  "id": "syn-007",
+  "description": "Synthetic replay syn-007: Laptop (13th Gen Intel(R) Core(TM) i7-13700H; NVIDIA GeForce RTX 4060 Laptop GPU + Intel(R) Iris(R) Xe Graphics; 16 GB RAM), Microsoft Windows 11 Home build 22631.4317. Event window 2026-10-18T19:12:57Z to 2026-10-19T00:48:57Z.",
+  "now": "2026-10-19T00:48:57Z",
+  "system": {
+    "os_caption": "Microsoft Windows 11 Home",
+    "os_build": "22631.4317",
+    "gpus": [
+      {
+        "name": "NVIDIA GeForce RTX 4060 Laptop GPU",
+        "vendor": "nvidia",
+        "driver_version": "32.0.15.6094",
+        "driver_date": "2024-08-14"
+      },
+      {
+        "name": "Intel(R) Iris(R) Xe Graphics",
+        "vendor": "intel",
+        "driver_version": "31.0.101.5333",
+        "driver_date": "2024-03-01"
+      }
+    ],
+    "utc_offset_minutes": -180
+  }
+}

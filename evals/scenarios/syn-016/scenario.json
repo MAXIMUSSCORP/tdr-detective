@@ -1,0 +1,18 @@
+{
+  "id": "syn-016",
+  "description": "Synthetic replay syn-016: Desktop (13th Gen Intel(R) Core(TM) i9-13900K; NVIDIA GeForce RTX 4080 SUPER; 64 GB RAM), Microsoft Windows 11 Pro build 22631.4317. Event window 2026-10-08T14:02:44Z to 2026-10-08T19:22:44Z.",
+  "now": "2026-10-08T19:22:44Z",
+  "system": {
+    "os_caption": "Microsoft Windows 11 Pro",
+    "os_build": "22631.4317",
+    "gpus": [
+      {
+        "name": "NVIDIA GeForce RTX 4080 SUPER",
+        "vendor": "nvidia",
+        "driver_version": "32.0.15.6094",
+        "driver_date": "2024-08-14"
+      }
+    ],
+    "utc_offset_minutes": -300
+  }
+}
