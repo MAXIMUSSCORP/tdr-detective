@@ -688,6 +688,70 @@ def test_other_project_settings_fail_closed(tmp_path: Path, content: str, named:
         triage.check_project_settings(tmp_path)
 
 
+def test_run_removes_only_the_placeholders_it_created(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    (tmp_path / "package.json").write_text("", encoding="utf-8")  # already there: kept
+    (tmp_path / "notes.txt").write_text("keep", encoding="utf-8")
+    outside = tmp_path.parent / f"{tmp_path.name}-outside.txt"
+    outside.write_text("", encoding="utf-8")
+
+    def sandbox_side_effects() -> list[Any]:
+        for name in sorted(triage.SANDBOX_PLACEHOLDERS - {"package.json", "yarn.lock", ".npmrc"}):
+            (tmp_path / name).write_text("", encoding="utf-8")
+        (tmp_path / "yarn.lock").write_text("# real lockfile\n", encoding="utf-8")  # not empty
+        (tmp_path / ".npmrc").symlink_to(outside)  # a link, even to an empty file
+        (tmp_path / "empty-but-unknown.json").write_text("", encoding="utf-8")
+        return []
+
+    class SideEffectQuery(FakeQuery):
+        def __call__(self, *, prompt: Any, options: ClaudeAgentOptions) -> AsyncIterator[Any]:
+            inner = super().__call__(prompt=prompt, options=options)
+
+            async def gen() -> AsyncIterator[Any]:
+                sandbox_side_effects()
+                async for message in inner:
+                    yield message
+
+            return gen()
+
+    monkeypatch.setattr(claude_agent_sdk, "query", SideEffectQuery(good_run()))
+    triage_sync(cwd=tmp_path)
+    left = {p.name for p in tmp_path.iterdir()}
+    assert left == {"package.json", "notes.txt", "yarn.lock", ".npmrc", "empty-but-unknown.json"}
+    assert outside.exists()
+
+
+def test_placeholders_are_removed_when_the_run_fails(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    def broken(*, prompt: Any, options: ClaudeAgentOptions) -> AsyncIterator[Any]:
+        async def gen() -> AsyncIterator[Any]:
+            (tmp_path / "bunfig.toml").write_text("", encoding="utf-8")
+            yield init(skills=["other"])
+
+        return gen()
+
+    monkeypatch.setattr(claude_agent_sdk, "query", broken)
+    with pytest.raises(TriageSetupError):
+        triage_sync(cwd=tmp_path)
+    assert not (tmp_path / "bunfig.toml").exists()
+
+
+def test_placeholder_set_is_exactly_what_the_cli_was_seen_to_create() -> None:
+    assert {
+        ".gitmodules",
+        ".npmrc",
+        ".yarnrc",
+        ".yarnrc.yml",
+        "bunfig.toml",
+        "package-lock.json",
+        "package.json",
+        "pnpm-lock.yaml",
+        "yarn.lock",
+    } == triage.SANDBOX_PLACEHOLDERS
+
+
 def test_widening_project_settings_fail_loudly(
     monkeypatch: pytest.MonkeyPatch, tmp_path: Path
 ) -> None:

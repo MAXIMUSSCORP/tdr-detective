@@ -129,6 +129,21 @@ _SERVER_ENV_PASSTHROUGH = (
 # Claude Code strips credentials from the environment of every subprocess it starts (Bash,
 # hooks, MCP servers) when this is set; without it the API key reaches the MCP server.
 SUBPROCESS_ENV_SCRUB = "CLAUDE_CODE_SUBPROCESS_ENV_SCRUB"
+# Empty files the CLI's scrubbing sandbox creates in cwd as mount points for the paths it
+# protects (observed with the bundled CLI 2.1.294). run_triage removes the ones it caused.
+SANDBOX_PLACEHOLDERS = frozenset(
+    {
+        ".gitmodules",
+        ".npmrc",
+        ".yarnrc",
+        ".yarnrc.yml",
+        "bunfig.toml",
+        "package-lock.json",
+        "package.json",
+        "pnpm-lock.yaml",
+        "yarn.lock",
+    }
+)
 
 
 class TriageSetupError(RuntimeError):
@@ -387,6 +402,27 @@ def check_project_settings(cwd: Path) -> None:
         )
 
 
+def remove_sandbox_placeholders(cwd: Path, before: set[str]) -> list[str]:
+    """Delete the placeholder files this run created: only names in
+    ``SANDBOX_PLACEHOLDERS`` that were absent before, are regular files (not links) and are
+    empty. Returns the names removed."""
+    removed: list[str] = []
+    for name in sorted(SANDBOX_PLACEHOLDERS - before):
+        path = cwd / name
+        try:
+            info = os.lstat(path)
+        except OSError:
+            continue
+        if stat.S_ISREG(info.st_mode) and info.st_size == 0:
+            try:
+                path.unlink()
+            except OSError:
+                log.warning("could not remove sandbox placeholder %s", path, exc_info=True)
+                continue
+            removed.append(name)
+    return removed
+
+
 def _check_init(data: dict[str, Any], model: str) -> None:
     skills = {s if isinstance(s, str) else s.get("name") for s in data.get("skills") or []}
     if SKILL_NAME not in skills:
@@ -459,6 +495,7 @@ async def run_triage(
     result: ResultMessage | None = None
     initialized = False
     started = time.monotonic()
+    before = set(os.listdir(cwd))
 
     stream = claude_agent_sdk.query(prompt=question, options=options)
     try:
@@ -485,9 +522,12 @@ async def run_triage(
     except ClaudeSDKError as exc:
         errors.append(f"agent run failed: {exc}")
     finally:
-        aclose = getattr(stream, "aclose", None)
-        if aclose is not None:
-            await aclose()
+        try:
+            aclose = getattr(stream, "aclose", None)
+            if aclose is not None:
+                await aclose()
+        finally:
+            remove_sandbox_placeholders(cwd, before)
 
     if result is None and not errors and not initialized:
         raise TriageSetupError("the CLI produced no init message")
