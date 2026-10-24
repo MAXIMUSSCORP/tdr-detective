@@ -7,8 +7,10 @@ python -m pc_diag_mcp.record scrub SRC DST [--literal TEXT ...]
 replacing host identifiers with stable placeholders, and fails closed: if any pattern still
 matches afterwards, nothing is written and the exit code is non-zero.
 
-Known limitation: IP addresses, Wi-Fi SSIDs, other hostnames and personal device names (e.g.
-Bluetooth headsets) inside event messages are not detected. Read the output before sharing it.
+Replaced: host/user names and the profile path from the capture, user-profile paths, SIDs,
+MACs, serial-like fields, emails, IPv4/IPv6 addresses, UNC paths, URLs with query strings and
+device instance IDs. Known limitation: Wi-Fi SSIDs, other hostnames and personal device names
+(e.g. Bluetooth headsets) in free text are not detected. Read the output before sharing it.
 """
 
 from __future__ import annotations
@@ -24,7 +26,7 @@ import tempfile
 from collections.abc import Callable, Iterable
 from dataclasses import dataclass, field
 from datetime import UTC, datetime, timedelta
-from pathlib import Path
+from pathlib import Path, PureWindowsPath
 from typing import Any
 
 from pc_diag_mcp.collectors.base import Collector, CollectorError
@@ -53,6 +55,26 @@ _INSTANCE = re.compile(
     r"(?i)\b(?P<prefix>(?:PCI|USB|HID|SWD|ACPI|SCSI|NVME|STORAGE|DISPLAY|BTHENUM|BTH|HDAUDIO|"
     r"MONITOR|USBSTOR|ROOT)\\[^\\\s\"<]+\\)(?!\[INSTANCE-)(?P<id>[^\\\s\"\[<]+)"
 )
+_OCTET = r"(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)"
+# Octets are 0-255, so driver versions such as 32.0.101.8509 never match.
+_IPV4 = re.compile(rf"(?<![\w.])(?:{_OCTET}\.){{3}}{_OCTET}(?!\w|\.\d)")
+_IPV4_KEEP = {"127.0.0.1", "0.0.0.0", "255.255.255.255"}  # noqa: S104 - not a bind address
+_H16 = r"[0-9A-Fa-f]{1,4}"
+# Full 8-group form, or a compressed form that starts with a group (fe80::..., 2001:db8::...);
+# times (16:47:42) and C++ scopes (std::vector) do not match.
+_IPV6 = re.compile(
+    rf"(?<![\w:.])(?:(?:{_H16}:){{7}}{_H16}"
+    rf"|{_H16}(?::{_H16}){{0,6}}::(?:{_H16}(?::{_H16}){{0,6}})?)"
+    r"(?:%[0-9A-Za-z]+)?(?![\w:])"
+)
+# \\server\share, but not the \\?\ and \\.\ device-path prefixes.
+_UNC = re.compile(r"(?<![\w\\])\\\\(?![?.]\\)[A-Za-z0-9._$-]+\\[^\\\s\"<>|\[]+")
+_URL_WITH_QUERY = re.compile(r"\bhttps?://[^\s\"'<>]+\?[^\s\"'<>]*")
+# Driver/firmware versions such as 4.92.0.0 are valid IPv4 shapes; fields named *version* are
+# never addresses, so the IPv4 rule skips them.
+_VERSION_KEY = re.compile(r"(?i)version")
+_BARE_MAC = re.compile(r"^[0-9A-Fa-f]{12}$")
+_MAC_KEY = re.compile(r"(?i)mac|address")
 _SERIAL_KEY = re.compile(r"(?i)serial|machineid|uuid|productid|hardwareid")
 _EMPTY_SERIAL = {"", "0", "0x0", "none", "null", "n/a", "unknown", "to be filled by o.e.m."}
 _PLACEHOLDER = re.compile(r"^\[[A-Z]+(?:-\d+)?\]$")
@@ -82,6 +104,12 @@ class Scrubber:
             return value != 0
         return isinstance(value, str) and value.strip().lower() not in _EMPTY_SERIAL
 
+    @staticmethod
+    def _mac_field(key: str | None, value: Any) -> bool:
+        return bool(key and _MAC_KEY.search(key) and isinstance(value, str)) and bool(
+            _BARE_MAC.match(value.strip())
+        )
+
     def _stable(self, kind: str, value: str) -> str:
         key = (kind, value.lower())
         if key not in self._seen:
@@ -89,11 +117,22 @@ class Scrubber:
             self._seen[key] = f"[{kind}-{count}]"
         return self._seen[key]
 
-    def scrub_text(self, text: str) -> str:
+    def scrub_text(self, text: str, *, version_field: bool = False) -> str:
+        # URLs first: their query strings may hold emails or names the later rules would split.
+        text = _URL_WITH_QUERY.sub(lambda m: self._stable("URL", m.group(0)), text)
+        text = _EMAIL.sub(lambda m: self._stable("EMAIL", m.group(0)), text)
         text = _PROFILE.sub(lambda m: m.group("prefix") + "[USER]", text)
+        text = _UNC.sub(lambda m: "\\\\" + self._stable("UNC", m.group(0)), text)
         text = _SID.sub(lambda m: self._stable("SID", m.group(0)), text)
         text = _MAC.sub(lambda m: self._stable("MAC", m.group(0)), text)
-        text = _EMAIL.sub(lambda m: self._stable("EMAIL", m.group(0)), text)
+        text = _IPV6.sub(lambda m: self._stable("IPV6", m.group(0)), text)
+        if not version_field:
+            text = _IPV4.sub(
+                lambda m: (
+                    m.group(0) if m.group(0) in _IPV4_KEEP else self._stable("IPV4", m.group(0))
+                ),
+                text,
+            )
         text = _INSTANCE.sub(
             lambda m: m.group("prefix") + self._stable("INSTANCE", m.group("id")), text
         )
@@ -109,8 +148,10 @@ class Scrubber:
             return [self.scrub_value(v, key) for v in value]
         if self._serial_like(key, value):
             return self._stable("SERIAL", str(value))
+        if self._mac_field(key, value):
+            return self._stable("MAC", str(value).strip())
         if isinstance(value, str):
-            return self.scrub_text(value)
+            return self.scrub_text(value, version_field=bool(key and _VERSION_KEY.search(key)))
         return value
 
     def findings(self, value: Any, key: str | None = None, where: str = "$") -> list[str]:
@@ -129,22 +170,31 @@ class Scrubber:
             isinstance(value, str) and _PLACEHOLDER.match(value)
         ):
             found.append(f"{where}: serial-like field {key}")
+        if self._mac_field(key, value):
+            found.append(f"{where}: MAC address field {key}")
         if isinstance(value, str):
-            found += self._text_findings(value, where)
+            versions = bool(key and _VERSION_KEY.search(key))
+            found += self._text_findings(value, where, version_field=versions)
         return found
 
-    def _text_findings(self, text: str, where: str) -> list[str]:
+    def _text_findings(self, text: str, where: str, *, version_field: bool = False) -> list[str]:
         found: list[str] = []
+        # Mirrors scrub_text, so fail-closed covers every rule it applies.
         checks: list[tuple[str, re.Pattern[str]]] = [
+            ("URL with query string", _URL_WITH_QUERY),
+            ("email address", _EMAIL),
             ("user-profile path", _PROFILE),
+            ("UNC path", _UNC),
             ("SID", _SID),
             ("MAC address", _MAC),
-            ("email address", _EMAIL),
+            ("IPv6 address", _IPV6),
             ("device instance id", _INSTANCE),
         ]
         for label, pattern in checks:
             if pattern.search(text):
                 found.append(f"{where}: {label}")
+        if not version_field and any(m.group(0) not in _IPV4_KEEP for m in _IPV4.finditer(text)):
+            found.append(f"{where}: IPv4 address")
         lowered = text.lower()
         for literal in self.literals:
             if literal.lower() in lowered:
@@ -171,6 +221,17 @@ def default_literals() -> dict[str, str]:
     return found
 
 
+def _require_literal(
+    scrubber: Scrubber, field_name: str, value: str | None, placeholder: str
+) -> None:
+    # A captured identifier we cannot replace safely is a reason to stop, not skip.
+    if value and not scrubber.add_literal(value, placeholder):
+        raise ScrubError(
+            f"captured {field_name} {value!r} is too short or generic to scrub "
+            "automatically; review the capture by hand"
+        )
+
+
 def scrub_directory(src: Path, dst: Path, extra_literals: Iterable[str] = ()) -> list[Path]:
     """Copy ``src`` to ``dst`` scrubbed. Raises ``ScrubError`` (writing nothing) on leftovers."""
     if not src.is_dir():
@@ -187,13 +248,12 @@ def scrub_directory(src: Path, dst: Path, extra_literals: Iterable[str] = ()) ->
             ("user_name", "[USERNAME]"),
             ("user_domain", "[COMPUTERNAME]"),
         ):
-            value = identity.get(field_name)
-            # A captured identifier we cannot replace safely is a reason to stop, not skip.
-            if value and not scrubber.add_literal(value, placeholder):
-                raise ScrubError(
-                    f"captured {field_name} {value!r} is too short or generic to scrub "
-                    "automatically; review the capture by hand"
-                )
+            _require_literal(scrubber, field_name, identity.get(field_name), placeholder)
+        profile = identity.get("user_profile")
+        if profile:
+            _require_literal(scrubber, "user_profile", profile, "[USERPROFILE]")
+            leaf = PureWindowsPath(profile).name
+            _require_literal(scrubber, "user_profile", leaf, "[USERNAME]")
     for literal, placeholder in default_literals().items():
         scrubber.add_literal(literal, placeholder)
     for literal in extra_literals:
@@ -246,6 +306,30 @@ def _write_json(path: Path, payload: Any) -> None:
     path.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
 
 
+_CAPTURE_NAME = re.compile(r"^[a-z0-9][a-z0-9_-]{0,63}$")
+REVIEW_REMINDER = (
+    "Review the output before committing: the scrubber cannot recognise every identifier "
+    "(e.g. Wi-Fi names or personal device names)."
+)
+
+
+def validate_capture_name(name: str) -> str:
+    """Names become directories under fixtures/raw: no separators, no '..', no surprises."""
+    if "/" in name or "\\" in name or ".." in name or not _CAPTURE_NAME.fullmatch(name):
+        raise ValueError(
+            f"invalid capture name {name!r}: use lowercase letters, digits, '-' or '_' "
+            "(at most 64 characters, no path separators)"
+        )
+    return name
+
+
+def _capture_name_arg(text: str) -> str:
+    try:
+        return validate_capture_name(text)
+    except ValueError as exc:
+        raise argparse.ArgumentTypeError(str(exc)) from exc
+
+
 def capture(
     collector: Collector,
     name: str,
@@ -262,6 +346,7 @@ def capture(
     Everything is collected first and written last (via a staging directory), so a failed
     capture leaves nothing behind and can simply be rerun.
     """
+    validate_capture_name(name)
     target = root / name
     if target.exists():
         raise FileExistsError(f"{target} already exists")
@@ -336,7 +421,7 @@ def main(argv: list[str] | None = None) -> int:
     sub = parser.add_subparsers(dest="command", required=True)
 
     cap = sub.add_parser("capture", help="record a live window into fixtures/raw/NAME")
-    cap.add_argument("name")
+    cap.add_argument("name", type=_capture_name_arg)
     cap.add_argument("--start", type=_parse_time)
     cap.add_argument("--end", type=_parse_time)
     cap.add_argument(
@@ -359,6 +444,7 @@ def main(argv: list[str] | None = None) -> int:
             print(f"scrub failed: {exc}", file=sys.stderr)
             return 2
         print(f"wrote {len(written)} scrubbed files to {args.dst}")
+        print(REVIEW_REMINDER)
         return 0
 
     end = args.end or datetime.now(UTC)
@@ -374,6 +460,7 @@ def main(argv: list[str] | None = None) -> int:
         identity=collector.identity,
     )
     print(f"captured into {target}; run 'scrub' before sharing it")
+    print(REVIEW_REMINDER)
     return 0
 
 

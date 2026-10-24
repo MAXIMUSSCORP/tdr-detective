@@ -107,7 +107,7 @@ def test_scrub_fails_closed_and_writes_nothing(
 ) -> None:
     raw = write_raw(tmp_path / "raw")
     # Simulate a scrubbing bug: text replacement that does nothing.
-    monkeypatch.setattr(Scrubber, "scrub_text", lambda self, text: text)
+    monkeypatch.setattr(Scrubber, "scrub_text", lambda self, text, **_: text)
     with pytest.raises(ScrubError, match="still match"):
         scrub_directory(raw, tmp_path / "clean")
     assert not (tmp_path / "clean").exists()
