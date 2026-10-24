@@ -21,11 +21,10 @@ from pc_diag_mcp.tools.params import (
     SensorSnapshotParams,
     SortKey,
 )
-from pc_diag_mcp.tools.results import Result as _Result
 from pc_diag_mcp.tools.results import UntrustedResult
 
 
-class ProcessSnapshotResult(_Result):
+class ProcessSnapshotResult(UntrustedResult):
     sort_by: SortKey
     snapshot: ProcessSnapshot
     collection: CollectionManifest
@@ -47,7 +46,7 @@ class DxDiagResult(UntrustedResult):
     collection: CollectionManifest
 
 
-class SystemInfoResult(_Result):
+class SystemInfoResult(UntrustedResult):
     system: SystemInfo
     collection: CollectionManifest
 
@@ -66,6 +65,26 @@ def _sanitize_driver(driver: DriverInfo) -> DriverInfo:
             "version": sanitize_label(driver.version),
             "date": _optional(driver.date),
             "inf_name": _optional(driver.inf_name),
+        }
+    )
+
+
+def _sanitize_system(info: SystemInfo) -> SystemInfo:
+    gpus = [
+        gpu.model_copy(
+            update={
+                "name": sanitize_label(gpu.name),
+                "driver_version": sanitize_label(gpu.driver_version),
+                "driver_date": _optional(gpu.driver_date),
+            }
+        )
+        for gpu in info.gpus
+    ]
+    return info.model_copy(
+        update={
+            "os_caption": sanitize_label(info.os_caption),
+            "os_build": sanitize_label(info.os_build),
+            "gpus": gpus,
         }
     )
 
@@ -99,6 +118,8 @@ def process_snapshot(
     params = ProcessSnapshotParams(top_n=top_n, sort_by=sort_by)
     snapshot, manifest = collect(collector, lambda: collector.process_snapshot(params.top_n))
     ranked = sorted(snapshot.top_processes, key=PROCESS_SORT_KEYS[params.sort_by], reverse=True)
+    # Process names are chosen by whoever started the process: untrusted text.
+    ranked = [p.model_copy(update={"name": sanitize_label(p.name)}) for p in ranked]
     return ProcessSnapshotResult(
         sort_by=params.sort_by,
         snapshot=snapshot.model_copy(update={"top_processes": ranked[: params.top_n]}),
@@ -147,4 +168,5 @@ def dxdiag_summary(collector: Collector) -> DxDiagResult:
 def system_info(collector: Collector) -> SystemInfoResult:
     """OS caption and build, GPUs with driver versions, and the local UTC offset."""
     info, manifest = collect(collector, collector.system_info)
+    info = _sanitize_system(info)
     return SystemInfoResult(system=info, collection=manifest)
