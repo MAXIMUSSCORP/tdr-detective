@@ -42,11 +42,21 @@ describe("findComparison", () => {
 });
 
 describe("<EvalPanel>", () => {
-  it("shows a clear empty state when no eval results exist", async () => {
+  it("shows a clear empty state when no eval results exist and the incident has no run stats", async () => {
     mockFetch(404, { error: "no eval results yet" });
-    render(<EvalPanel />);
+    const { container } = render(<EvalPanel run={null} />);
     expect(await screen.findByText("No eval results yet.")).toBeInTheDocument();
     expect(screen.queryByRole("table")).not.toBeInTheDocument();
+    expect(screen.queryByRole("heading", { name: "This run" })).not.toBeInTheDocument();
+    expect(container.textContent).not.toMatch(/undefined|NaN|null/);
+  });
+
+  it("shows the incident's own run stats when present", async () => {
+    mockFetch(404, { error: "no eval results yet" });
+    render(<EvalPanel run={{ config: "cfg", model: "model-a", input_tokens: 1200, output_tokens: 300, latency_ms: 950 }} />);
+    expect(await screen.findByRole("heading", { name: "This run" })).toBeInTheDocument();
+    expect(screen.getByText("1,200 in · 300 out")).toBeInTheDocument();
+    expect(screen.getByText("n/a")).toBeInTheDocument();
   });
 
   it("compares skill+tools with the raw dump", async () => {
