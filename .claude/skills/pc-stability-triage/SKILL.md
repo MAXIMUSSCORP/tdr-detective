@@ -28,8 +28,9 @@ zone (`2026-10-23T14:42:00Z`).
 
 ## Runbook
 
-**1. Scope the window.** Call `system_info` first: it gives `utc_offset_minutes`,
-`os_build`, the GPU, and the driver version. Convert local times to UTC as
+**1. Scope the window.** Call `system_info` first: it gives `now` (the host's current UTC
+time), `utc_offset_minutes`, `os_build`, the GPU, and the driver version. Take "today" and
+"tonight" from `now`, never from your own clock. Convert local times to UTC as
 `UTC = local - utc_offset_minutes` (offset -300 means 09:42 local = 14:42Z). Without a date,
 take the most recent past occurrence and say so. Default window: T +/- 15 min. If you find
 nothing, widen to +/- 60 min, then +/- 6 h. A crash's evidence (Kernel-Power 41, bugcheck
