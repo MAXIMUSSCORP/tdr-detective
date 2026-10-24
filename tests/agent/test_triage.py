@@ -256,6 +256,9 @@ def test_guardrail_allows_only_the_read_only_surface(name: str, inp: dict[str, A
         ("Bash", {"command": f"python {triage.COMPRESSOR} a.json --prefix --map"}),
         ("Bash", {"command": f"python {triage.COMPRESSOR} a.json --burst-gap 1e9"}),
         ("Bash", {"command": f"python {triage.COMPRESSOR} -m"}),
+        ("Bash", {"command": f"python {triage.COMPRESSOR} -- --map x"}),
+        ("Bash", {"command": f"python {triage.COMPRESSOR} a.json --prefix E1"}),
+        ("Bash", {"command": f"python {triage.COMPRESSOR} a.json --prefix=-x"}),
         ("Bash", {"command": f"python /abs/{triage.COMPRESSOR} a.json"}),
         ("Bash", {}),
     ],
@@ -431,6 +434,9 @@ def test_widening_project_settings_fail_loudly(
     triage_sync(cwd=tmp_path)  # nothing here widens the guardrail
     settings.write_text('{"permissions": {"defaultMode": "bypassPermissions"}}', encoding="utf-8")
     with pytest.raises(TriageSetupError, match="defaultMode"):
+        triage_sync(cwd=tmp_path)
+    settings.write_text("[]", encoding="utf-8")
+    with pytest.raises(TriageSetupError, match="not a settings object"):
         triage_sync(cwd=tmp_path)
 
 

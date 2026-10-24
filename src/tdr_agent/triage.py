@@ -246,6 +246,8 @@ def check_project_settings(cwd: Path) -> None:
         settings = json.loads(path.read_text(encoding="utf-8"))
     except (OSError, ValueError) as exc:
         raise TriageSetupError(f"cannot read {path}: {exc}") from exc
+    if not isinstance(settings, dict) or not isinstance(settings.get("permissions", {}), dict):
+        raise TriageSetupError(f"{path} is not a settings object; refusing to guess its effect")
     permissions = settings.get("permissions") or {}
     widening = [
         name
