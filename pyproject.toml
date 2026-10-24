@@ -33,6 +33,7 @@ packages = ["src/pc_diag_mcp"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+pythonpath = ["."]
 addopts = "-ra --strict-markers"
 markers = [
     "windows: requires a live Windows host (powershell.exe)",
