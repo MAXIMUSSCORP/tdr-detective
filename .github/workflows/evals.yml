@@ -36,9 +36,11 @@ jobs:
     # Claude Code CLI, so no separate install is needed. (Its lock has no Windows wheel;
     # on Windows the sdist would install without a CLI.)
     runs-on: ubuntu-latest
+    # Holds ANTHROPIC_API_KEY; the environment's required reviewers approve each run.
+    environment: evals
     timeout-minutes: 180
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
 
@@ -49,6 +51,12 @@ jobs:
 
       - name: Install
         run: uv sync --locked --all-extras
+
+      # run_triage sets CLAUDE_CODE_SUBPROCESS_ENV_SCRUB=1 so the API key never reaches the
+      # MCP server or the Bash tool; on Linux the CLI needs bubblewrap for that.
+      - name: Install bubblewrap
+        if: inputs.config != 'raw_dump'
+        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends bubblewrap
 
       - name: Check the Agent SDK's bundled Claude Code CLI
         if: inputs.config != 'raw_dump'
