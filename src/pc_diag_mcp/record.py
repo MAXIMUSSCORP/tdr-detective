@@ -24,7 +24,7 @@ from datetime import UTC, datetime, timedelta
 from pathlib import Path
 from typing import Any
 
-from pc_diag_mcp.collectors.base import Collector, CollectorUnavailable
+from pc_diag_mcp.collectors.base import Collector, CollectorError
 from pc_diag_mcp.collectors.powershell import PowerShellCollector
 from pc_diag_mcp.models import EventQuery, ReplayScenario, TimeWindow
 from pc_diag_mcp.tools.params import DEVICE_CLASS_ALLOWLIST
@@ -37,11 +37,12 @@ IDENTIFIERS_FILE = ".identifiers.json"
 # --------------------------------------------------------------------------- #
 
 _PROFILE = re.compile(
-    r"(?i)(?P<prefix>[A-Z]:[\\/]+Users[\\/]+)(?!\[USER\])"
+    r"(?i)(?P<prefix>(?:[A-Z]:|/mnt/[a-z])[\\/]+Users[\\/]+|/home/)(?!\[USER\])"
     r"(?!(?:Public|Default|All Users)(?:[\\/]|$))"
     r"(?P<name>[^\\/:*?\"<>|\r\n]+)"
 )
-_SID = re.compile(r"S-1-5-21(?:-\d+){3,4}")
+# Domain/local account SIDs (S-1-5-21-...) and Entra ID account SIDs (S-1-12-1-...).
+_SID = re.compile(r"S-1-(?:5-21|12-1)(?:-\d+){3,4}")
 _MAC = re.compile(r"(?<![0-9A-Fa-f:-])(?:[0-9A-Fa-f]{2}[:-]){5}[0-9A-Fa-f]{2}(?![0-9A-Fa-f:-])")
 _EMAIL = re.compile(r"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}")
 # Device instance IDs end in a per-device suffix that is often a serial number.
@@ -63,9 +64,20 @@ class Scrubber:
     literals: dict[str, str] = field(default_factory=dict)
     _seen: dict[tuple[str, str], str] = field(default_factory=dict)
 
-    def add_literal(self, value: str | None, placeholder: str) -> None:
+    def add_literal(self, value: str | None, placeholder: str) -> bool:
+        """Register a literal; False when it is too short or generic to replace safely."""
         if value and len(value.strip()) >= 3 and value.strip().lower() not in _GENERIC_NAMES:
             self.literals.setdefault(value.strip(), placeholder)
+            return True
+        return False
+
+    @staticmethod
+    def _serial_like(key: str | None, value: Any) -> bool:
+        if not key or not _SERIAL_KEY.search(key) or isinstance(value, bool):
+            return False
+        if isinstance(value, int | float):
+            return value != 0
+        return isinstance(value, str) and value.strip().lower() not in _EMPTY_SERIAL
 
     def _stable(self, kind: str, value: str) -> str:
         key = (kind, value.lower())
@@ -92,9 +104,9 @@ class Scrubber:
             return {self.scrub_text(str(k)): self.scrub_value(v, str(k)) for k, v in value.items()}
         if isinstance(value, list):
             return [self.scrub_value(v, key) for v in value]
+        if self._serial_like(key, value):
+            return self._stable("SERIAL", str(value))
         if isinstance(value, str):
-            if key and _SERIAL_KEY.search(key) and value.strip().lower() not in _EMPTY_SERIAL:
-                return self._stable("SERIAL", value)
             return self.scrub_text(value)
         return value
 
@@ -110,14 +122,11 @@ class Scrubber:
             for i, v in enumerate(value):
                 found += self.findings(v, key, f"{where}[{i}]")
             return found
+        if self._serial_like(key, value) and not (
+            isinstance(value, str) and _PLACEHOLDER.match(value)
+        ):
+            found.append(f"{where}: serial-like field {key}")
         if isinstance(value, str):
-            if (
-                key
-                and _SERIAL_KEY.search(key)
-                and value.strip().lower() not in _EMPTY_SERIAL
-                and not _PLACEHOLDER.match(value)
-            ):
-                found.append(f"{where}: serial-like field {key}")
             found += self._text_findings(value, where)
         return found
 
@@ -163,16 +172,25 @@ def scrub_directory(src: Path, dst: Path, extra_literals: Iterable[str] = ()) ->
     """Copy ``src`` to ``dst`` scrubbed. Raises ``ScrubError`` (writing nothing) on leftovers."""
     if not src.is_dir():
         raise ScrubError(f"source directory not found: {src}")
-    if dst.exists() and any(dst.iterdir()):
+    if dst.exists() and (not dst.is_dir() or any(dst.iterdir())):
         raise ScrubError(f"destination is not empty: {dst}")
 
     scrubber = Scrubber()
     identifiers_file = src / IDENTIFIERS_FILE
     if identifiers_file.is_file():
         identity = json.loads(identifiers_file.read_text(encoding="utf-8"))
-        scrubber.add_literal(identity.get("computer_name"), "[COMPUTERNAME]")
-        scrubber.add_literal(identity.get("user_name"), "[USERNAME]")
-        scrubber.add_literal(identity.get("user_domain"), "[COMPUTERNAME]")
+        for field_name, placeholder in (
+            ("computer_name", "[COMPUTERNAME]"),
+            ("user_name", "[USERNAME]"),
+            ("user_domain", "[COMPUTERNAME]"),
+        ):
+            value = identity.get(field_name)
+            # A captured identifier we cannot replace safely is a reason to stop, not skip.
+            if value and not scrubber.add_literal(value, placeholder):
+                raise ScrubError(
+                    f"captured {field_name} {value!r} is too short or generic to scrub "
+                    "automatically; review the capture by hand"
+                )
     for literal, placeholder in default_literals().items():
         scrubber.add_literal(literal, placeholder)
     for literal in extra_literals:
@@ -236,43 +254,66 @@ def capture(
     identity: Callable[[], dict[str, str]] | None = None,
     log: Callable[[str], None] = print,
 ) -> Path:
-    """Record ``window`` from ``collector`` into ``root/name`` as a replay directory."""
+    """Record ``window`` from ``collector`` into ``root/name`` as a replay directory.
+
+    Everything is collected first and written last (via a staging directory), so a failed
+    capture leaves nothing behind and can simply be rerun.
+    """
+    target = root / name
+    if target.exists():
+        raise FileExistsError(f"{target} already exists")
     system = collector.system_info()
+    events = collector.events(EventQuery(window=window, max_events=5000))
+    files: dict[str, Any] = {"events.json": [e.model_dump(mode="json") for e in events]}
+    log(f"events.json: {len(events)} events")
+
+    latest = window.end
+    optional: list[tuple[str, Callable[[], Any]]] = [
+        ("process_snapshot.json", lambda: collector.process_snapshot(25)),
+        ("sensors.json", lambda: collector.sensors(None)),
+        ("drivers.json", lambda: collector.drivers(list(DEVICE_CLASS_ALLOWLIST))),
+    ]
+    if include_dxdiag:
+        optional.append(("dxdiag.json", collector.dxdiag))
+    for filename, produce in optional:
+        try:
+            result = produce()
+        except CollectorError as exc:  # includes CollectorUnavailable
+            log(f"{filename}: skipped ({exc})")
+            continue
+        items = result if isinstance(result, list) else [result]
+        for item in items:
+            taken_at = getattr(item, "taken_at", None)
+            if taken_at is not None and taken_at > latest:
+                latest = taken_at
+        files[filename] = (
+            [i.model_dump(mode="json") for i in result]
+            if isinstance(result, list)
+            else result.model_dump(mode="json")
+        )
+        log(f"{filename}: ok")
+
+    # Snapshots are taken after the window closes; "now" must not precede them, or replay
+    # would treat the current sensor reading as being in the future.
     scenario = ReplayScenario(
         id=name,
         description=description or f"Captured {window.start:%Y-%m-%d %H:%M}Z",
-        now=window.end,
+        now=latest,
         system=system,
     )
-    target = root / name
-    target.mkdir(parents=True, exist_ok=False)
-    _write_json(target / "scenario.json", scenario.model_dump(mode="json"))
-
-    events = collector.events(EventQuery(window=window, max_events=5000))
-    _write_json(target / "events.json", [e.model_dump(mode="json") for e in events])
-    log(f"events.json: {len(events)} events")
-
-    optional: list[tuple[str, Callable[[], Any]]] = [
-        ("process_snapshot.json", lambda: collector.process_snapshot(25).model_dump(mode="json")),
-        ("sensors.json", lambda: [s.model_dump(mode="json") for s in collector.sensors(None)]),
-        (
-            "drivers.json",
-            lambda: [
-                d.model_dump(mode="json") for d in collector.drivers(list(DEVICE_CLASS_ALLOWLIST))
-            ],
-        ),
-    ]
-    if include_dxdiag:
-        optional.append(("dxdiag.json", lambda: collector.dxdiag().model_dump(mode="json")))
-    for filename, produce in optional:
-        try:
-            _write_json(target / filename, produce())
-            log(f"{filename}: ok")
-        except CollectorUnavailable as exc:
-            log(f"{filename}: skipped ({exc})")
-
+    files["scenario.json"] = scenario.model_dump(mode="json")
     if identity is not None:
-        _write_json(target / IDENTIFIERS_FILE, identity())
+        files[IDENTIFIERS_FILE] = identity()
+
+    root.mkdir(parents=True, exist_ok=True)
+    staging = Path(tempfile.mkdtemp(prefix=f".capture-{name}-", dir=root))
+    try:
+        for filename, payload in files.items():
+            _write_json(staging / filename, payload)
+        staging.rename(target)
+    except BaseException:
+        shutil.rmtree(staging, ignore_errors=True)
+        raise
     return target
 
 
