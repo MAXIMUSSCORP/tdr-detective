@@ -4,6 +4,7 @@ import io
 import json
 import urllib.error
 import urllib.request
+from email.message import Message
 from pathlib import Path
 from typing import Any
 
@@ -180,11 +181,80 @@ def test_post_http_error_is_reported(
     assert "incident failed" in capsys.readouterr().err
 
 
-@pytest.mark.parametrize("url", ["file:///etc/passwd", "ftp://x", "127.0.0.1:4173"])
-def test_post_rejects_non_http_urls(agent: FakeTriage, url: str) -> None:
+@pytest.mark.parametrize(
+    "url",
+    [
+        "file:///etc/passwd",
+        "ftp://x",
+        "127.0.0.1:4173",
+        "http://example.com:4173",  # plain http off loopback
+        "http://10.0.0.5:4173",
+        "http://127.0.0.1.evil.example:4173",
+        "http://user:hunter2pass@127.0.0.1:4173",
+        "https://hunter2pass@timeline.example",
+        "http://127.0.0.1:99999",
+        "https://",
+    ],
+)
+def test_post_rejects_unsafe_urls(agent: FakeTriage, url: str, capsys: Any) -> None:
     with pytest.raises(SystemExit) as exc:
         cli.main(["ask", "q", "--post", url])
     assert exc.value.code == 2
+    assert "hunter2pass" not in capsys.readouterr().err
+
+
+@pytest.mark.parametrize(
+    ("url", "normalised"),
+    [
+        ("http://127.0.0.1:4173/", "http://127.0.0.1:4173"),
+        ("http://localhost:4173", "http://localhost:4173"),
+        ("http://[::1]:4173", "http://[::1]:4173"),
+        ("https://timeline.example/base/?x=1#frag", "https://timeline.example/base"),
+    ],
+)
+def test_post_accepts_https_and_loopback_http(url: str, normalised: str) -> None:
+    assert cli._post_url(url) == normalised
+
+
+def test_post_opener_follows_no_redirects_and_uses_no_proxy() -> None:
+    handlers = cli._OPENER.handlers
+    # ProxyHandler({}) replaces the default env-driven one and registers no proxy routes.
+    proxies = [h for h in handlers if isinstance(h, urllib.request.ProxyHandler)]
+    assert all(not h.proxies for h in proxies)  # type: ignore[attr-defined]
+    assert not any(
+        hasattr(h, "http_open") and isinstance(h, urllib.request.ProxyHandler) for h in handlers
+    )
+    (redirect,) = [h for h in handlers if isinstance(h, urllib.request.HTTPRedirectHandler)]
+    request = urllib.request.Request("http://127.0.0.1:4173/api/incidents")
+    with pytest.raises(urllib.error.HTTPError, match="redirect not followed"):
+        redirect.redirect_request(
+            request, io.BytesIO(), 302, "Found", Message(), "http://evil.example/"
+        )
+
+
+@pytest.mark.parametrize("budget", ["inf", "nan", "0", "-1"])
+def test_budget_must_be_finite_and_positive(agent: FakeTriage, budget: str) -> None:
+    with pytest.raises(SystemExit) as exc:
+        cli.main(["ask", "q", "--budget", budget])
+    assert exc.value.code == 2
+
+
+@pytest.mark.parametrize("as_json", [False, True])
+def test_printed_output_is_redacted(
+    agent: FakeTriage, capsys: Any, monkeypatch: pytest.MonkeyPatch, as_json: bool
+) -> None:
+    monkeypatch.setenv("ANTHROPIC_API_KEY", "key-from-env-0123456789")
+    agent.result = ok_result(
+        answer="leaked sk-ant-api03-abcDEF_123 in the answer",
+        diagnosis=None,
+        parse_error="no fenced ```json block found",
+        error="auth failed for key-from-env-0123456789",
+    )
+    cli.main(["ask", "q", *(["--json"] if as_json else [])])
+    out = capsys.readouterr().out
+    assert "sk-ant-api03" not in out
+    assert "key-from-env-0123456789" not in out
+    assert "[redacted]" in out
 
 
 def test_schema_delegates(monkeypatch: pytest.MonkeyPatch) -> None:
