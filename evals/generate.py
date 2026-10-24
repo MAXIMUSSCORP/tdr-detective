@@ -8,6 +8,11 @@ layout (``scenario.json``, ``events.json`` and optional telemetry files). All ra
 comes from ``random.Random`` seeded with ``SEED`` and the case id, so output is
 byte-for-byte reproducible.
 
+Recorded cases are not generated: their scrubbed captures live in ``scenarios/rec-*`` and
+their labels in the hand-written ``recorded_cases.jsonl``. ``cases.jsonl`` lists the
+synthetic cases followed by the recorded ones; generation and ``--check`` leave the
+``rec-*`` directories alone.
+
 Noise model
 -----------
 The signal events of a case are embedded in background events at rates meant to
@@ -71,6 +76,7 @@ import shutil
 import sys
 import tempfile
 import uuid
+from collections import Counter
 from collections.abc import Callable
 from dataclasses import dataclass, field
 from datetime import UTC, datetime, timedelta, timezone
@@ -78,7 +84,7 @@ from pathlib import Path
 
 from pydantic import TypeAdapter
 
-from evals.schema import EvalCase, Expected
+from evals.schema import EvalCase, Expected, load_cases
 from evals.specs import (
     SPECS,
     App,
@@ -131,6 +137,8 @@ from pc_diag_mcp.models import (
 SEED = 20261023
 EVALS_DIR = Path(__file__).resolve().parent
 REPO_ROOT = EVALS_DIR.parent
+RECORDED_CASES = EVALS_DIR / "recorded_cases.jsonl"
+RECORDED_PREFIX = "rec-"
 GIB = 1024**3
 MIB = 1024**2
 PROTECTED_MIN = 20.0
@@ -1979,18 +1987,56 @@ def _write_bundle(directory: Path, bundle: Bundle) -> None:
         )
 
 
-def generate(root: Path) -> list[EvalCase]:
-    """Write ``root/scenarios/<id>/`` and ``root/cases.jsonl``. Only those paths are touched."""
+def load_recorded(path: Path = RECORDED_CASES) -> list[EvalCase]:
+    """The hand-labelled recorded cases; each must point at its committed ``rec-*`` replay."""
+    if not path.exists():
+        return []
+    cases = load_cases(path)
+    for case in cases:
+        problems = []
+        if not case.id.startswith(RECORDED_PREFIX):
+            problems.append(f"id must start with {RECORDED_PREFIX!r}")
+        if case.source != "recorded":
+            problems.append("source must be 'recorded'")
+        if case.split != "test":
+            problems.append("split must be 'test'")
+        if case.scenario != f"evals/scenarios/{case.id}":
+            problems.append(f"scenario must be evals/scenarios/{case.id}")
+        scenario_file = REPO_ROOT / case.scenario / "scenario.json"
+        if not scenario_file.is_file():
+            problems.append(f"{scenario_file.relative_to(REPO_ROOT)} is missing")
+        elif ReplayScenario.model_validate_json(scenario_file.read_bytes()).id != case.id:
+            problems.append("scenario.json id does not match the case id")
+        if problems:
+            raise ValueError(f"{path.name}: case {case.id!r}: {'; '.join(problems)}")
+    return cases
+
+
+def _is_recorded(path: Path) -> bool:
+    return path.name.startswith(RECORDED_PREFIX)
+
+
+def generate(root: Path, recorded: Path = RECORDED_CASES) -> list[EvalCase]:
+    """Write ``root/scenarios/<syn id>/`` and ``root/cases.jsonl``; ``rec-*`` dirs are kept."""
     scenarios = root / "scenarios"
-    if scenarios.exists():
-        shutil.rmtree(scenarios)
-    scenarios.mkdir(parents=True)
+    scenarios.mkdir(parents=True, exist_ok=True)
+    for stale in scenarios.iterdir():
+        if _is_recorded(stale):
+            continue
+        if stale.is_dir():
+            shutil.rmtree(stale)
+        else:
+            stale.unlink()
     splits = assign_splits(SPECS)
     cases: list[EvalCase] = []
     for spec in SPECS:
         bundle = build(spec, splits[spec.id])
         _write_bundle(scenarios / spec.id, bundle)
         cases.append(bundle.case)
+    cases += load_recorded(recorded)
+    duplicates = sorted(i for i, n in Counter(c.id for c in cases).items() if n > 1)
+    if duplicates:
+        raise ValueError(f"duplicate case ids: {duplicates}")
     (root / "cases.jsonl").write_bytes(
         b"".join(c.model_dump_json().encode() + b"\n" for c in cases)
     )
@@ -2004,15 +2050,19 @@ def _tree(root: Path) -> dict[str, bytes]:
     scenarios = root / "scenarios"
     if scenarios.exists():
         for p in sorted(scenarios.rglob("*")):
-            if p.is_file():
+            relative = p.relative_to(scenarios)
+            if p.is_file() and not relative.parts[0].startswith(RECORDED_PREFIX):
                 files[p.relative_to(root).as_posix()] = p.read_bytes()
     return files
 
 
-def check(root: Path) -> list[str]:
-    """Regenerate into a temp dir and list every difference against ``root``."""
+def check(root: Path, recorded: Path = RECORDED_CASES) -> list[str]:
+    """Regenerate into a temp dir and list every difference against ``root``.
+
+    Recorded ``rec-*`` scenario directories are not generated and are not compared.
+    """
     with tempfile.TemporaryDirectory(prefix="evals-check-") as tmp:
-        generate(Path(tmp))
+        generate(Path(tmp), recorded)
         expected = _tree(Path(tmp))
     actual = _tree(root)
     drift = [f"missing: {p}" for p in sorted(expected.keys() - actual.keys())]
@@ -2039,10 +2089,10 @@ def main(argv: list[str] | None = None) -> int:
             for line in drift:
                 print(f"  {line}", file=sys.stderr)
             return 1
-        print(f"{len(SPECS)} scenarios up to date")
+        print(f"{len(SPECS)} scenarios and {len(load_recorded())} recorded cases up to date")
         return 0
     cases = generate(args.root)
-    print(f"wrote {len(cases)} scenarios and cases.jsonl under {args.root}")
+    print(f"wrote {len(SPECS)} scenarios and {len(cases)} cases to cases.jsonl under {args.root}")
     return 0
 
 

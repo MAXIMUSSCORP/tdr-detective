@@ -1,0 +1,1280 @@
+[
+  {
+    "device_name": "Hyper-V Virtual Switch Extension Adapter",
+    "device_class": "NET",
+    "provider": "Microsoft",
+    "version": "10.0.26100.1",
+    "date": "2006-06-21",
+    "inf_name": "wvms_mp_windows.inf",
+    "signed": true
+  },
+  {
+    "device_name": "Xvdd SCSI Miniport",
+    "device_class": "SCSIADAPTER",
+    "provider": "Xbox",
+    "version": "10.0.22030.1",
+    "date": "2026-10-11",
+    "inf_name": "oem78.inf",
+    "signed": true
+  },
+  {
+    "device_name": "WAN Miniport (Network Monitor)",
+    "device_class": "NET",
+    "provider": "Microsoft",
+    "version": "10.0.26100.1",
+    "date": "2006-06-21",
+    "inf_name": "netrasa.inf",
+    "signed": true
+  },
+  {
+    "device_name": "WAN Miniport (IPv6)",
+    "device_class": "NET",
+    "provider": "Microsoft",
+    "version": "10.0.26100.1",
+    "date": "2006-06-21",
+    "inf_name": "netrasa.inf",
+    "signed": true
+  },
+  {
+    "device_name": "WAN Miniport (IP)",
+    "device_class": "NET",
+    "provider": "Microsoft",
+    "version": "10.0.26100.1",
+    "date": "2006-06-21",
+    "inf_name": "netrasa.inf",
+    "signed": true
+  },
+  {
+    "device_name": "WAN Miniport (PPPOE)",
+    "device_class": "NET",
+    "provider": "Microsoft",
+    "version": "10.0.26100.1",
+    "date": "2006-06-21",
+    "inf_name": "netrasa.inf",
+    "signed": true
+  },
+  {
+    "device_name": "WAN Miniport (PPTP)",
+    "device_class": "NET",
+    "provider": "Microsoft",
+    "version": "10.0.26100.1",
+    "date": "2006-06-21",
+    "inf_name": "netrasa.inf",
+    "signed": true
+  },
+  {
+    "device_name": "WAN Miniport (L2TP)",
+    "device_class": "NET",
+    "provider": "Microsoft",
+    "version": "10.0.26100.1",
+    "date": "2006-06-21",
+    "inf_name": "netrasa.inf",
+    "signed": true
+  },
+  {
+    "device_name": "WAN Miniport (IKEv2)",
+    "device_class": "NET",
+    "provider": "Microsoft",
+    "version": "10.0.26100.1",
+    "date": "2006-06-21",
+    "inf_name": "netavpna.inf",
+    "signed": true
+  },
+  {
+    "device_name": "WAN Miniport (SSTP)",
+    "device_class": "NET",
+    "provider": "Microsoft",
+    "version": "10.0.26100.1",
+    "date": "2006-06-21",
+    "inf_name": "netsstpa.inf",
+    "signed": true
+  },
+  {
+    "device_name": "Remote Desktop Device Redirector Bus",
+    "device_class": "SYSTEM",
+    "provider": "Microsoft",
+    "version": "10.0.26100.8972",
+    "date": "2006-06-21",
+    "inf_name": "rdpbus.inf",
+    "signed": true
+  },
+  {
+    "device_name": "Logitech G HUB Virtual Bus Enumerator",
+    "device_class": "SYSTEM",
+    "provider": "Logitech",
+    "version": "2026.0.0.0",
+    "date": "2026-02-05",
+    "inf_name": "oem141.inf",
+    "signed": true
+  },
+  {
+    "device_name": "Microsoft Streaming Service Proxy",
+    "device_class": "MEDIA",
+    "provider": "Microsoft",
+    "version": "10.0.26100.1",
+    "date": "2006-06-21",
+    "inf_name": "ksfilter.inf",
+    "signed": true
+  },
+  {
+    "device_name": "Plug and Play Software Device Enumerator",
+    "device_class": "SYSTEM",
+    "provider": "Microsoft",
+    "version": "10.0.26100.4202",
+    "date": "2025-05-23",
+    "inf_name": "swenum.inf",
+    "signed": true
+  },
+  {
+    "device_name": "Microsoft System Management BIOS Driver",
+    "device_class": "SYSTEM",
+    "provider": "Microsoft",
+    "version": "10.0.26100.1",
+    "date": "2006-06-21",
+    "inf_name": "mssmbios.inf",
+    "signed": true
+  },
+  {
+    "device_name": "NDIS Virtual Network Adapter Enumerator",
+    "device_class": "SYSTEM",
+    "provider": "Microsoft",
+    "version": "10.0.26100.1",
+    "date": "2006-06-21",
+    "inf_name": "ndisvirtualbus.inf",
+    "signed": true
+  },
+  {
+    "device_name": "NVIDIA Virtual Audio Device (Wave Extensible) (WDM)",
+    "device_class": "MEDIA",
+    "provider": "NVIDIA",
+    "version": "4.92.0.0",
+    "date": "2026-08-04",
+    "inf_name": "oem146.inf",
+    "signed": true
+  },
+  {
+    "device_name": "Microsoft Hyper-V Virtual Disk Server",
+    "device_class": "SYSTEM",
+    "provider": "Microsoft",
+    "version": "10.0.26100.9711",
+    "date": "2006-06-21",
+    "inf_name": "wstorvsp.inf",
+    "signed": true
+  },
+  {
+    "device_name": "Microsoft Basic Render Driver",
+    "device_class": "SYSTEM",
+    "provider": "Microsoft",
+    "version": "10.0.26100.9711",
+    "date": "2006-06-21",
+    "inf_name": "basicrender.inf",
+    "signed": true
+  },
+  {
+    "device_name": "Microsoft Hyper-V PCI Server",
+    "device_class": "SYSTEM",
+    "provider": "Microsoft",
+    "version": "10.0.26100.8972",
+    "date": "2006-06-21",
+    "inf_name": "wvpcivsp.inf",
+    "signed": true
+  },
+  {
+    "device_name": "Microsoft UEFI-Compliant System",
+    "device_class": "SYSTEM",
+    "provider": "Microsoft",
+    "version": "10.0.26100.8972",
+    "date": "2006-06-21",
+    "inf_name": "uefi.inf",
+    "signed": true
+  },
+  {
+    "device_name": "Generic Bus",
+    "device_class": "SYSTEM",
+    "provider": "Microsoft",
+    "version": "10.0.26100.1150",
+    "date": "2006-06-21",
+    "inf_name": "machine.inf",
+    "signed": true
+  },
+  {
+    "device_name": "Intel(R) TXT Authenticated Code Module",
+    "device_class": "SYSTEM",
+    "provider": "INTEL",
+    "version": "1.21.18.0",
+    "date": "2026-01-13",
+    "inf_name": "oem73.inf",
+    "signed": true
+  },
+  {
+    "device_name": "ACPI Thermal Zone",
+    "device_class": "SYSTEM",
+    "provider": "Microsoft",
+    "version": "10.0.26100.1150",
+    "date": "2006-06-21",
+    "inf_name": "machine.inf",
+    "signed": true
+  },
+  {
+    "device_name": "ACPI Thermal Zone",
+    "device_class": "SYSTEM",
+    "provider": "Microsoft",
+    "version": "10.0.26100.1150",
+    "date": "2006-06-21",
+    "inf_name": "machine.inf",
+    "signed": true
+  },
+  {
+    "device_name": "Armoury Crate Control Interface",
+    "device_class": "SYSTEM",
+    "provider": "ASUSTek Computer Inc.",
+    "version": "1.2.0.2",
+    "date": "2026-03-02",
+    "inf_name": "oem153.inf",
+    "signed": true
+  },
+  {
+    "device_name": "ASUS ScreenXpert Interface",
+    "device_class": "SYSTEM",
+    "provider": "ASUSTek Computer Inc.",
+    "version": "3.0.13.0",
+    "date": "2025-09-01",
+    "inf_name": "oem106.inf",
+    "signed": true
+  },
+  {
+    "device_name": "ASUS System Control Interface v3",
+    "device_class": "SYSTEM",
+    "provider": "ASUSTeK COMPUTER INC.",
+    "version": "3.1.72.0",
+    "date": "2026-09-14",
+    "inf_name": "oem74.inf",
+    "signed": true
+  },
+  {
+    "device_name": "ACPI Fan",
+    "device_class": "SYSTEM",
+    "provider": "Microsoft",
+    "version": "10.0.26100.1150",
+    "date": "2006-06-21",
+    "inf_name": "machine.inf",
+    "signed": true
+  },
+  {
+    "device_name": "Microsoft Windows Management Interface for ACPI",
+    "device_class": "SYSTEM",
+    "provider": "Microsoft",
+    "version": "10.0.26100.1150",
+    "date": "2006-06-21",
+    "inf_name": "wmiacpi.inf",
+    "signed": true
+  },
+  {
+    "device_name": "ACPI Audio Compositor Device",
+    "device_class": "SYSTEM",
+    "provider": "Microsoft",
+    "version": "10.0.26100.8972",
+    "date": "2006-06-21",
+    "inf_name": "acpiaudiocompositor.inf",
+    "signed": true
+  },
+  {
+    "device_name": "ACPI Power Button",
+    "device_class": "SYSTEM",
+    "provider": "Microsoft",
+    "version": "10.0.26100.1150",
+    "date": "2006-06-21",
+    "inf_name": "machine.inf",
+    "signed": true
+  },
+  {
+    "device_name": "Microsoft Windows Management Interface for ACPI",
+    "device_class": "SYSTEM",
+    "provider": "Microsoft",
+    "version": "10.0.26100.1150",
+    "date": "2006-06-21",
+    "inf_name": "wmiacpi.inf",
+    "signed": true
+  },
+  {
+    "device_name": "Microsoft Windows Management Interface for ACPI",
+    "device_class": "SYSTEM",
+    "provider": "Microsoft",
+    "version": "10.0.26100.1150",
+    "date": "2006-06-21",
+    "inf_name": "wmiacpi.inf",
+    "signed": true
+  },
+  {
+    "device_name": "Intel(R) Power Engine Plug-in",
+    "device_class": "SYSTEM",
+    "provider": "Microsoft",
+    "version": "10.0.26100.9278",
+    "date": "2006-06-21",
+    "inf_name": "intelpep.inf",
+    "signed": true
+  },
+  {
+    "device_name": "ACPI Processor Aggregator",
+    "device_class": "SYSTEM",
+    "provider": "Microsoft",
+    "version": "10.0.26100.1150",
+    "date": "2006-06-21",
+    "inf_name": "acpipagr.inf",
+    "signed": true
+  },
+  {
+    "device_name": "Intel(R) Serial IO Generic GPIO Host Controller",
+    "device_class": "SYSTEM",
+    "provider": "Intel Corporation",
+    "version": "30.100.2534.18",
+    "date": "2025-08-18",
+    "inf_name": "oem0.inf",
+    "signed": true
+  },
+  {
+    "device_name": "Intel(R) Serial IO Generic GPIO Host Controller",
+    "device_class": "SYSTEM",
+    "provider": "Intel Corporation",
+    "version": "30.100.2534.18",
+    "date": "2025-08-18",
+    "inf_name": "oem0.inf",
+    "signed": true
+  },
+  {
+    "device_name": "Intel(R) Serial IO Generic GPIO Host Controller",
+    "device_class": "SYSTEM",
+    "provider": "Intel Corporation",
+    "version": "30.100.2534.18",
+    "date": "2025-08-18",
+    "inf_name": "oem0.inf",
+    "signed": true
+  },
+  {
+    "device_name": "Intel(R) Serial IO Generic GPIO Host Controller",
+    "device_class": "SYSTEM",
+    "provider": "Intel Corporation",
+    "version": "30.100.2534.18",
+    "date": "2025-08-18",
+    "inf_name": "oem0.inf",
+    "signed": true
+  },
+  {
+    "device_name": "Intel(R) Serial IO Generic GPIO Host Controller",
+    "device_class": "SYSTEM",
+    "provider": "Intel Corporation",
+    "version": "30.100.2534.18",
+    "date": "2025-08-18",
+    "inf_name": "oem0.inf",
+    "signed": true
+  },
+  {
+    "device_name": "Motherboard resources",
+    "device_class": "SYSTEM",
+    "provider": "Microsoft",
+    "version": "10.0.26100.1150",
+    "date": "2006-06-21",
+    "inf_name": "machine.inf",
+    "signed": true
+  },
+  {
+    "device_name": "Motherboard resources",
+    "device_class": "SYSTEM",
+    "provider": "Microsoft",
+    "version": "10.0.26100.1150",
+    "date": "2006-06-21",
+    "inf_name": "machine.inf",
+    "signed": true
+  },
+  {
+    "device_name": "Motherboard resources",
+    "device_class": "SYSTEM",
+    "provider": "Microsoft",
+    "version": "10.0.26100.1150",
+    "date": "2006-06-21",
+    "inf_name": "machine.inf",
+    "signed": true
+  },
+  {
+    "device_name": "Intel(R) Innovation Platform Framework Generic Participant",
+    "device_class": "SYSTEM",
+    "provider": "Intel",
+    "version": "2.3.20303.5058",
+    "date": "2026-01-14",
+    "inf_name": "oem85.inf",
+    "signed": true
+  },
+  {
+    "device_name": "Intel(R) Innovation Platform Framework Generic Participant",
+    "device_class": "SYSTEM",
+    "provider": "Intel",
+    "version": "2.3.20303.5058",
+    "date": "2026-01-14",
+    "inf_name": "oem85.inf",
+    "signed": true
+  },
+  {
+    "device_name": "Intel(R) Innovation Platform Framework Generic Participant",
+    "device_class": "SYSTEM",
+    "provider": "Intel",
+    "version": "2.3.20303.5058",
+    "date": "2026-01-14",
+    "inf_name": "oem85.inf",
+    "signed": true
+  },
+  {
+    "device_name": "Intel(R) Innovation Platform Framework Generic Participant",
+    "device_class": "SYSTEM",
+    "provider": "Intel",
+    "version": "2.3.20303.5058",
+    "date": "2026-01-14",
+    "inf_name": "oem85.inf",
+    "signed": true
+  },
+  {
+    "device_name": "Intel(R) Innovation Platform Framework Generic Participant",
+    "device_class": "SYSTEM",
+    "provider": "Intel",
+    "version": "2.3.20303.5058",
+    "date": "2026-01-14",
+    "inf_name": "oem85.inf",
+    "signed": true
+  },
+  {
+    "device_name": "Intel(R) Innovation Platform Framework Generic Participant",
+    "device_class": "SYSTEM",
+    "provider": "Intel",
+    "version": "2.3.20303.5058",
+    "date": "2026-01-14",
+    "inf_name": "oem85.inf",
+    "signed": true
+  },
+  {
+    "device_name": "Intel(R) Innovation Platform Framework Generic Participant",
+    "device_class": "SYSTEM",
+    "provider": "Intel",
+    "version": "2.3.20303.5058",
+    "date": "2026-01-14",
+    "inf_name": "oem85.inf",
+    "signed": true
+  },
+  {
+    "device_name": "Intel(R) Innovation Platform Framework Manager",
+    "device_class": "SYSTEM",
+    "provider": "Intel",
+    "version": "2.3.20303.5058",
+    "date": "2026-01-14",
+    "inf_name": "oem85.inf",
+    "signed": true
+  },
+  {
+    "device_name": "Audio Kernel-Mode Proxy Audio Device",
+    "device_class": "MEDIA",
+    "provider": "Microsoft",
+    "version": "10.0.26100.9278",
+    "date": "2026-08-24",
+    "inf_name": "apxunit.inf",
+    "signed": true
+  },
+  {
+    "device_name": "Audio Kernel-Mode Proxy Audio Device",
+    "device_class": "MEDIA",
+    "provider": "Microsoft",
+    "version": "10.0.26100.9278",
+    "date": "2026-08-24",
+    "inf_name": "apxunit.inf",
+    "signed": true
+  },
+  {
+    "device_name": "Audio Kernel-Mode Proxy Unit Device",
+    "device_class": "MEDIA",
+    "provider": "Microsoft",
+    "version": "10.0.26100.9278",
+    "date": "2026-08-24",
+    "inf_name": "apxunit.inf",
+    "signed": true
+  },
+  {
+    "device_name": "Bluetooth Device (Personal Area Network)",
+    "device_class": "NET",
+    "provider": "Microsoft",
+    "version": "10.0.26100.8972",
+    "date": "2006-06-21",
+    "inf_name": "bthpan.inf",
+    "signed": true
+  },
+  {
+    "device_name": "Microsoft Bluetooth Hands-Free Profile AudioGateway role",
+    "device_class": "SYSTEM",
+    "provider": "Microsoft",
+    "version": "10.0.26100.1",
+    "date": "2024-03-31",
+    "inf_name": "microsoft_bluetooth_hfp_ag.inf",
+    "signed": true
+  },
+  {
+    "device_name": "Microsoft Bluetooth A2dp Source",
+    "device_class": "MEDIA",
+    "provider": "Microsoft",
+    "version": "10.0.26100.1",
+    "date": "2024-03-31",
+    "inf_name": "microsoft_bluetooth_a2dp_src.inf",
+    "signed": true
+  },
+  {
+    "device_name": "Microsoft Bluetooth Hands-Free Profile Handsfree role",
+    "device_class": "SYSTEM",
+    "provider": "Microsoft",
+    "version": "10.0.26100.1",
+    "date": "2024-03-31",
+    "inf_name": "microsoft_bluetooth_hfp_hf.inf",
+    "signed": true
+  },
+  {
+    "device_name": "Microsoft Bluetooth A2dp Sink",
+    "device_class": "MEDIA",
+    "provider": "Microsoft",
+    "version": "10.0.26100.1",
+    "date": "2024-03-31",
+    "inf_name": "microsoft_bluetooth_a2dp_snk.inf",
+    "signed": true
+  },
+  {
+    "device_name": "Motherboard resources",
+    "device_class": "SYSTEM",
+    "provider": "Microsoft",
+    "version": "10.0.26100.1150",
+    "date": "2006-06-21",
+    "inf_name": "machine.inf",
+    "signed": true
+  },
+  {
+    "device_name": "ACPI Wake Alarm",
+    "device_class": "SYSTEM",
+    "provider": "Microsoft",
+    "version": "10.0.26100.1150",
+    "date": "2006-06-21",
+    "inf_name": "acpitime.inf",
+    "signed": true
+  },
+  {
+    "device_name": "Intel(R) SPI (flash) Controller - E323",
+    "device_class": "SYSTEM",
+    "provider": "INTEL",
+    "version": "10.1.56.28",
+    "date": "1968-07-18",
+    "inf_name": "oem90.inf",
+    "signed": true
+  },
+  {
+    "device_name": "Intel(R) SMBus Controller - E322",
+    "device_class": "SYSTEM",
+    "provider": "INTEL",
+    "version": "10.1.56.28",
+    "date": "1968-07-18",
+    "inf_name": "oem90.inf",
+    "signed": true
+  },
+  {
+    "device_name": "Microphone on BT",
+    "device_class": "MEDIA",
+    "provider": "Intel(R) Corporation",
+    "version": "20.43.12573.6",
+    "date": "2026-01-13",
+    "inf_name": "oem27.inf",
+    "signed": true
+  },
+  {
+    "device_name": "Headphones on BT",
+    "device_class": "MEDIA",
+    "provider": "Intel(R) Corporation",
+    "version": "20.43.12573.6",
+    "date": "2026-01-13",
+    "inf_name": "oem27.inf",
+    "signed": true
+  },
+  {
+    "device_name": "Intel® Smart Sound Technology ACX Streaming for Bluetooth® LE Audio",
+    "device_class": "MEDIA",
+    "provider": "Intel(R) Corporation",
+    "version": "20.43.12573.6",
+    "date": "2026-01-13",
+    "inf_name": "oem27.inf",
+    "signed": true
+  },
+  {
+    "device_name": "Intel® Smart Sound Technology for Bluetooth® Audio",
+    "device_class": "MEDIA",
+    "provider": "Intel(R) Corporation",
+    "version": "20.43.12573.6",
+    "date": "2026-01-13",
+    "inf_name": "oem25.inf",
+    "signed": true
+  },
+  {
+    "device_name": "Speaker on SDW",
+    "device_class": "MEDIA",
+    "provider": "Intel(R) Corporation",
+    "version": "20.43.12573.6",
+    "date": "2026-01-13",
+    "inf_name": "oem26.inf",
+    "signed": true
+  },
+  {
+    "device_name": "Headset Earphone on SDW",
+    "device_class": "MEDIA",
+    "provider": "Intel(R) Corporation",
+    "version": "20.43.12573.6",
+    "date": "2026-01-13",
+    "inf_name": "oem26.inf",
+    "signed": true
+  },
+  {
+    "device_name": "Headset Microphone on SDW",
+    "device_class": "MEDIA",
+    "provider": "Intel(R) Corporation",
+    "version": "20.43.12573.6",
+    "date": "2026-01-13",
+    "inf_name": "oem26.inf",
+    "signed": true
+  },
+  {
+    "device_name": "Microphone Array on SDW",
+    "device_class": "MEDIA",
+    "provider": "Intel(R) Corporation",
+    "version": "20.43.12573.6",
+    "date": "2026-01-13",
+    "inf_name": "oem26.inf",
+    "signed": true
+  },
+  {
+    "device_name": "Intel® Smart Sound Technology ACX Streaming for SoundWire",
+    "device_class": "MEDIA",
+    "provider": "Intel(R) Corporation",
+    "version": "20.43.12573.6",
+    "date": "2026-01-13",
+    "inf_name": "oem26.inf",
+    "signed": true
+  },
+  {
+    "device_name": "Intel® Smart Sound Technology for USB Audio",
+    "device_class": "MEDIA",
+    "provider": "Intel(R) Corporation",
+    "version": "20.43.12573.6",
+    "date": "2026-01-13",
+    "inf_name": "oem22.inf",
+    "signed": true
+  },
+  {
+    "device_name": "SoundWire Audio",
+    "device_class": "MEDIA",
+    "provider": "Microsoft",
+    "version": "10.0.26100.9549",
+    "date": "2006-06-21",
+    "inf_name": "sdcaclass.inf",
+    "signed": true
+  },
+  {
+    "device_name": "SoundWire Audio",
+    "device_class": "MEDIA",
+    "provider": "Microsoft",
+    "version": "10.0.26100.9549",
+    "date": "2006-06-21",
+    "inf_name": "sdcaclass.inf",
+    "signed": true
+  },
+  {
+    "device_name": "SoundWire Audio Multifunction Device",
+    "device_class": "SYSTEM",
+    "provider": "Microsoft",
+    "version": "10.0.26100.9278",
+    "date": "2006-06-21",
+    "inf_name": "sdcamfd.inf",
+    "signed": true
+  },
+  {
+    "device_name": "SoundWire Audio",
+    "device_class": "MEDIA",
+    "provider": "Microsoft",
+    "version": "10.0.26100.9549",
+    "date": "2006-06-21",
+    "inf_name": "sdcaclass.inf",
+    "signed": true
+  },
+  {
+    "device_name": "SoundWire Audio",
+    "device_class": "MEDIA",
+    "provider": "Microsoft",
+    "version": "10.0.26100.9549",
+    "date": "2006-06-21",
+    "inf_name": "sdcaclass.inf",
+    "signed": true
+  },
+  {
+    "device_name": "SoundWire Audio",
+    "device_class": "MEDIA",
+    "provider": "Microsoft",
+    "version": "10.0.26100.9549",
+    "date": "2006-06-21",
+    "inf_name": "sdcaclass.inf",
+    "signed": true
+  },
+  {
+    "device_name": "SoundWire Audio",
+    "device_class": "MEDIA",
+    "provider": "Microsoft",
+    "version": "10.0.26100.9549",
+    "date": "2006-06-21",
+    "inf_name": "sdcaclass.inf",
+    "signed": true
+  },
+  {
+    "device_name": "SoundWire Audio",
+    "device_class": "MEDIA",
+    "provider": "Microsoft",
+    "version": "10.0.26100.9549",
+    "date": "2006-06-21",
+    "inf_name": "sdcaclass.inf",
+    "signed": true
+  },
+  {
+    "device_name": "SoundWire Audio",
+    "device_class": "MEDIA",
+    "provider": "Microsoft",
+    "version": "10.0.26100.9549",
+    "date": "2006-06-21",
+    "inf_name": "sdcaclass.inf",
+    "signed": true
+  },
+  {
+    "device_name": "SoundWire Audio",
+    "device_class": "MEDIA",
+    "provider": "Microsoft",
+    "version": "10.0.26100.9549",
+    "date": "2006-06-21",
+    "inf_name": "sdcaclass.inf",
+    "signed": true
+  },
+  {
+    "device_name": "SoundWire Audio Multifunction Device",
+    "device_class": "SYSTEM",
+    "provider": "Microsoft",
+    "version": "10.0.26100.9278",
+    "date": "2006-06-21",
+    "inf_name": "sdcamfd.inf",
+    "signed": true
+  },
+  {
+    "device_name": "SoundWire Audio",
+    "device_class": "MEDIA",
+    "provider": "Microsoft",
+    "version": "10.0.26100.9549",
+    "date": "2006-06-21",
+    "inf_name": "sdcaclass.inf",
+    "signed": true
+  },
+  {
+    "device_name": "SoundWire Audio",
+    "device_class": "MEDIA",
+    "provider": "Microsoft",
+    "version": "10.0.26100.9549",
+    "date": "2006-06-21",
+    "inf_name": "sdcaclass.inf",
+    "signed": true
+  },
+  {
+    "device_name": "SoundWire Audio Multifunction Device",
+    "device_class": "SYSTEM",
+    "provider": "Microsoft",
+    "version": "10.0.26100.9278",
+    "date": "2006-06-21",
+    "inf_name": "sdcamfd.inf",
+    "signed": true
+  },
+  {
+    "device_name": "SoundWire Speakers",
+    "device_class": "MEDIA",
+    "provider": "Microsoft",
+    "version": "10.0.26100.9278",
+    "date": "2006-06-21",
+    "inf_name": "sdcaaggregator.inf",
+    "signed": true
+  },
+  {
+    "device_name": "SoundWire Audio",
+    "device_class": "MEDIA",
+    "provider": "Microsoft",
+    "version": "10.0.26100.9278",
+    "date": "2006-06-21",
+    "inf_name": "sdcaaggregator.inf",
+    "signed": true
+  },
+  {
+    "device_name": "Intel® Smart Sound Technology MIPI SoundWire® Controller",
+    "device_class": "SYSTEM",
+    "provider": "Intel(R) Corporation",
+    "version": "20.43.12573.6",
+    "date": "2026-01-13",
+    "inf_name": "oem28.inf",
+    "signed": true
+  },
+  {
+    "device_name": "Intel® Smart Sound Technology OED",
+    "device_class": "SYSTEM",
+    "provider": "Intel(R) Corporation",
+    "version": "20.43.12573.6",
+    "date": "2026-01-13",
+    "inf_name": "oem21.inf",
+    "signed": true
+  },
+  {
+    "device_name": "Intel® Smart Sound Technology BUS",
+    "device_class": "SYSTEM",
+    "provider": "Intel(R) Corporation",
+    "version": "20.43.12573.6",
+    "date": "2026-01-13",
+    "inf_name": "oem20.inf",
+    "signed": true
+  },
+  {
+    "device_name": "ACPI Lid",
+    "device_class": "SYSTEM",
+    "provider": "Microsoft",
+    "version": "10.0.26100.1150",
+    "date": "2006-06-21",
+    "inf_name": "machine.inf",
+    "signed": true
+  },
+  {
+    "device_name": "Microsoft ACPI-Compliant Embedded Controller",
+    "device_class": "SYSTEM",
+    "provider": "Microsoft",
+    "version": "10.0.26100.1150",
+    "date": "2006-06-21",
+    "inf_name": "machine.inf",
+    "signed": true
+  },
+  {
+    "device_name": "Motherboard resources",
+    "device_class": "SYSTEM",
+    "provider": "Microsoft",
+    "version": "10.0.26100.1150",
+    "date": "2006-06-21",
+    "inf_name": "machine.inf",
+    "signed": true
+  },
+  {
+    "device_name": "System timer",
+    "device_class": "SYSTEM",
+    "provider": "Microsoft",
+    "version": "10.0.26100.1150",
+    "date": "2006-06-21",
+    "inf_name": "machine.inf",
+    "signed": true
+  },
+  {
+    "device_name": "Motherboard resources",
+    "device_class": "SYSTEM",
+    "provider": "Microsoft",
+    "version": "10.0.26100.1150",
+    "date": "2006-06-21",
+    "inf_name": "machine.inf",
+    "signed": true
+  },
+  {
+    "device_name": "Numeric data processor",
+    "device_class": "SYSTEM",
+    "provider": "Microsoft",
+    "version": "10.0.26100.1150",
+    "date": "2006-06-21",
+    "inf_name": "machine.inf",
+    "signed": true
+  },
+  {
+    "device_name": "Programmable interrupt controller",
+    "device_class": "SYSTEM",
+    "provider": "Microsoft",
+    "version": "10.0.26100.1150",
+    "date": "2006-06-21",
+    "inf_name": "machine.inf",
+    "signed": true
+  },
+  {
+    "device_name": "High precision event timer",
+    "device_class": "SYSTEM",
+    "provider": "Microsoft",
+    "version": "10.0.26100.1150",
+    "date": "2006-06-21",
+    "inf_name": "machine.inf",
+    "signed": true
+  },
+  {
+    "device_name": "Intel(R) LPC/eSPI - E302",
+    "device_class": "SYSTEM",
+    "provider": "INTEL",
+    "version": "10.1.56.28",
+    "date": "1968-07-18",
+    "inf_name": "oem90.inf",
+    "signed": true
+  },
+  {
+    "device_name": "Standard NVM Express Controller",
+    "device_class": "SCSIADAPTER",
+    "provider": "Microsoft",
+    "version": "10.0.26100.9549",
+    "date": "2006-06-21",
+    "inf_name": "stornvme.inf",
+    "signed": true
+  },
+  {
+    "device_name": "PCI Express Root Port",
+    "device_class": "SYSTEM",
+    "provider": "Microsoft",
+    "version": "10.0.26100.9711",
+    "date": "2006-06-21",
+    "inf_name": "pci.inf",
+    "signed": true
+  },
+  {
+    "device_name": "PCI Express Root Port",
+    "device_class": "SYSTEM",
+    "provider": "Microsoft",
+    "version": "10.0.26100.9711",
+    "date": "2006-06-21",
+    "inf_name": "pci.inf",
+    "signed": true
+  },
+  {
+    "device_name": "Intel(R) Serial IO I2C Host Controller - E351",
+    "device_class": "SYSTEM",
+    "provider": "Intel Corporation",
+    "version": "30.100.2534.18",
+    "date": "2025-08-18",
+    "inf_name": "oem1.inf",
+    "signed": true
+  },
+  {
+    "device_name": "Intel(R) Serial IO I2C Host Controller - E350",
+    "device_class": "SYSTEM",
+    "provider": "Intel Corporation",
+    "version": "30.100.2534.18",
+    "date": "2025-08-18",
+    "inf_name": "oem1.inf",
+    "signed": true
+  },
+  {
+    "device_name": "Intel(R) Silicon Security Engine Interface",
+    "device_class": "SYSTEM",
+    "provider": "Intel Corporation",
+    "version": "2543.9.0.0",
+    "date": "2025-10-22",
+    "inf_name": "oem6.inf",
+    "signed": true
+  },
+  {
+    "device_name": "Intel(R) Management Engine Interface #1",
+    "device_class": "SYSTEM",
+    "provider": "Intel",
+    "version": "2603.9.4.0",
+    "date": "2026-01-13",
+    "inf_name": "oem114.inf",
+    "signed": true
+  },
+  {
+    "device_name": "Intel(R) Wi-Fi 7 BE211 320MHz",
+    "device_class": "NET",
+    "provider": "Intel",
+    "version": "24.50.0.4",
+    "date": "2026-05-20",
+    "inf_name": "oem120.inf",
+    "signed": true
+  },
+  {
+    "device_name": "Intel(R) Shared SRAM - E37F",
+    "device_class": "SYSTEM",
+    "provider": "INTEL",
+    "version": "10.1.56.28",
+    "date": "1968-07-18",
+    "inf_name": "oem90.inf",
+    "signed": true
+  },
+  {
+    "device_name": "Intel(R) ISS HID Bus",
+    "device_class": "SYSTEM",
+    "provider": "Intel",
+    "version": "5.8.58.0",
+    "date": "2025-11-04",
+    "inf_name": "oem15.inf",
+    "signed": true
+  },
+  {
+    "device_name": "Intel(R) HECI Protocol Device",
+    "device_class": "SYSTEM",
+    "provider": "Intel",
+    "version": "5.8.62.0",
+    "date": "2025-12-30",
+    "inf_name": "oem13.inf",
+    "signed": true
+  },
+  {
+    "device_name": "Intel(R) Integrated Sensor Solution",
+    "device_class": "SYSTEM",
+    "provider": "Intel",
+    "version": "5.8.62.0",
+    "date": "2025-12-30",
+    "inf_name": "oem18.inf",
+    "signed": true
+  },
+  {
+    "device_name": "Intel(R) Platform Monitoring Technology (PMT) Driver",
+    "device_class": "SYSTEM",
+    "provider": "Intel(R) Platform Monitoring Technology (PMT) Device",
+    "version": "7.3.10.3",
+    "date": "2025-09-17",
+    "inf_name": "oem80.inf",
+    "signed": true
+  },
+  {
+    "device_name": "PCI Express Root Port",
+    "device_class": "SYSTEM",
+    "provider": "Microsoft",
+    "version": "10.0.26100.9711",
+    "date": "2006-06-21",
+    "inf_name": "pci.inf",
+    "signed": true
+  },
+  {
+    "device_name": "PCI Express Root Port",
+    "device_class": "SYSTEM",
+    "provider": "Microsoft",
+    "version": "10.0.26100.9711",
+    "date": "2006-06-21",
+    "inf_name": "pci.inf",
+    "signed": true
+  },
+  {
+    "device_name": "NVIDIA High Definition Audio",
+    "device_class": "MEDIA",
+    "provider": "NVIDIA Corporation",
+    "version": "1.4.6.3",
+    "date": "2026-07-23",
+    "inf_name": "oem160.inf",
+    "signed": true
+  },
+  {
+    "device_name": "High Definition Audio Controller",
+    "device_class": "SYSTEM",
+    "provider": "Microsoft",
+    "version": "10.0.26100.9711",
+    "date": "2026-10-10",
+    "inf_name": "hdaudbus.inf",
+    "signed": true
+  },
+  {
+    "device_name": "NVIDIA GeForce RTX 5070 Ti Laptop GPU",
+    "device_class": "DISPLAY",
+    "provider": "NVIDIA",
+    "version": "32.0.16.1742",
+    "date": "2026-09-30",
+    "inf_name": "oem147.inf",
+    "signed": true
+  },
+  {
+    "device_name": "PCI Express Root Port",
+    "device_class": "SYSTEM",
+    "provider": "Microsoft",
+    "version": "10.0.26100.9711",
+    "date": "2006-06-21",
+    "inf_name": "pci.inf",
+    "signed": true
+  },
+  {
+    "device_name": "Standard NVM Express Controller",
+    "device_class": "SCSIADAPTER",
+    "provider": "Microsoft",
+    "version": "10.0.26100.9549",
+    "date": "2006-06-21",
+    "inf_name": "stornvme.inf",
+    "signed": true
+  },
+  {
+    "device_name": "PCI Express Root Port",
+    "device_class": "SYSTEM",
+    "provider": "Microsoft",
+    "version": "10.0.26100.9711",
+    "date": "2006-06-21",
+    "inf_name": "pci.inf",
+    "signed": true
+  },
+  {
+    "device_name": "Intel(R) Application Optimization Driver Component Extension",
+    "device_class": "SYSTEM",
+    "provider": "Intel",
+    "version": "9.1.10007.1466",
+    "date": "2026-02-13",
+    "inf_name": "oem84.inf",
+    "signed": true
+  },
+  {
+    "device_name": "Intel(R) Innovation Platform Framework Extensible Framework",
+    "device_class": "SYSTEM",
+    "provider": "Intel",
+    "version": "2.3.20303.5058",
+    "date": "2026-01-14",
+    "inf_name": "oem86.inf",
+    "signed": true
+  },
+  {
+    "device_name": "Intel(R) Innovation Platform Framework Processor Participant",
+    "device_class": "SYSTEM",
+    "provider": "Intel",
+    "version": "2.3.20303.5058",
+    "date": "2026-01-14",
+    "inf_name": "oem86.inf",
+    "signed": true
+  },
+  {
+    "device_name": "Intel(R) Graphics",
+    "device_class": "DISPLAY",
+    "provider": "Intel Corporation",
+    "version": "32.0.101.8509",
+    "date": "2026-02-05",
+    "inf_name": "oem93.inf",
+    "signed": true
+  },
+  {
+    "device_name": "PCI standard host CPU bridge",
+    "device_class": "SYSTEM",
+    "provider": "Microsoft",
+    "version": "10.0.26100.1150",
+    "date": "2006-06-21",
+    "inf_name": "machine.inf",
+    "signed": true
+  },
+  {
+    "device_name": "PCI Express Root Complex",
+    "device_class": "SYSTEM",
+    "provider": "Microsoft",
+    "version": "10.0.26100.9711",
+    "date": "2006-06-21",
+    "inf_name": "pci.inf",
+    "signed": true
+  },
+  {
+    "device_name": "Microsoft ACPI-Compliant System",
+    "device_class": "SYSTEM",
+    "provider": "Microsoft",
+    "version": "10.0.26100.9549",
+    "date": "2006-06-21",
+    "inf_name": "acpi.inf",
+    "signed": true
+  },
+  {
+    "device_name": "Charge Arbitration Driver",
+    "device_class": "SYSTEM",
+    "provider": "Microsoft",
+    "version": "10.0.26100.8972",
+    "date": "2006-06-21",
+    "inf_name": "ChargeArbitration.inf",
+    "signed": true
+  },
+  {
+    "device_name": "UMBus Root Bus Enumerator",
+    "device_class": "SYSTEM",
+    "provider": "Microsoft",
+    "version": "10.0.26100.1150",
+    "date": "2006-06-21",
+    "inf_name": "umbus.inf",
+    "signed": true
+  },
+  {
+    "device_name": "Microsoft Kernel Debug Network Adapter",
+    "device_class": "NET",
+    "provider": "Microsoft",
+    "version": "10.0.26100.8521",
+    "date": "2006-06-21",
+    "inf_name": "kdnic.inf",
+    "signed": true
+  },
+  {
+    "device_name": "Microsoft Storage Spaces Controller",
+    "device_class": "SCSIADAPTER",
+    "provider": "Microsoft",
+    "version": "10.0.26100.9711",
+    "date": "2006-06-21",
+    "inf_name": "spaceport.inf",
+    "signed": true
+  },
+  {
+    "device_name": "Microsoft VHD Loopback Controller",
+    "device_class": "SCSIADAPTER",
+    "provider": "Microsoft",
+    "version": "10.0.26100.9711",
+    "date": "2006-06-21",
+    "inf_name": "vhdmp.inf",
+    "signed": true
+  },
+  {
+    "device_name": "Microsoft Virtual Drive Enumerator",
+    "device_class": "SYSTEM",
+    "provider": "Microsoft",
+    "version": "10.0.26100.1591",
+    "date": "2006-06-21",
+    "inf_name": "vdrvroot.inf",
+    "signed": true
+  },
+  {
+    "device_name": "Composite Bus Enumerator",
+    "device_class": "SYSTEM",
+    "provider": "Microsoft",
+    "version": "10.0.26100.1150",
+    "date": "2006-06-21",
+    "inf_name": "compositebus.inf",
+    "signed": true
+  },
+  {
+    "device_name": "Microsoft Hyper-V Virtualization Infrastructure Driver",
+    "device_class": "SYSTEM",
+    "provider": "Microsoft",
+    "version": "10.0.26100.9711",
+    "date": "2006-06-21",
+    "inf_name": "wvid.inf",
+    "signed": true
+  },
+  {
+    "device_name": "Microsoft Hypervisor Service",
+    "device_class": "SYSTEM",
+    "provider": "Microsoft",
+    "version": "10.0.26100.8972",
+    "date": "2006-06-21",
+    "inf_name": "hvservice.inf",
+    "signed": true
+  },
+  {
+    "device_name": "Microsoft Basic Display Driver",
+    "device_class": "SYSTEM",
+    "provider": "Microsoft",
+    "version": "10.0.26100.8521",
+    "date": "2006-06-21",
+    "inf_name": "basicdisplay.inf",
+    "signed": true
+  },
+  {
+    "device_name": "Microsoft Hyper-V Virtual Machine Bus Provider",
+    "device_class": "SYSTEM",
+    "provider": "Microsoft",
+    "version": "10.0.26100.9711",
+    "date": "2006-06-21",
+    "inf_name": "wvmbusr.inf",
+    "signed": true
+  },
+  {
+    "device_name": "Volume Manager",
+    "device_class": "SYSTEM",
+    "provider": "Microsoft",
+    "version": "10.0.26100.9711",
+    "date": "2006-06-21",
+    "inf_name": "volmgr.inf",
+    "signed": true
+  }
+]

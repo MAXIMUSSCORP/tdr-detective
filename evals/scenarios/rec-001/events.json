@@ -1,0 +1,4721 @@
+[
+  {
+    "record_id": 21200,
+    "time": "2026-10-06T05:58:17.266699Z",
+    "log": "Application",
+    "provider": "IPF",
+    "event_id": 19,
+    "level": "information",
+    "message": "ESIF(2.3.20303.5058) TYPE: INFO MODULE: IPF TIME 285009 ms DPTF Build Version: 9.1.10007.1466 DPTF Build Date: Feb 13 2026 08:20:24 Message: EPO Modes Status:DC Endurance Gaming(Status: Enabled);DC Balanced(Status: Enabled);AC Balanced(Status: Enabled);AC Cool & Quiet(Status: Enabled); AC Performance(Status: Enabled); DC Cool & Quiet(Status: Enabled); DC Performance(Status: Enabled); AC Collaboration(Status: Enabled);DC Collaboration(Status: Enabled);AC VC IP Alignment(Status: Enabled);DC VC IP Alignment(Status: Enabled);DC System In Bag Hibernation(Status: Disabled); DC System In Bag Aggress…",
+    "data": {
+      "Message": "ESIF(2.3.20303.5058) TYPE: INFO MODULE: IPF TIME 285009 ms\n\n    DPTF Build Version:  9.1.10007.1466    DPTF Build Date:  Feb 13 2026 08:20:24    Message:  EPO Modes Status:DC Endurance Gaming(Status: Enabled);DC Balanced(Status: Enabled);AC Balanced(Status: Enabled);AC Cool & Quiet(Status: Enabled); AC Performance(Status: Enabled); DC Cool & Quiet(Status: Enabled); DC Performance(Status: Enabled); AC Collaboration(Status: Enabled);DC Collaboration(Status: Enabled);AC VC IP Alignment(Status: Enabled);DC VC IP Alignment(Status: Enabled);DC System In Bag Hibernation(Status: Disabled); DC System …"
+    }
+  },
+  {
+    "record_id": 21199,
+    "time": "2026-10-06T05:56:47.454943Z",
+    "log": "Application",
+    "provider": "Microsoft-Windows-Security-SPP",
+    "event_id": 903,
+    "level": "information",
+    "message": "The Software Protection service has stopped.",
+    "data": {}
+  },
+  {
+    "record_id": 21198,
+    "time": "2026-10-06T05:56:47.440851Z",
+    "log": "Application",
+    "provider": "Microsoft-Windows-Security-SPP",
+    "event_id": 16384,
+    "level": "information",
+    "message": "Successfully scheduled Software Protection service for re-start at 2126-09-12T05:56:47Z. Reason: RulesEngine.",
+    "data": {
+      "param1": "2126-09-12T05:56:47Z",
+      "param2": "RulesEngine"
+    }
+  },
+  {
+    "record_id": 21197,
+    "time": "2026-10-06T05:56:24.093370Z",
+    "log": "Application",
+    "provider": "SecurityCenter",
+    "event_id": 15,
+    "level": "information",
+    "message": "Updated Windows Defender status successfully to SECURITY_PRODUCT_STATE_ON.",
+    "data": {
+      "param1": "Windows Defender",
+      "param2": "SECURITY_PRODUCT_STATE_ON"
+    }
+  },
+  {
+    "record_id": 21196,
+    "time": "2026-10-06T05:56:22.061198Z",
+    "log": "Application",
+    "provider": "SecurityCenter",
+    "event_id": 15,
+    "level": "information",
+    "message": "Updated Windows Defender status successfully to SECURITY_PRODUCT_STATE_ON.",
+    "data": {
+      "param1": "Windows Defender",
+      "param2": "SECURITY_PRODUCT_STATE_ON"
+    }
+  },
+  {
+    "record_id": 21195,
+    "time": "2026-10-06T05:56:18.041570Z",
+    "log": "Application",
+    "provider": "SecurityCenter",
+    "event_id": 1,
+    "level": "information",
+    "message": "The Windows Security Center Service has started.",
+    "data": {}
+  },
+  {
+    "record_id": 28077,
+    "time": "2026-10-06T05:56:17.876828Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-DistributedCOM",
+    "event_id": 10016,
+    "level": "warning",
+    "message": "The application-specific permission settings do not grant Local Launch permission for the COM Server application with CLSID Windows.SecurityCenter.WscDataProtection and APPID Unavailable to the user NT AUTHORITY\\SYSTEM SID (S-1-5-18) from address LocalHost (Using LRPC) running in the application container Unavailable SID (Unavailable). This security permission can be modified using the Component Services administrative tool.",
+    "data": {
+      "param1": "application-specific",
+      "param2": "Local",
+      "param3": "Launch",
+      "param4": "Windows.SecurityCenter.WscDataProtection",
+      "param5": "Unavailable",
+      "param6": "NT AUTHORITY",
+      "param7": "SYSTEM",
+      "param8": "S-1-5-18",
+      "param9": "LocalHost (Using LRPC)",
+      "param10": "Unavailable",
+      "param11": "Unavailable"
+    }
+  },
+  {
+    "record_id": 28076,
+    "time": "2026-10-06T05:56:17.686081Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-Time-Service",
+    "event_id": 37,
+    "level": "information",
+    "message": "The time provider NtpClient is currently receiving valid time data from time.windows.com,0x9 (ntp.m|0x9|0.0.0.0:123->168.61.215.74:123).",
+    "data": {
+      "TimeSource": "time.windows.com,0x9 (ntp.m|0x9|0.0.0.0:123->168.61.215.74:123)"
+    }
+  },
+  {
+    "record_id": 28075,
+    "time": "2026-10-06T05:56:17.594145Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-Time-Service",
+    "event_id": 158,
+    "level": "information",
+    "message": "The time provider 'VMICTimeProvider' has indicated that the current hardware and operating environment is not supported and has stopped. This behavior is expected for VMICTimeProvider on non-HyperV-guest environments. This may be the expected behavior for the current provider in the current operating environment as well.",
+    "data": {
+      "TimeProvider": "VMICTimeProvider"
+    }
+  },
+  {
+    "record_id": 21194,
+    "time": "2026-10-06T05:56:17.384219Z",
+    "log": "Application",
+    "provider": "Microsoft-Windows-Security-SPP",
+    "event_id": 902,
+    "level": "information",
+    "message": "The Software Protection service has started. 10.0.26100.9457",
+    "data": {
+      "param1": "10.0.26100.9457"
+    }
+  },
+  {
+    "record_id": 21193,
+    "time": "2026-10-06T05:56:17.226938Z",
+    "log": "Application",
+    "provider": "Microsoft-Windows-Security-SPP",
+    "event_id": 1003,
+    "level": "information",
+    "message": "The Software Protection service has completed licensing status check. Application Id=55c92734-d682-4d71-983e-d6ec3f16059f Licensing Status= 1: 0567073a-7d74-403b-b2d5-6b35da372d8d, 1, 0 [(0 [0xC004F014, 0, 0], [(?)(?)(?)(?)(?)(?)(?)(?)])(1 )(2 )(3 )] 2: 1b750385-9fe2-49a8-ab55-149d0546395b, 1, 0 [(0 [0xC004F014, 0, 0], [(?)(?)(?)(?)(?)(?)(?)(?)])(1 )(2 )(3 )] 3: 1d873132-f09f-4eb2-bf5a-2e4fb48935e8, 1, 1 [(0 )(1 )(2 [0x00000000, 1, 0], [(?)( 1 0x00000000)(?)(?)(?)(?)( 10 0x00000000 msft:rm/algorithm/flags/1.0)(?)])(3 )] 4: 2b1f36bb-c1cd-4306-bf5c-a0367c2d97d8, 1, 0 [(0 [0xC004F014, 0, 0], [(?…",
+    "data": {
+      "param1": "55c92734-d682-4d71-983e-d6ec3f16059f",
+      "param2": "1: 0567073a-7d74-403b-b2d5-6b35da372d8d, 1, 0 [(0 [0xC004F014, 0, 0], [(?)(?)(?)(?)(?)(?)(?)(?)])(1 )(2 )(3 )]\n2: 1b750385-9fe2-49a8-ab55-149d0546395b, 1, 0 [(0 [0xC004F014, 0, 0], [(?)(?)(?)(?)(?)(?)(?)(?)])(1 )(2 )(3 )]\n3: 1d873132-f09f-4eb2-bf5a-2e4fb48935e8, 1, 1 [(0 )(1 )(2 [0x00000000, 1, 0], [(?)( 1 0x00000000)(?)(?)(?)(?)( 10 0x00000000 msft:rm/algorithm/flags/1.0)(?)])(3 )]\n4: 2b1f36bb-c1cd-4306-bf5c-a0367c2d97d8, 1, 0 [(0 [0xC004F014, 0, 0], [(?)(?)(?)(?)(?)(?)(?)(?)])(1 )(2 )(3 )]\n5: 30d469c6-a78f-4476-b5c8-af78d5b6a5fb, 1, 0 [(0 [0xC004F014, 0, 0], [(?)(?)(?)(?)(?)(?)(?)(?)])(1 )(…"
+    }
+  },
+  {
+    "record_id": 21192,
+    "time": "2026-10-06T05:56:17.136965Z",
+    "log": "Application",
+    "provider": "Microsoft-Windows-Security-SPP",
+    "event_id": 1066,
+    "level": "information",
+    "message": "Initialization status for service objects. C:\\Windows\\system32\\sppwinob.dll, msft:spp/windowsfunctionality/agent/7.0, 0x00000000, 0x00000000 C:\\Windows\\system32\\sppobjs.dll, msft:rm/algorithm/inherited/1.0, 0x00000000, 0x00000000 C:\\Windows\\system32\\sppobjs.dll, msft:rm/algorithm/phone/1.0, 0x00000000, 0x00000000 C:\\Windows\\system32\\sppobjs.dll, msft:rm/algorithm/pkey/detect, 0x00000000, 0x00000000 C:\\Windows\\system32\\sppobjs.dll, msft:spp/ActionScheduler/1.0, 0x00000000, 0x00000000 C:\\Windows\\system32\\sppobjs.dll, msft:spp/TaskScheduler/1.0, 0x00000000, 0x00000000 C:\\Windows\\system32\\sppobjs…",
+    "data": {
+      "param1": "C:\\Windows\\system32\\sppwinob.dll, msft:spp/windowsfunctionality/agent/7.0, 0x00000000, 0x00000000\nC:\\Windows\\system32\\sppobjs.dll, msft:rm/algorithm/inherited/1.0, 0x00000000, 0x00000000\nC:\\Windows\\system32\\sppobjs.dll, msft:rm/algorithm/phone/1.0, 0x00000000, 0x00000000\nC:\\Windows\\system32\\sppobjs.dll, msft:rm/algorithm/pkey/detect, 0x00000000, 0x00000000\nC:\\Windows\\system32\\sppobjs.dll, msft:spp/ActionScheduler/1.0, 0x00000000, 0x00000000\nC:\\Windows\\system32\\sppobjs.dll, msft:spp/TaskScheduler/1.0, 0x00000000, 0x00000000\nC:\\Windows\\system32\\sppobjs.dll, msft:spp/statecollector/pkey, 0x00000…"
+    }
+  },
+  {
+    "record_id": 21191,
+    "time": "2026-10-06T05:56:17.105581Z",
+    "log": "Application",
+    "provider": "Microsoft-Windows-Security-SPP",
+    "event_id": 16394,
+    "level": "information",
+    "message": "Offline downlevel migration succeeded.",
+    "data": {}
+  },
+  {
+    "record_id": 21190,
+    "time": "2026-10-06T05:56:17.002604Z",
+    "log": "Application",
+    "provider": "Microsoft-Windows-Security-SPP",
+    "event_id": 900,
+    "level": "information",
+    "message": "The Software Protection service is starting. Parameters:<explicit>",
+    "data": {
+      "param1": "<explicit>"
+    }
+  },
+  {
+    "record_id": 21189,
+    "time": "2026-10-06T05:56:16.473478Z",
+    "log": "Application",
+    "provider": "edgeupdate",
+    "event_id": 0,
+    "level": "information",
+    "message": "Service stopped.",
+    "data": {
+      "param1": "Service stopped"
+    }
+  },
+  {
+    "record_id": 28074,
+    "time": "2026-10-06T05:56:16.304631Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-Kernel-General",
+    "event_id": 16,
+    "level": "information",
+    "message": "The access history in hive \\??\\C:\\Windows\\ServiceProfiles\\NetworkService\\AppData\\Local\\Microsoft\\Windows\\DeliveryOptimization\\State\\dosvcState.dat was cleared updating 41 keys and creating 13 modified pages.",
+    "data": {
+      "HiveNameLength": "119",
+      "HiveName": "\\??\\C:\\Windows\\ServiceProfiles\\NetworkService\\AppData\\Local\\Microsoft\\Windows\\DeliveryOptimization\\State\\dosvcState.dat",
+      "KeysUpdated": "41",
+      "DirtyPages": "13"
+    }
+  },
+  {
+    "record_id": 28073,
+    "time": "2026-10-06T05:56:16.204459Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-DistributedCOM",
+    "event_id": 10016,
+    "level": "warning",
+    "message": "The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID {9EA82395-E31B-41CA-8DF7-EC1CEE7194DF} and APPID {2ED83BAA-B2FD-43B1-99BF-E6149C622692} to the user NT AUTHORITY\\NETWORK SERVICE SID (S-1-5-20) from address LocalHost (Using LRPC) running in the application container Unavailable SID (Unavailable). This security permission can be modified using the Component Services administrative tool.",
+    "data": {
+      "param1": "application-specific",
+      "param2": "Local",
+      "param3": "Activation",
+      "param4": "{9EA82395-E31B-41CA-8DF7-EC1CEE7194DF}",
+      "param5": "{2ED83BAA-B2FD-43B1-99BF-E6149C622692}",
+      "param6": "NT AUTHORITY",
+      "param7": "NETWORK SERVICE",
+      "param8": "S-1-5-20",
+      "param9": "LocalHost (Using LRPC)",
+      "param10": "Unavailable",
+      "param11": "Unavailable"
+    }
+  },
+  {
+    "record_id": 21188,
+    "time": "2026-10-06T05:56:10.461516Z",
+    "log": "Application",
+    "provider": "asus",
+    "event_id": 0,
+    "level": "information",
+    "message": "Service stopped",
+    "data": {
+      "param1": "Service stopped"
+    }
+  },
+  {
+    "record_id": 28072,
+    "time": "2026-10-06T05:54:44.428959Z",
+    "log": "System",
+    "provider": "Service Control Manager",
+    "event_id": 7040,
+    "level": "information",
+    "message": "The start type of the IsolationSession service was changed from auto start to demand start.",
+    "data": {
+      "param1": "IsolationSession",
+      "param2": "auto start",
+      "param3": "demand start",
+      "param4": "IsolationSession"
+    }
+  },
+  {
+    "record_id": 21187,
+    "time": "2026-10-06T05:54:22.907288Z",
+    "log": "Application",
+    "provider": "IPF",
+    "event_id": 19,
+    "level": "information",
+    "message": "ESIF(2.3.20303.5058) TYPE: INFO MODULE: IPF TIME 50650 ms DPTF Build Version: 9.1.10007.1466 DPTF Build Date: Feb 13 2026 08:20:24 Message: EPO Modes Status:DC Endurance Gaming(Status: Enabled);DC Balanced(Status: Enabled);AC Balanced(Status: Enabled);AC Cool & Quiet(Status: Enabled); AC Performance(Status: Enabled); DC Cool & Quiet(Status: Enabled); DC Performance(Status: Enabled); AC Collaboration(Status: Enabled);DC Collaboration(Status: Enabled);AC VC IP Alignment(Status: Enabled);DC VC IP Alignment(Status: Enabled);DC System In Bag Hibernation(Status: Disabled); DC System In Bag Aggressi…",
+    "data": {
+      "Message": "ESIF(2.3.20303.5058) TYPE: INFO MODULE: IPF TIME 50650 ms\n\n    DPTF Build Version:  9.1.10007.1466    DPTF Build Date:  Feb 13 2026 08:20:24    Message:  EPO Modes Status:DC Endurance Gaming(Status: Enabled);DC Balanced(Status: Enabled);AC Balanced(Status: Enabled);AC Cool & Quiet(Status: Enabled); AC Performance(Status: Enabled); DC Cool & Quiet(Status: Enabled); DC Performance(Status: Enabled); AC Collaboration(Status: Enabled);DC Collaboration(Status: Enabled);AC VC IP Alignment(Status: Enabled);DC VC IP Alignment(Status: Enabled);DC System In Bag Hibernation(Status: Disabled); DC System I…"
+    }
+  },
+  {
+    "record_id": 21186,
+    "time": "2026-10-06T05:54:22.268677Z",
+    "log": "Application",
+    "provider": "IPF",
+    "event_id": 19,
+    "level": "information",
+    "message": "ESIF(2.3.20303.5058) TYPE: INFO MODULE: IPF TIME 50011 ms DPTF Build Version: 9.1.10007.1466 DPTF Build Date: Feb 13 2026 08:20:24 Message: EPO Modes Status: Policy: Energy Performance Optimizer Policy [2]",
+    "data": {
+      "Message": "ESIF(2.3.20303.5058) TYPE: INFO MODULE: IPF TIME 50011 ms\n\n    DPTF Build Version:  9.1.10007.1466    DPTF Build Date:  Feb 13 2026 08:20:24    Message:  EPO Modes Status:    Policy:  Energy Performance Optimizer Policy [2]"
+    }
+  },
+  {
+    "record_id": 21185,
+    "time": "2026-10-06T05:54:21.873550Z",
+    "log": "Application",
+    "provider": "IPF",
+    "event_id": 19,
+    "level": "information",
+    "message": "ESIF(2.3.20303.5058) TYPE: INFO MODULE: IPF TIME 49616 ms <EVENTLOG>DTT Version: 9.1.10007.1466. IPF SDK Version: 1.0.23203.03. Minimum IPF Version Required: 1.0.11904.0.",
+    "data": {
+      "Message": "ESIF(2.3.20303.5058) TYPE: INFO MODULE: IPF TIME 49616 ms\n\n<EVENTLOG>DTT Version: 9.1.10007.1466. IPF SDK Version: 1.0.23203.03. Minimum IPF Version Required: 1.0.11904.0."
+    }
+  },
+  {
+    "record_id": 28071,
+    "time": "2026-10-06T05:54:17.702816Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-TPM-WMI",
+    "event_id": 1025,
+    "level": "information",
+    "message": "The TPM was successfully provisioned and is now ready for use.",
+    "data": {}
+  },
+  {
+    "record_id": 21183,
+    "time": "2026-10-06T05:54:17.376198Z",
+    "log": "Application",
+    "provider": "CoworkVMService",
+    "event_id": 1,
+    "level": "warning",
+    "message": "Claude VM Service: failed to configure SCM recovery actions; if the service crashes it stays down until the Claude desktop app starts it again on next use, or the machine reboots: open service: Access is denied.",
+    "data": {
+      "param1": "Claude VM Service: failed to configure SCM recovery actions; if the service crashes it stays down until the Claude desktop app starts it again on next use, or the machine reboots: open service: Access is denied."
+    }
+  },
+  {
+    "record_id": 28070,
+    "time": "2026-10-06T05:54:16.799612Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-Hyper-V-VmSwitch",
+    "event_id": 233,
+    "level": "information",
+    "message": "The operation 'Delete' succeeded on nic 790E58B4-7939-4434-9358-89AE7DDBE87F (Friendly Name: WSL (Hyper-V firewall)), Instance Id {26188a62-d44d-4b8f-8224-252c52ace212}.",
+    "data": {
+      "NicNameLen": "36",
+      "NicName": "790E58B4-7939-4434-9358-89AE7DDBE87F",
+      "NicFNameLen": "22",
+      "NicFName": "WSL (Hyper-V firewall)",
+      "Operation": "8",
+      "NicInstanceId": "{26188a62-d44d-4b8f-8224-252c52ace212}"
+    }
+  },
+  {
+    "record_id": 28069,
+    "time": "2026-10-06T05:54:16.758176Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-Hyper-V-VmSwitch",
+    "event_id": 62,
+    "level": "information",
+    "message": "Switch 790E58B4-7939-4434-9358-89AE7DDBE87E (Friendly Name: WSL (Hyper-V firewall)) successfully deleted.",
+    "data": {
+      "SwitchNameLen": "36",
+      "SwitchName": "790E58B4-7939-4434-9358-89AE7DDBE87E",
+      "SwitchFNameLen": "22",
+      "SwitchFName": "WSL (Hyper-V firewall)",
+      "Flags": "9",
+      "OwnerService": "1"
+    }
+  },
+  {
+    "record_id": 28068,
+    "time": "2026-10-06T05:54:16.757952Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-Hyper-V-VmSwitch",
+    "event_id": 233,
+    "level": "information",
+    "message": "The operation 'Delete' succeeded on nic 790E58B4-7939-4434-9358-89AE7DDBE87E (Friendly Name: WSL (Hyper-V firewall)), Instance Id {00000000-0000-0000-0000-000000000000}.",
+    "data": {
+      "NicNameLen": "36",
+      "NicName": "790E58B4-7939-4434-9358-89AE7DDBE87E",
+      "NicFNameLen": "22",
+      "NicFName": "WSL (Hyper-V firewall)",
+      "Operation": "8",
+      "NicInstanceId": "{00000000-0000-0000-0000-000000000000}"
+    }
+  },
+  {
+    "record_id": 28067,
+    "time": "2026-10-06T05:54:16.757929Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-Hyper-V-VmSwitch",
+    "event_id": 71,
+    "level": "information",
+    "message": "Delete complete for port 790E58B4-7939-4434-9358-89AE7DDBE87E (Friendly Name: WSL (Hyper-V firewall)).",
+    "data": {
+      "PortNameLen": "36",
+      "PortName": "790E58B4-7939-4434-9358-89AE7DDBE87E",
+      "PortFNameLen": "22",
+      "PortFName": "WSL (Hyper-V firewall)",
+      "SwitchNameLen": "36",
+      "SwitchName": "790E58B4-7939-4434-9358-89AE7DDBE87E",
+      "SwitchFNameLen": "22",
+      "SwitchFName": "WSL (Hyper-V firewall)",
+      "Flags": "0",
+      "OwnerService": "1"
+    }
+  },
+  {
+    "record_id": 28066,
+    "time": "2026-10-06T05:54:16.757818Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-Hyper-V-VmSwitch",
+    "event_id": 71,
+    "level": "information",
+    "message": "Delete complete for port 790E58B4-7939-4434-9358-89AE7DDBE87F (Friendly Name: Host Vnic 790E58B4-7939-4434-9358-89AE7DDBE87E).",
+    "data": {
+      "PortNameLen": "36",
+      "PortName": "790E58B4-7939-4434-9358-89AE7DDBE87F",
+      "PortFNameLen": "46",
+      "PortFName": "Host Vnic 790E58B4-7939-4434-9358-89AE7DDBE87E",
+      "SwitchNameLen": "36",
+      "SwitchName": "790E58B4-7939-4434-9358-89AE7DDBE87E",
+      "SwitchFNameLen": "22",
+      "SwitchFName": "WSL (Hyper-V firewall)",
+      "Flags": "0",
+      "OwnerService": "1"
+    }
+  },
+  {
+    "record_id": 28065,
+    "time": "2026-10-06T05:54:16.757673Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-Hyper-V-VmSwitch",
+    "event_id": 69,
+    "level": "information",
+    "message": "Port 790E58B4-7939-4434-9358-89AE7DDBE87F (Friendly Name: Host Vnic 790E58B4-7939-4434-9358-89AE7DDBE87E) successfully deleted - switch 790E58B4-7939-4434-9358-89AE7DDBE87E (Friendly Name: WSL (Hyper-V firewall)).",
+    "data": {
+      "PortNameLen": "36",
+      "PortName": "790E58B4-7939-4434-9358-89AE7DDBE87F",
+      "PortFNameLen": "46",
+      "PortFName": "Host Vnic 790E58B4-7939-4434-9358-89AE7DDBE87E",
+      "SwitchNameLen": "36",
+      "SwitchName": "790E58B4-7939-4434-9358-89AE7DDBE87E",
+      "SwitchFNameLen": "22",
+      "SwitchFName": "WSL (Hyper-V firewall)",
+      "Flags": "0",
+      "OwnerService": "1"
+    }
+  },
+  {
+    "record_id": 28064,
+    "time": "2026-10-06T05:54:16.757581Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-Hyper-V-VmSwitch",
+    "event_id": 234,
+    "level": "information",
+    "message": "NIC 790E58B4-7939-4434-9358-89AE7DDBE87F successfully disconnected from port 790E58B4-7939-4434-9358-89AE7DDBE87F.",
+    "data": {
+      "NicNameLen": "36",
+      "NicName": "790E58B4-7939-4434-9358-89AE7DDBE87F",
+      "PortNameLen": "36",
+      "PortName": "790E58B4-7939-4434-9358-89AE7DDBE87F"
+    }
+  },
+  {
+    "record_id": 28063,
+    "time": "2026-10-06T05:54:16.752773Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-Hyper-V-VmSwitch",
+    "event_id": 69,
+    "level": "information",
+    "message": "Port 790E58B4-7939-4434-9358-89AE7DDBE87E (Friendly Name: WSL (Hyper-V firewall)) successfully deleted - switch 790E58B4-7939-4434-9358-89AE7DDBE87E (Friendly Name: WSL (Hyper-V firewall)).",
+    "data": {
+      "PortNameLen": "36",
+      "PortName": "790E58B4-7939-4434-9358-89AE7DDBE87E",
+      "PortFNameLen": "22",
+      "PortFName": "WSL (Hyper-V firewall)",
+      "SwitchNameLen": "36",
+      "SwitchName": "790E58B4-7939-4434-9358-89AE7DDBE87E",
+      "SwitchFNameLen": "22",
+      "SwitchFName": "WSL (Hyper-V firewall)",
+      "Flags": "0",
+      "OwnerService": "1"
+    }
+  },
+  {
+    "record_id": 28062,
+    "time": "2026-10-06T05:54:16.752755Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-Hyper-V-VmSwitch",
+    "event_id": 234,
+    "level": "information",
+    "message": "NIC 790E58B4-7939-4434-9358-89AE7DDBE87E successfully disconnected from port 790E58B4-7939-4434-9358-89AE7DDBE87E.",
+    "data": {
+      "NicNameLen": "36",
+      "NicName": "790E58B4-7939-4434-9358-89AE7DDBE87E",
+      "PortNameLen": "36",
+      "PortName": "790E58B4-7939-4434-9358-89AE7DDBE87E"
+    }
+  },
+  {
+    "record_id": 21182,
+    "time": "2026-10-06T05:54:16.685865Z",
+    "log": "Application",
+    "provider": "MsiInstaller",
+    "event_id": 1042,
+    "level": "information",
+    "message": "Ending a Windows Installer transaction: C:\\Program Files\\WindowsApps\\Microsoft.GamingServices_38.117.27001.0_x64__8wekyb3d8bbwe\\gameinputredist.msi. Client Process Id: 7496.",
+    "data": {
+      "param1": "C:\\Program Files\\WindowsApps\\Microsoft.GamingServices_38.117.27001.0_x64__8wekyb3d8bbwe\\gameinputredist.msi",
+      "param2": "7496",
+      "param3": "(NULL)",
+      "param4": "(NULL)",
+      "param5": "(NULL)",
+      "param6": "(NULL)"
+    }
+  },
+  {
+    "record_id": 21184,
+    "time": "2026-10-06T05:54:16.681536Z",
+    "log": "Application",
+    "provider": "Microsoft-Windows-RestartManager",
+    "event_id": 10001,
+    "level": "information",
+    "message": "Ending session 0 started ‎2026‎-‎10‎-‎06T05:54:13.949555200Z.",
+    "data": {
+      "RmSessionId": "0",
+      "UTCStartTime": "2026-10-06T05:54:13.9495552Z"
+    }
+  },
+  {
+    "record_id": 21181,
+    "time": "2026-10-06T05:54:16.678593Z",
+    "log": "Application",
+    "provider": "MsiInstaller",
+    "event_id": 1035,
+    "level": "information",
+    "message": "Windows Installer reconfigured the product. Product Name: Microsoft GameInput. Product Version: 3.5.270.0. Product Language: 1033. Manufacturer: Microsoft Corporation. Reconfiguration success or error status: 0.",
+    "data": {
+      "param1": "Microsoft GameInput",
+      "param2": "3.5.270.0",
+      "param3": "1033",
+      "param4": "0",
+      "param5": "Microsoft Corporation",
+      "param6": "(NULL)"
+    }
+  },
+  {
+    "record_id": 21180,
+    "time": "2026-10-06T05:54:16.678325Z",
+    "log": "Application",
+    "provider": "MsiInstaller",
+    "event_id": 11728,
+    "level": "information",
+    "message": "Product: Microsoft GameInput -- Configuration completed successfully.",
+    "data": {
+      "param1": "Product: Microsoft GameInput -- Configuration completed successfully.",
+      "param2": "(NULL)",
+      "param3": "(NULL)",
+      "param4": "(NULL)",
+      "param5": "(NULL)",
+      "param6": "(NULL)"
+    }
+  },
+  {
+    "record_id": 28061,
+    "time": "2026-10-06T05:54:16.630816Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-TPM-WMI",
+    "event_id": 1282,
+    "level": "information",
+    "message": "The TBS device identifier has been generated.",
+    "data": {}
+  },
+  {
+    "record_id": 28060,
+    "time": "2026-10-06T05:54:15.458653Z",
+    "log": "System",
+    "provider": "Service Control Manager",
+    "event_id": 7045,
+    "level": "information",
+    "message": "A service was installed in the system. Service Name: D Service File Name: C:\\Windows\\TEMP\\D.sys Service Type: kernel mode driver Service Start Type: demand start Service Account:",
+    "data": {
+      "ServiceName": "D",
+      "ImagePath": "C:\\Windows\\TEMP\\D.sys",
+      "ServiceType": "kernel mode driver",
+      "StartType": "demand start",
+      "AccountName": ""
+    }
+  },
+  {
+    "record_id": 28059,
+    "time": "2026-10-06T05:54:15.454637Z",
+    "log": "System",
+    "provider": "Win32k",
+    "event_id": 267,
+    "level": "information",
+    "message": "Touch/Touchpad Hardware Quality Assurance verification succeeded.",
+    "data": {
+      "param1": ""
+    }
+  },
+  {
+    "record_id": 28058,
+    "time": "2026-10-06T05:54:15.375020Z",
+    "log": "System",
+    "provider": "VfpExt",
+    "event_id": 7036,
+    "level": "information",
+    "message": "The service entered the Filter detach complete state.",
+    "data": {
+      "param1": "",
+      "param2": "Filter detach complete"
+    }
+  },
+  {
+    "record_id": 28057,
+    "time": "2026-10-06T05:54:15.373440Z",
+    "log": "System",
+    "provider": "VfpExt",
+    "event_id": 7036,
+    "level": "information",
+    "message": "The service entered the Filter detach start state.",
+    "data": {
+      "param1": "",
+      "param2": "Filter detach start"
+    }
+  },
+  {
+    "record_id": 28056,
+    "time": "2026-10-06T05:54:15.373440Z",
+    "log": "System",
+    "provider": "VfpExt",
+    "event_id": 7036,
+    "level": "information",
+    "message": "The service entered the Filter pause complete state.",
+    "data": {
+      "param1": "",
+      "param2": "Filter pause complete"
+    }
+  },
+  {
+    "record_id": 28055,
+    "time": "2026-10-06T05:54:15.373440Z",
+    "log": "System",
+    "provider": "VfpExt",
+    "event_id": 7036,
+    "level": "information",
+    "message": "The service entered the Filter pause start state.",
+    "data": {
+      "param1": "",
+      "param2": "Filter pause start"
+    }
+  },
+  {
+    "record_id": 28054,
+    "time": "2026-10-06T05:54:14.585910Z",
+    "log": "System",
+    "provider": "TPM",
+    "event_id": 18,
+    "level": "information",
+    "message": "This event triggers the Trusted Platform Module (TPM) provisioning/status check to run.",
+    "data": {
+      "driverFile": "0x14",
+      "lineNumber": "217",
+      "Data": "0"
+    }
+  },
+  {
+    "record_id": 28053,
+    "time": "2026-10-06T05:54:14.316070Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-Kernel-General",
+    "event_id": 16,
+    "level": "information",
+    "message": "The access history in hive \\??\\C:\\Windows\\ServiceProfiles\\LocalService\\AppData\\Local\\Packages\\WindowsWorkload.Manager.1_8wekyb3d8bbwe\\Settings\\settings.dat was cleared updating 1 keys and creating 1 modified pages.",
+    "data": {
+      "HiveNameLength": "128",
+      "HiveName": "\\??\\C:\\Windows\\ServiceProfiles\\LocalService\\AppData\\Local\\Packages\\WindowsWorkload.Manager.1_8wekyb3d8bbwe\\Settings\\settings.dat",
+      "KeysUpdated": "1",
+      "DirtyPages": "1"
+    }
+  },
+  {
+    "record_id": 28052,
+    "time": "2026-10-06T05:54:14.242189Z",
+    "log": "System",
+    "provider": "Service Control Manager",
+    "event_id": 7040,
+    "level": "information",
+    "message": "The start type of the IsolationSession service was changed from demand start to auto start.",
+    "data": {
+      "param1": "IsolationSession",
+      "param2": "demand start",
+      "param3": "auto start",
+      "param4": "IsolationSession"
+    }
+  },
+  {
+    "record_id": 21179,
+    "time": "2026-10-06T05:54:13.950163Z",
+    "log": "Application",
+    "provider": "Microsoft-Windows-RestartManager",
+    "event_id": 10000,
+    "level": "information",
+    "message": "Starting session 0 - ‎2026‎-‎10‎-‎06T05:54:13.949555200Z.",
+    "data": {
+      "RmSessionId": "0",
+      "UTCStartTime": "2026-10-06T05:54:13.9495552Z"
+    }
+  },
+  {
+    "record_id": 28051,
+    "time": "2026-10-06T05:54:13.894941Z",
+    "log": "System",
+    "provider": "Netwaw18",
+    "event_id": 6062,
+    "level": "warning",
+    "message": "6062 - Wi-Fi Driver Info",
+    "data": {
+      "param1": ""
+    }
+  },
+  {
+    "record_id": 21178,
+    "time": "2026-10-06T05:54:13.852631Z",
+    "log": "Application",
+    "provider": "Microsoft-Windows-Search",
+    "event_id": 1003,
+    "level": "information",
+    "message": "The Windows Search Service started.",
+    "data": {
+      "ExtraInfo": ""
+    }
+  },
+  {
+    "record_id": 21177,
+    "time": "2026-10-06T05:54:13.847209Z",
+    "log": "Application",
+    "provider": "MsiInstaller",
+    "event_id": 1040,
+    "level": "information",
+    "message": "Beginning a Windows Installer transaction: C:\\Program Files\\WindowsApps\\Microsoft.GamingServices_38.117.27001.0_x64__8wekyb3d8bbwe\\gameinputredist.msi. Client Process Id: 7496.",
+    "data": {
+      "param1": "C:\\Program Files\\WindowsApps\\Microsoft.GamingServices_38.117.27001.0_x64__8wekyb3d8bbwe\\gameinputredist.msi",
+      "param2": "7496",
+      "param3": "(NULL)",
+      "param4": "(NULL)",
+      "param5": "(NULL)",
+      "param6": "(NULL)"
+    }
+  },
+  {
+    "record_id": 28050,
+    "time": "2026-10-06T05:54:13.539933Z",
+    "log": "System",
+    "provider": "Netwaw18",
+    "event_id": 7021,
+    "level": "information",
+    "message": "7021 - Wi-Fi Driver Info",
+    "data": {
+      "param1": ""
+    }
+  },
+  {
+    "record_id": 28049,
+    "time": "2026-10-06T05:54:13.461774Z",
+    "log": "System",
+    "provider": "Netwaw18",
+    "event_id": 7021,
+    "level": "information",
+    "message": "7021 - Wi-Fi Driver Info",
+    "data": {
+      "param1": ""
+    }
+  },
+  {
+    "record_id": 28048,
+    "time": "2026-10-06T05:54:13.387003Z",
+    "log": "System",
+    "provider": "Netwaw18",
+    "event_id": 7021,
+    "level": "information",
+    "message": "7021 - Wi-Fi Driver Info",
+    "data": {
+      "param1": ""
+    }
+  },
+  {
+    "record_id": 28047,
+    "time": "2026-10-06T05:54:12.033172Z",
+    "log": "System",
+    "provider": "Service Control Manager",
+    "event_id": 7045,
+    "level": "information",
+    "message": "A service was installed in the system. Service Name: D Service File Name: C:\\Windows\\TEMP\\D.sys Service Type: kernel mode driver Service Start Type: demand start Service Account:",
+    "data": {
+      "ServiceName": "D",
+      "ImagePath": "C:\\Windows\\TEMP\\D.sys",
+      "ServiceType": "kernel mode driver",
+      "StartType": "demand start",
+      "AccountName": ""
+    }
+  },
+  {
+    "record_id": 28046,
+    "time": "2026-10-06T05:54:11.161403Z",
+    "log": "System",
+    "provider": "AsusPTPDrv",
+    "event_id": 24,
+    "level": "information",
+    "message": "",
+    "data": {
+      "param1": ""
+    }
+  },
+  {
+    "record_id": 28045,
+    "time": "2026-10-06T05:54:10.802456Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-FilterManager",
+    "event_id": 6,
+    "level": "information",
+    "message": "File System Filter 'gameflt' (10.0, ‎2047‎-‎06‎-‎13T01:32:47.000000000Z) has successfully loaded and registered with Filter Manager.",
+    "data": {
+      "FinalStatus": "0x0",
+      "DeviceVersionMajor": "10",
+      "DeviceVersionMinor": "0",
+      "DeviceNameLength": "7",
+      "DeviceName": "gameflt",
+      "DeviceTime": "2047-06-13T01:32:47.0000000Z"
+    }
+  },
+  {
+    "record_id": 28044,
+    "time": "2026-10-06T05:54:10.411095Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-IsolatedUserMode",
+    "event_id": 1,
+    "level": "information",
+    "message": "Secure Trustlet \\??\\C:\\Windows\\System32\\WUDFCompanionHost.exe Id 4096 and Pid 2132 started with status STATUS_SUCCESS.",
+    "data": {
+      "TrustletIdentity": "4096",
+      "NormalProcessId": "2132",
+      "Status": "0",
+      "ImageName": "\\??\\C:\\Windows\\System32\\WUDFCompanionHost.exe"
+    }
+  },
+  {
+    "record_id": 28043,
+    "time": "2026-10-06T05:54:10.410485Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-IsolatedUserMode",
+    "event_id": 5,
+    "level": "information",
+    "message": "Secure Trustlet NULL Id 0 and Pid 0 started with status STATUS_SUCCESS.",
+    "data": {
+      "TrustletIdentity": "0",
+      "NormalProcessId": "0",
+      "Status": "0",
+      "ImageName": "NULL"
+    }
+  },
+  {
+    "record_id": 28042,
+    "time": "2026-10-06T05:54:10.304163Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-IsolatedUserMode",
+    "event_id": 1,
+    "level": "information",
+    "message": "Secure Trustlet \\??\\C:\\Windows\\System32\\WUDFCompanionHost.exe Id 4096 and Pid 13656 started with status STATUS_SUCCESS.",
+    "data": {
+      "TrustletIdentity": "4096",
+      "NormalProcessId": "13656",
+      "Status": "0",
+      "ImageName": "\\??\\C:\\Windows\\System32\\WUDFCompanionHost.exe"
+    }
+  },
+  {
+    "record_id": 28041,
+    "time": "2026-10-06T05:54:10.303610Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-IsolatedUserMode",
+    "event_id": 5,
+    "level": "information",
+    "message": "Secure Trustlet NULL Id 0 and Pid 0 started with status STATUS_SUCCESS.",
+    "data": {
+      "TrustletIdentity": "0",
+      "NormalProcessId": "0",
+      "Status": "0",
+      "ImageName": "NULL"
+    }
+  },
+  {
+    "record_id": 28040,
+    "time": "2026-10-06T05:54:10.058770Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-TPM-WMI",
+    "event_id": 1038,
+    "level": "information",
+    "message": "Pre-attestation health checks confirm that the device is expected to pass attestation. Please see C:\\Windows\\Logs\\MeasuredBoot\\0000000041-0000000000.json for detailed information on what checks were made.",
+    "data": {
+      "Path": "C:\\Windows\\Logs\\MeasuredBoot\\0000000041-0000000000.json"
+    }
+  },
+  {
+    "record_id": 28039,
+    "time": "2026-10-06T05:54:10.056980Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-TPM-WMI",
+    "event_id": 1041,
+    "level": "information",
+    "message": "Pre-attestation health check detailed information: {\"Version\":2,\"HealthStatus\":\"Attestable\",\"Required\":[{\"Field\":\"TpmPresent\",\"Value\":true,\"DesiredValue\":true},{\"Field\":\"TpmMeetsMinimumVersion\",\"Value\":true,\"DesiredValue\":true},{\"Field\":\"TpmIsResponsive\",\"Value\":true,\"DesiredValue\":true},{\"Field\":\"EkCertIsAvailable\",\"Value\":true,\"DesiredValue\":true},{\"Field\":\"TcgLogFound\",\"Value\":true,\"DesiredValue\":true}],\"Expected\":[{\"Field\":\"PcrsMatchTcgLog\",\"Value\":true,\"DesiredValue\":true}],\"Informational\":[{\"Field\":\"SecureBootEnabled\",\"ValueFromComputer\":true,\"ValueFromTcgLog\":true,\"DesiredValue\":true,\"…",
+    "data": {
+      "Json": "{\"Version\":2,\"HealthStatus\":\"Attestable\",\"Required\":[{\"Field\":\"TpmPresent\",\"Value\":true,\"DesiredValue\":true},{\"Field\":\"TpmMeetsMinimumVersion\",\"Value\":true,\"DesiredValue\":true},{\"Field\":\"TpmIsResponsive\",\"Value\":true,\"DesiredValue\":true},{\"Field\":\"EkCertIsAvailable\",\"Value\":true,\"DesiredValue\":true},{\"Field\":\"TcgLogFound\",\"Value\":true,\"DesiredValue\":true}],\"Expected\":[{\"Field\":\"PcrsMatchTcgLog\",\"Value\":true,\"DesiredValue\":true}],\"Informational\":[{\"Field\":\"SecureBootEnabled\",\"ValueFromComputer\":true,\"ValueFromTcgLog\":true,\"DesiredValue\":true,\"TcgValueIsVerifiable\":true},{\"Field\":\"VirtualSecure…"
+    }
+  },
+  {
+    "record_id": 21172,
+    "time": "2026-10-06T05:54:09.813571Z",
+    "log": "Application",
+    "provider": "WMIRegistrationService",
+    "event_id": 2,
+    "level": "information",
+    "message": "Intel(R) WMI Registration Service has successfully finished WMI Registration.",
+    "data": {}
+  },
+  {
+    "record_id": 21176,
+    "time": "2026-10-06T05:54:09.784186Z",
+    "log": "Application",
+    "provider": "Microsoft-Windows-WMI",
+    "event_id": 63,
+    "level": "warning",
+    "message": "A provider, IntelMEProv, has been registered in the Windows Management Instrumentation namespace root\\Intel_ME to use the LocalSystem account. This account is privileged and the provider may cause a security violation if it does not correctly impersonate user requests.",
+    "data": {
+      "Provider": "IntelMEProv",
+      "Namespace": "root\\Intel_ME"
+    }
+  },
+  {
+    "record_id": 21175,
+    "time": "2026-10-06T05:54:09.772004Z",
+    "log": "Application",
+    "provider": "Microsoft-Windows-WMI",
+    "event_id": 63,
+    "level": "warning",
+    "message": "A provider, IntelMEProv, has been registered in the Windows Management Instrumentation namespace root\\Intel_ME to use the LocalSystem account. This account is privileged and the provider may cause a security violation if it does not correctly impersonate user requests.",
+    "data": {
+      "Provider": "IntelMEProv",
+      "Namespace": "root\\Intel_ME"
+    }
+  },
+  {
+    "record_id": 21174,
+    "time": "2026-10-06T05:54:09.755117Z",
+    "log": "Application",
+    "provider": "Microsoft-Windows-WMI",
+    "event_id": 63,
+    "level": "warning",
+    "message": "A provider, IntelMEProv, has been registered in the Windows Management Instrumentation namespace root\\Intel_ME to use the LocalSystem account. This account is privileged and the provider may cause a security violation if it does not correctly impersonate user requests.",
+    "data": {
+      "Provider": "IntelMEProv",
+      "Namespace": "root\\Intel_ME"
+    }
+  },
+  {
+    "record_id": 21171,
+    "time": "2026-10-06T05:54:09.753873Z",
+    "log": "Application",
+    "provider": "Intel Graphics Software Service",
+    "event_id": 0,
+    "level": "information",
+    "message": "Service started successfully.",
+    "data": {
+      "param1": "Service started successfully."
+    }
+  },
+  {
+    "record_id": 21170,
+    "time": "2026-10-06T05:54:09.300693Z",
+    "log": "Application",
+    "provider": "Razer Game Manager Service 3",
+    "event_id": 0,
+    "level": "information",
+    "message": "Service started successfully.",
+    "data": {
+      "param1": "Service started successfully."
+    }
+  },
+  {
+    "record_id": 21173,
+    "time": "2026-10-06T05:54:09.161650Z",
+    "log": "Application",
+    "provider": "Microsoft-Windows-WMI",
+    "event_id": 5617,
+    "level": "information",
+    "message": "Windows Management Instrumentation Service subsystems initialized successfully",
+    "data": {}
+  },
+  {
+    "record_id": 28038,
+    "time": "2026-10-06T05:54:08.979319Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-WLAN-AutoConfig",
+    "event_id": 10001,
+    "level": "information",
+    "message": "WLAN Extensibility Module has successfully started. Module Path: C:\\Windows\\System32\\DriverStore\\FileRepository\\netwtw6e.inf_amd64_bd0a3abded73be0b\\IntelIHVRouter18.dll",
+    "data": {
+      "ExtensibleModulePath": "C:\\Windows\\System32\\DriverStore\\FileRepository\\netwtw6e.inf_amd64_bd0a3abded73be0b\\IntelIHVRouter18.dll"
+    }
+  },
+  {
+    "record_id": 21169,
+    "time": "2026-10-06T05:54:08.969886Z",
+    "log": "Application",
+    "provider": "CoworkVMService",
+    "event_id": 1,
+    "level": "information",
+    "message": "Claude VM Service starting. Detailed logs: C:\\ProgramData\\Claude\\Logs\\cowork-service.log",
+    "data": {
+      "param1": "Claude VM Service starting. Detailed logs: C:\\ProgramData\\Claude\\Logs\\cowork-service.log"
+    }
+  },
+  {
+    "record_id": 28037,
+    "time": "2026-10-06T05:54:08.877361Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-WLAN-AutoConfig",
+    "event_id": 4000,
+    "level": "information",
+    "message": "WLAN AutoConfig service has successfully started.",
+    "data": {}
+  },
+  {
+    "record_id": 21167,
+    "time": "2026-10-06T05:54:08.838080Z",
+    "log": "Application",
+    "provider": "Razer Central Service",
+    "event_id": 0,
+    "level": "information",
+    "message": "Service started successfully.",
+    "data": {
+      "param1": "Service started successfully."
+    }
+  },
+  {
+    "record_id": 28036,
+    "time": "2026-10-06T05:54:08.827216Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-IsolatedUserMode",
+    "event_id": 1,
+    "level": "information",
+    "message": "Secure Trustlet \\??\\C:\\Windows\\system32\\BioIso.exe Id 4 and Pid 11248 started with status STATUS_SUCCESS.",
+    "data": {
+      "TrustletIdentity": "4",
+      "NormalProcessId": "11248",
+      "Status": "0",
+      "ImageName": "\\??\\C:\\Windows\\system32\\BioIso.exe"
+    }
+  },
+  {
+    "record_id": 28035,
+    "time": "2026-10-06T05:54:08.825608Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-IsolatedUserMode",
+    "event_id": 5,
+    "level": "information",
+    "message": "Secure Trustlet NULL Id 0 and Pid 0 started with status STATUS_SUCCESS.",
+    "data": {
+      "TrustletIdentity": "0",
+      "NormalProcessId": "0",
+      "Status": "0",
+      "ImageName": "NULL"
+    }
+  },
+  {
+    "record_id": 28034,
+    "time": "2026-10-06T05:54:08.774181Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-IsolatedUserMode",
+    "event_id": 5,
+    "level": "information",
+    "message": "Secure Trustlet NULL Id 0 and Pid 0 started with status STATUS_SUCCESS.",
+    "data": {
+      "TrustletIdentity": "0",
+      "NormalProcessId": "0",
+      "Status": "0",
+      "ImageName": "NULL"
+    }
+  },
+  {
+    "record_id": 21166,
+    "time": "2026-10-06T05:54:08.645577Z",
+    "log": "Application",
+    "provider": "IgoAudioService",
+    "event_id": 0,
+    "level": "information",
+    "message": "Service started successfully.",
+    "data": {
+      "param1": "Service started successfully."
+    }
+  },
+  {
+    "record_id": 28033,
+    "time": "2026-10-06T05:54:08.638299Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-Kernel-General",
+    "event_id": 16,
+    "level": "information",
+    "message": "The access history in hive \\??\\C:\\ProgramData\\Microsoft\\Windows\\WindowsApps\\AppUp.IntelArcSoftware_26.32.2604.0_x64__8j3eq9eme6ctt\\Cache\\53bb1f9af67d9f91_COM15.dat was cleared updating 1 keys and creating 1 modified pages.",
+    "data": {
+      "HiveNameLength": "136",
+      "HiveName": "\\??\\C:\\ProgramData\\Microsoft\\Windows\\WindowsApps\\AppUp.IntelArcSoftware_26.32.2604.0_x64__8j3eq9eme6ctt\\Cache\\53bb1f9af67d9f91_COM15.dat",
+      "KeysUpdated": "1",
+      "DirtyPages": "1"
+    }
+  },
+  {
+    "record_id": 21165,
+    "time": "2026-10-06T05:54:08.600413Z",
+    "log": "Application",
+    "provider": "Razer Chroma SDK Service",
+    "event_id": 0,
+    "level": "information",
+    "message": "Service has started",
+    "data": {
+      "param1": "Service has started",
+      "param2": "Razer Chroma SDK Service"
+    }
+  },
+  {
+    "record_id": 21164,
+    "time": "2026-10-06T05:54:08.524803Z",
+    "log": "Application",
+    "provider": "LightingService",
+    "event_id": 0,
+    "level": "information",
+    "message": "Service started/resumed",
+    "data": {
+      "param1": "Service started/resumed"
+    }
+  },
+  {
+    "record_id": 21163,
+    "time": "2026-10-06T05:54:08.455595Z",
+    "log": "Application",
+    "provider": "Razer Chroma SDK Server",
+    "event_id": 0,
+    "level": "information",
+    "message": "Service has started",
+    "data": {
+      "param1": "Service has started",
+      "param2": "Razer Chroma SDK Server"
+    }
+  },
+  {
+    "record_id": 28032,
+    "time": "2026-10-06T05:54:08.452902Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-HttpService",
+    "event_id": 113,
+    "level": "information",
+    "message": "Attempted to add URL (http://localhost:54235/) to URL group (0xFE00000320000001). Status: 0x0. Process Id 0x1AB4 Executable path \\Device\\HarddiskVolume3\\Program Files (x86)\\Razer Chroma SDK\\bin\\RzSDKServer.exe, User S-1-5-18",
+    "data": {
+      "UrlGroupId": "18302628899055468545",
+      "Url": "http://localhost:54235/",
+      "Status": "0",
+      "ProcessId": "6836",
+      "ExecutablePath": "\\Device\\HarddiskVolume3\\Program Files (x86)\\Razer Chroma SDK\\bin\\RzSDKServer.exe",
+      "UserSid": "S-1-5-18"
+    }
+  },
+  {
+    "record_id": 28031,
+    "time": "2026-10-06T05:54:08.436425Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-HttpService",
+    "event_id": 111,
+    "level": "information",
+    "message": "Create URL group 0xFE00000320000001. Status 0x0. Process Id 0x1AB4 Executable path \\Device\\HarddiskVolume3\\Program Files (x86)\\Razer Chroma SDK\\bin\\RzSDKServer.exe, User S-1-5-18",
+    "data": {
+      "UrlGroupId": "18302628899055468545",
+      "Status": "0",
+      "ProcessId": "6836",
+      "ExecutablePath": "\\Device\\HarddiskVolume3\\Program Files (x86)\\Razer Chroma SDK\\bin\\RzSDKServer.exe",
+      "UserSid": "S-1-5-18"
+    }
+  },
+  {
+    "record_id": 28030,
+    "time": "2026-10-06T05:54:08.436410Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-HttpService",
+    "event_id": 113,
+    "level": "information",
+    "message": "Attempted to add URL (http://127.0.0.1:27339:127.0.0.1/AuraSDK/) to URL group (0xFE00000120000001). Status: 0x0. Process Id 0x18C0 Executable path \\Device\\HarddiskVolume3\\Program Files (x86)\\ASUS\\GameSDK Service\\GameSDK.exe, User S-1-5-18",
+    "data": {
+      "UrlGroupId": "18302628890465533953",
+      "Url": "http://127.0.0.1:27339:127.0.0.1/AuraSDK/",
+      "Status": "0",
+      "ProcessId": "6336",
+      "ExecutablePath": "\\Device\\HarddiskVolume3\\Program Files (x86)\\ASUS\\GameSDK Service\\GameSDK.exe",
+      "UserSid": "S-1-5-18"
+    }
+  },
+  {
+    "record_id": 28029,
+    "time": "2026-10-06T05:54:08.430108Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-HttpService",
+    "event_id": 111,
+    "level": "information",
+    "message": "Create URL group 0xFE00000120000001. Status 0x0. Process Id 0x18C0 Executable path \\Device\\HarddiskVolume3\\Program Files (x86)\\ASUS\\GameSDK Service\\GameSDK.exe, User S-1-5-18",
+    "data": {
+      "UrlGroupId": "18302628890465533953",
+      "Status": "0",
+      "ProcessId": "6336",
+      "ExecutablePath": "\\Device\\HarddiskVolume3\\Program Files (x86)\\ASUS\\GameSDK Service\\GameSDK.exe",
+      "UserSid": "S-1-5-18"
+    }
+  },
+  {
+    "record_id": 21162,
+    "time": "2026-10-06T05:54:08.360941Z",
+    "log": "Application",
+    "provider": "GameSDK Service",
+    "event_id": 0,
+    "level": "information",
+    "message": "GameSDK Service GameSDK Service in OnStart",
+    "data": {
+      "param1": "GameSDK Service",
+      "param2": "GameSDK Service in OnStart"
+    }
+  },
+  {
+    "record_id": 21161,
+    "time": "2026-10-06T05:54:08.313814Z",
+    "log": "Application",
+    "provider": "WMIRegistrationService",
+    "event_id": 0,
+    "level": "information",
+    "message": "Intel(R) WMI Registration Service started.",
+    "data": {}
+  },
+  {
+    "record_id": 21160,
+    "time": "2026-10-06T05:54:08.313727Z",
+    "log": "Application",
+    "provider": "IntelTraceAgentService",
+    "event_id": 257,
+    "level": "information",
+    "message": "system active",
+    "data": {
+      "param1": "system active"
+    }
+  },
+  {
+    "record_id": 21159,
+    "time": "2026-10-06T05:54:08.310294Z",
+    "log": "Application",
+    "provider": "IntelTraceAgentService",
+    "event_id": 257,
+    "level": "information",
+    "message": "service started",
+    "data": {
+      "param1": "service started"
+    }
+  },
+  {
+    "record_id": 21158,
+    "time": "2026-10-06T05:54:08.239154Z",
+    "log": "Application",
+    "provider": "Razer Chroma SDK Diagnostic Service",
+    "event_id": 0,
+    "level": "information",
+    "message": "Service has started",
+    "data": {
+      "param1": "Service has started",
+      "param2": "Razer Chroma SDK Diagnostic Service"
+    }
+  },
+  {
+    "record_id": 28028,
+    "time": "2026-10-06T05:54:08.146331Z",
+    "log": "System",
+    "provider": "Service Control Manager",
+    "event_id": 7000,
+    "level": "error",
+    "message": "The ASUSDialService service failed to start due to the following error: The service did not respond to the start or control request in a timely fashion.",
+    "data": {
+      "param1": "ASUSDialService",
+      "param2": "%%1053"
+    }
+  },
+  {
+    "record_id": 28027,
+    "time": "2026-10-06T05:54:08.146331Z",
+    "log": "System",
+    "provider": "Service Control Manager",
+    "event_id": 7009,
+    "level": "error",
+    "message": "A timeout was reached (45000 milliseconds) while waiting for the ASUSDialService service to connect.",
+    "data": {
+      "param1": "45000",
+      "param2": "ASUSDialService"
+    }
+  },
+  {
+    "record_id": 21157,
+    "time": "2026-10-06T05:54:08.122559Z",
+    "log": "Application",
+    "provider": "AsusAppService",
+    "event_id": 0,
+    "level": "information",
+    "message": "AsusAppService Service in OnStart",
+    "data": {
+      "param1": "AsusAppService",
+      "param2": "Service in OnStart"
+    }
+  },
+  {
+    "record_id": 28026,
+    "time": "2026-10-06T05:54:08.049357Z",
+    "log": "System",
+    "provider": "Win32k",
+    "event_id": 267,
+    "level": "information",
+    "message": "Touch/Touchpad Hardware Quality Assurance verification succeeded.",
+    "data": {
+      "param1": ""
+    }
+  },
+  {
+    "record_id": 28025,
+    "time": "2026-10-06T05:54:08.033585Z",
+    "log": "System",
+    "provider": "Win32k",
+    "event_id": 267,
+    "level": "information",
+    "message": "Touch/Touchpad Hardware Quality Assurance verification succeeded.",
+    "data": {
+      "param1": ""
+    }
+  },
+  {
+    "record_id": 28024,
+    "time": "2026-10-06T05:54:08.002105Z",
+    "log": "System",
+    "provider": "Win32k",
+    "event_id": 267,
+    "level": "information",
+    "message": "Touch/Touchpad Hardware Quality Assurance verification succeeded.",
+    "data": {
+      "param1": ""
+    }
+  },
+  {
+    "record_id": 28023,
+    "time": "2026-10-06T05:54:07.975445Z",
+    "log": "System",
+    "provider": "Win32k",
+    "event_id": 267,
+    "level": "information",
+    "message": "Touch/Touchpad Hardware Quality Assurance verification succeeded.",
+    "data": {
+      "param1": ""
+    }
+  },
+  {
+    "record_id": 28022,
+    "time": "2026-10-06T05:54:07.913628Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-IsolatedUserMode",
+    "event_id": 1,
+    "level": "information",
+    "message": "Secure Trustlet \\??\\C:\\Windows\\System32\\NgcIso.exe Id 6 and Pid 6040 started with status STATUS_SUCCESS.",
+    "data": {
+      "TrustletIdentity": "6",
+      "NormalProcessId": "6040",
+      "Status": "0",
+      "ImageName": "\\??\\C:\\Windows\\System32\\NgcIso.exe"
+    }
+  },
+  {
+    "record_id": 28021,
+    "time": "2026-10-06T05:54:07.912785Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-IsolatedUserMode",
+    "event_id": 5,
+    "level": "information",
+    "message": "Secure Trustlet NULL Id 0 and Pid 0 started with status STATUS_SUCCESS.",
+    "data": {
+      "TrustletIdentity": "0",
+      "NormalProcessId": "0",
+      "Status": "0",
+      "ImageName": "NULL"
+    }
+  },
+  {
+    "record_id": 21168,
+    "time": "2026-10-06T05:54:07.885861Z",
+    "log": "Application",
+    "provider": "Microsoft-Windows-WMI",
+    "event_id": 5615,
+    "level": "information",
+    "message": "Windows Management Instrumentation Service started sucessfully",
+    "data": {}
+  },
+  {
+    "record_id": 28020,
+    "time": "2026-10-06T05:54:07.813174Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-HttpService",
+    "event_id": 112,
+    "level": "information",
+    "message": "Attempted to reserve URL http://+:10246/MDEServer/. Status 0x0. Process Id 0x4 Executable path , User S-1-5-18",
+    "data": {
+      "Url": "http://+:10246/MDEServer/",
+      "ReserveStatus": "0",
+      "ProcessId": "4",
+      "ExecutablePath": "",
+      "UserSid": "S-1-5-18"
+    }
+  },
+  {
+    "record_id": 28019,
+    "time": "2026-10-06T05:54:07.813171Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-HttpService",
+    "event_id": 112,
+    "level": "information",
+    "message": "Attempted to reserve URL http://+:10247/apps/. Status 0x0. Process Id 0x4 Executable path , User S-1-5-18",
+    "data": {
+      "Url": "http://+:10247/apps/",
+      "ReserveStatus": "0",
+      "ProcessId": "4",
+      "ExecutablePath": "",
+      "UserSid": "S-1-5-18"
+    }
+  },
+  {
+    "record_id": 28018,
+    "time": "2026-10-06T05:54:07.813167Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-HttpService",
+    "event_id": 112,
+    "level": "information",
+    "message": "Attempted to reserve URL https://+:443/sra_{BA195980-CD49-458b-9E23-C84EE0ADCD75}/. Status 0x0. Process Id 0x4 Executable path , User S-1-5-18",
+    "data": {
+      "Url": "https://+:443/sra_{BA195980-CD49-458b-9E23-C84EE0ADCD75}/",
+      "ReserveStatus": "0",
+      "ProcessId": "4",
+      "ExecutablePath": "",
+      "UserSid": "S-1-5-18"
+    }
+  },
+  {
+    "record_id": 28017,
+    "time": "2026-10-06T05:54:07.813160Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-HttpService",
+    "event_id": 112,
+    "level": "information",
+    "message": "Attempted to reserve URL https://+:3392/rdp/. Status 0x0. Process Id 0x4 Executable path , User S-1-5-18",
+    "data": {
+      "Url": "https://+:3392/rdp/",
+      "ReserveStatus": "0",
+      "ProcessId": "4",
+      "ExecutablePath": "",
+      "UserSid": "S-1-5-18"
+    }
+  },
+  {
+    "record_id": 28016,
+    "time": "2026-10-06T05:54:07.813156Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-HttpService",
+    "event_id": 112,
+    "level": "information",
+    "message": "Attempted to reserve URL http://+:10243/WMPNSSv4/. Status 0x0. Process Id 0x4 Executable path , User S-1-5-18",
+    "data": {
+      "Url": "http://+:10243/WMPNSSv4/",
+      "ReserveStatus": "0",
+      "ProcessId": "4",
+      "ExecutablePath": "",
+      "UserSid": "S-1-5-18"
+    }
+  },
+  {
+    "record_id": 28015,
+    "time": "2026-10-06T05:54:07.813147Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-HttpService",
+    "event_id": 112,
+    "level": "information",
+    "message": "Attempted to reserve URL https://+:10245/WMPNSSv4/. Status 0x0. Process Id 0x4 Executable path , User S-1-5-18",
+    "data": {
+      "Url": "https://+:10245/WMPNSSv4/",
+      "ReserveStatus": "0",
+      "ProcessId": "4",
+      "ExecutablePath": "",
+      "UserSid": "S-1-5-18"
+    }
+  },
+  {
+    "record_id": 28014,
+    "time": "2026-10-06T05:54:07.813143Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-HttpService",
+    "event_id": 112,
+    "level": "information",
+    "message": "Attempted to reserve URL http://+:5985/wsman/. Status 0x0. Process Id 0x4 Executable path , User S-1-5-18",
+    "data": {
+      "Url": "http://+:5985/wsman/",
+      "ReserveStatus": "0",
+      "ProcessId": "4",
+      "ExecutablePath": "",
+      "UserSid": "S-1-5-18"
+    }
+  },
+  {
+    "record_id": 28013,
+    "time": "2026-10-06T05:54:07.813139Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-HttpService",
+    "event_id": 112,
+    "level": "information",
+    "message": "Attempted to reserve URL http://+:47001/wsman/. Status 0x0. Process Id 0x4 Executable path , User S-1-5-18",
+    "data": {
+      "Url": "http://+:47001/wsman/",
+      "ReserveStatus": "0",
+      "ProcessId": "4",
+      "ExecutablePath": "",
+      "UserSid": "S-1-5-18"
+    }
+  },
+  {
+    "record_id": 28012,
+    "time": "2026-10-06T05:54:07.813135Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-HttpService",
+    "event_id": 112,
+    "level": "information",
+    "message": "Attempted to reserve URL https://+:5986/wsman/. Status 0x0. Process Id 0x4 Executable path , User S-1-5-18",
+    "data": {
+      "Url": "https://+:5986/wsman/",
+      "ReserveStatus": "0",
+      "ProcessId": "4",
+      "ExecutablePath": "",
+      "UserSid": "S-1-5-18"
+    }
+  },
+  {
+    "record_id": 28011,
+    "time": "2026-10-06T05:54:07.813129Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-HttpService",
+    "event_id": 112,
+    "level": "information",
+    "message": "Attempted to reserve URL http://*:2869/. Status 0x0. Process Id 0x4 Executable path , User S-1-5-18",
+    "data": {
+      "Url": "http://*:2869/",
+      "ReserveStatus": "0",
+      "ProcessId": "4",
+      "ExecutablePath": "",
+      "UserSid": "S-1-5-18"
+    }
+  },
+  {
+    "record_id": 28010,
+    "time": "2026-10-06T05:54:07.813125Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-HttpService",
+    "event_id": 112,
+    "level": "information",
+    "message": "Attempted to reserve URL https://*:5358/. Status 0x0. Process Id 0x4 Executable path , User S-1-5-18",
+    "data": {
+      "Url": "https://*:5358/",
+      "ReserveStatus": "0",
+      "ProcessId": "4",
+      "ExecutablePath": "",
+      "UserSid": "S-1-5-18"
+    }
+  },
+  {
+    "record_id": 28009,
+    "time": "2026-10-06T05:54:07.813116Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-HttpService",
+    "event_id": 112,
+    "level": "information",
+    "message": "Attempted to reserve URL http://+:80/Temporary_Listen_Addresses/. Status 0x0. Process Id 0x4 Executable path , User S-1-5-18",
+    "data": {
+      "Url": "http://+:80/Temporary_Listen_Addresses/",
+      "ReserveStatus": "0",
+      "ProcessId": "4",
+      "ExecutablePath": "",
+      "UserSid": "S-1-5-18"
+    }
+  },
+  {
+    "record_id": 28008,
+    "time": "2026-10-06T05:54:07.813109Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-HttpService",
+    "event_id": 112,
+    "level": "information",
+    "message": "Attempted to reserve URL http://*:5357/. Status 0x0. Process Id 0x4 Executable path , User S-1-5-18",
+    "data": {
+      "Url": "http://*:5357/",
+      "ReserveStatus": "0",
+      "ProcessId": "4",
+      "ExecutablePath": "",
+      "UserSid": "S-1-5-18"
+    }
+  },
+  {
+    "record_id": 27860,
+    "time": "2026-10-06T05:54:07.390066Z",
+    "log": "System",
+    "provider": "EventLog",
+    "event_id": 6013,
+    "level": "information",
+    "message": "The system uptime is 34 seconds.",
+    "data": {
+      "param1": "",
+      "param2": "",
+      "param3": "",
+      "param4": "",
+      "param5": "34",
+      "param6": "60",
+      "param7": "420 Mountain Standard Time"
+    }
+  },
+  {
+    "record_id": 27859,
+    "time": "2026-10-06T05:54:07.389978Z",
+    "log": "System",
+    "provider": "EventLog",
+    "event_id": 6005,
+    "level": "information",
+    "message": "The Event log service was started.",
+    "data": {}
+  },
+  {
+    "record_id": 27858,
+    "time": "2026-10-06T05:54:07.389916Z",
+    "log": "System",
+    "provider": "EventLog",
+    "event_id": 6009,
+    "level": "information",
+    "message": "Microsoft (R) Windows (R) 10.00. 26200 Multiprocessor Free.",
+    "data": {
+      "param1": "10.00.",
+      "param2": "26200",
+      "param3": "",
+      "param4": "Multiprocessor Free",
+      "param5": "0"
+    }
+  },
+  {
+    "record_id": 27854,
+    "time": "2026-10-06T05:54:07.389479Z",
+    "log": "System",
+    "provider": "EventLog",
+    "event_id": 6008,
+    "level": "error",
+    "message": "The previous system shutdown at 11:52:46 PM on ‎10/‎5/‎2026 was unexpected.",
+    "data": {
+      "param1": "11:52:46 PM",
+      "param2": "‎10/‎5/‎2026",
+      "param3": "",
+      "param4": "",
+      "param5": "1281895",
+      "param6": "",
+      "param7": ""
+    }
+  },
+  {
+    "record_id": 28007,
+    "time": "2026-10-06T05:54:07.294081Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-FilterManager",
+    "event_id": 6,
+    "level": "information",
+    "message": "File System Filter 'bindflt' (10.0, ‎2011‎-‎07‎-‎23T09:20:48.000000000Z) has successfully loaded and registered with Filter Manager.",
+    "data": {
+      "FinalStatus": "0x0",
+      "DeviceVersionMajor": "10",
+      "DeviceVersionMinor": "0",
+      "DeviceNameLength": "7",
+      "DeviceName": "bindflt",
+      "DeviceTime": "2011-07-23T09:20:48.0000000Z"
+    }
+  },
+  {
+    "record_id": 28006,
+    "time": "2026-10-06T05:54:07.275541Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-FilterManager",
+    "event_id": 6,
+    "level": "information",
+    "message": "File System Filter 'storqosflt' (10.0, ‎1989‎-‎03‎-‎28T05:25:35.000000000Z) has successfully loaded and registered with Filter Manager.",
+    "data": {
+      "FinalStatus": "0x0",
+      "DeviceVersionMajor": "10",
+      "DeviceVersionMinor": "0",
+      "DeviceNameLength": "10",
+      "DeviceName": "storqosflt",
+      "DeviceTime": "1989-03-28T05:25:35.0000000Z"
+    }
+  },
+  {
+    "record_id": 28005,
+    "time": "2026-10-06T05:54:07.245578Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-FilterManager",
+    "event_id": 6,
+    "level": "information",
+    "message": "File System Filter 'UnionFS' (10.0, ‎2053‎-‎03‎-‎31T10:44:17.000000000Z) has successfully loaded and registered with Filter Manager.",
+    "data": {
+      "FinalStatus": "0x0",
+      "DeviceVersionMajor": "10",
+      "DeviceVersionMinor": "0",
+      "DeviceNameLength": "7",
+      "DeviceName": "UnionFS",
+      "DeviceTime": "2053-03-31T10:44:17.0000000Z"
+    }
+  },
+  {
+    "record_id": 28004,
+    "time": "2026-10-06T05:54:07.206879Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-FilterManager",
+    "event_id": 6,
+    "level": "information",
+    "message": "File System Filter 'CldFlt' (10.0, ‎2079‎-‎01‎-‎29T21:04:50.000000000Z) has successfully loaded and registered with Filter Manager.",
+    "data": {
+      "FinalStatus": "0x0",
+      "DeviceVersionMajor": "10",
+      "DeviceVersionMinor": "0",
+      "DeviceNameLength": "6",
+      "DeviceName": "CldFlt",
+      "DeviceTime": "2079-01-29T21:04:50.0000000Z"
+    }
+  },
+  {
+    "record_id": 28003,
+    "time": "2026-10-06T05:54:07.206754Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-FilterManager",
+    "event_id": 1,
+    "level": "information",
+    "message": "File System Filter 'CldFlt' (Version 10.0, ‎2079‎-‎01‎-‎29T21:04:50.000000000Z) unloaded successfully.",
+    "data": {
+      "FinalStatus": "0x0",
+      "DeviceVersionMajor": "10",
+      "DeviceVersionMinor": "0",
+      "DeviceNameLength": "6",
+      "DeviceName": "CldFlt",
+      "DeviceTime": "2079-01-29T21:04:50.0000000Z"
+    }
+  },
+  {
+    "record_id": 28002,
+    "time": "2026-10-06T05:54:07.206745Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-FilterManager",
+    "event_id": 6,
+    "level": "information",
+    "message": "File System Filter 'CldFlt' (10.0, ‎2079‎-‎01‎-‎29T21:04:50.000000000Z) has successfully loaded and registered with Filter Manager.",
+    "data": {
+      "FinalStatus": "0x0",
+      "DeviceVersionMajor": "10",
+      "DeviceVersionMinor": "0",
+      "DeviceNameLength": "6",
+      "DeviceName": "CldFlt",
+      "DeviceTime": "2079-01-29T21:04:50.0000000Z"
+    }
+  },
+  {
+    "record_id": 28001,
+    "time": "2026-10-06T05:54:07.146802Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-FilterManager",
+    "event_id": 6,
+    "level": "information",
+    "message": "File System Filter 'wcifs' (10.0, ‎2036‎-‎03‎-‎13T18:07:44.000000000Z) has successfully loaded and registered with Filter Manager.",
+    "data": {
+      "FinalStatus": "0x0",
+      "DeviceVersionMajor": "10",
+      "DeviceVersionMinor": "0",
+      "DeviceNameLength": "5",
+      "DeviceName": "wcifs",
+      "DeviceTime": "2036-03-13T18:07:44.0000000Z"
+    }
+  },
+  {
+    "record_id": 28000,
+    "time": "2026-10-06T05:54:07.129920Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-FilterManager",
+    "event_id": 6,
+    "level": "information",
+    "message": "File System Filter 'luafv' (10.0, ‎2057‎-‎12‎-‎24T15:49:34.000000000Z) has successfully loaded and registered with Filter Manager.",
+    "data": {
+      "FinalStatus": "0x0",
+      "DeviceVersionMajor": "10",
+      "DeviceVersionMinor": "0",
+      "DeviceNameLength": "5",
+      "DeviceName": "luafv",
+      "DeviceTime": "2057-12-24T15:49:34.0000000Z"
+    }
+  },
+  {
+    "record_id": 27999,
+    "time": "2026-10-06T05:54:07.085477Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-FilterManager",
+    "event_id": 6,
+    "level": "information",
+    "message": "File System Filter 'bfs' (10.0, ‎2040‎-‎12‎-‎25T02:51:46.000000000Z) has successfully loaded and registered with Filter Manager.",
+    "data": {
+      "FinalStatus": "0x0",
+      "DeviceVersionMajor": "10",
+      "DeviceVersionMinor": "0",
+      "DeviceNameLength": "3",
+      "DeviceName": "bfs",
+      "DeviceTime": "2040-12-25T02:51:46.0000000Z"
+    }
+  },
+  {
+    "record_id": 27998,
+    "time": "2026-10-06T05:54:07.033137Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-IsolatedUserMode",
+    "event_id": 1,
+    "level": "information",
+    "message": "Secure Trustlet \\??\\C:\\Windows\\System32\\WUDFCompanionHost.exe Id 4096 and Pid 3508 started with status STATUS_SUCCESS.",
+    "data": {
+      "TrustletIdentity": "4096",
+      "NormalProcessId": "3508",
+      "Status": "0",
+      "ImageName": "\\??\\C:\\Windows\\System32\\WUDFCompanionHost.exe"
+    }
+  },
+  {
+    "record_id": 27997,
+    "time": "2026-10-06T05:54:07.032606Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-IsolatedUserMode",
+    "event_id": 5,
+    "level": "information",
+    "message": "Secure Trustlet NULL Id 0 and Pid 0 started with status STATUS_SUCCESS.",
+    "data": {
+      "TrustletIdentity": "0",
+      "NormalProcessId": "0",
+      "Status": "0",
+      "ImageName": "NULL"
+    }
+  },
+  {
+    "record_id": 27996,
+    "time": "2026-10-06T05:54:07.006554Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-WER-SystemErrorReporting",
+    "event_id": 1001,
+    "level": "error",
+    "message": "The computer has rebooted from a bugcheck. The bugcheck was: 0x0000009f (0x0000000000000004, 0x0000000000000258, 0xffffc2887a2632c0, 0xffffe482c413f870). A dump was saved in: C:\\Windows\\Minidump\\100526-34703-01.dmp. Report Id: 7a50b9d0-f051-44f7-a92e-011f7cdc6a6e.",
+    "data": {
+      "param1": "0x0000009f (0x0000000000000004, 0x0000000000000258, 0xffffc2887a2632c0, 0xffffe482c413f870)",
+      "param2": "C:\\Windows\\Minidump\\100526-34703-01.dmp",
+      "param3": "7a50b9d0-f051-44f7-a92e-011f7cdc6a6e"
+    }
+  },
+  {
+    "record_id": 21156,
+    "time": "2026-10-06T05:54:06.977957Z",
+    "log": "Application",
+    "provider": "Microsoft-Windows-User Profiles Service",
+    "event_id": 1531,
+    "level": "information",
+    "message": "The User Profile Service has started successfully.",
+    "data": {}
+  },
+  {
+    "record_id": 27995,
+    "time": "2026-10-06T05:54:06.975066Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-DHCPv6-Client",
+    "event_id": 51046,
+    "level": "information",
+    "message": "DHCPv6 client service is started",
+    "data": {}
+  },
+  {
+    "record_id": 27994,
+    "time": "2026-10-06T05:54:06.968770Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-Dhcp-Client",
+    "event_id": 50036,
+    "level": "information",
+    "message": "DHCPv4 client service is started",
+    "data": {}
+  },
+  {
+    "record_id": 27993,
+    "time": "2026-10-06T05:54:06.968600Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-Dhcp-Client",
+    "event_id": 50103,
+    "level": "information",
+    "message": "DHCPv4 client registered for shutdown notification",
+    "data": {}
+  },
+  {
+    "record_id": 27992,
+    "time": "2026-10-06T05:54:06.968464Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-Dhcp-Client",
+    "event_id": 50036,
+    "level": "information",
+    "message": "DHCPv4 client service is started",
+    "data": {}
+  },
+  {
+    "record_id": 27991,
+    "time": "2026-10-06T05:54:06.941127Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-Kernel-General",
+    "event_id": 16,
+    "level": "information",
+    "message": "The access history in hive \\SystemRoot\\System32\\Config\\BBI was cleared updating 382 keys and creating 107 modified pages.",
+    "data": {
+      "HiveNameLength": "31",
+      "HiveName": "\\SystemRoot\\System32\\Config\\BBI",
+      "KeysUpdated": "382",
+      "DirtyPages": "107"
+    }
+  },
+  {
+    "record_id": 27990,
+    "time": "2026-10-06T05:54:06.833041Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-Kernel-General",
+    "event_id": 16,
+    "level": "information",
+    "message": "The access history in hive \\??\\C:\\Windows\\ServiceProfiles\\NetworkService\\NTUSER.DAT was cleared updating 233 keys and creating 22 modified pages.",
+    "data": {
+      "HiveNameLength": "56",
+      "HiveName": "\\??\\C:\\Windows\\ServiceProfiles\\NetworkService\\NTUSER.DAT",
+      "KeysUpdated": "233",
+      "DirtyPages": "22"
+    }
+  },
+  {
+    "record_id": 27989,
+    "time": "2026-10-06T05:54:06.832281Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-Kernel-General",
+    "event_id": 16,
+    "level": "information",
+    "message": "The access history in hive \\??\\C:\\Windows\\ServiceProfiles\\LocalService\\NTUSER.DAT was cleared updating 353 keys and creating 68 modified pages.",
+    "data": {
+      "HiveNameLength": "54",
+      "HiveName": "\\??\\C:\\Windows\\ServiceProfiles\\LocalService\\NTUSER.DAT",
+      "KeysUpdated": "353",
+      "DirtyPages": "68"
+    }
+  },
+  {
+    "record_id": 27988,
+    "time": "2026-10-06T05:54:06.779459Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-Directory-Services-SAM",
+    "event_id": 16983,
+    "level": "information",
+    "message": "The security account manager is now logging periodic summary events for remote clients that call legacy password change or set RPC methods. For more information please see https://go.microsoft.com/fwlink/?linkid=2150956.",
+    "data": {}
+  },
+  {
+    "record_id": 27987,
+    "time": "2026-10-06T05:54:06.779453Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-Directory-Services-SAM",
+    "event_id": 16977,
+    "level": "information",
+    "message": "The domain is configured with the following minimum password length-related settings. MinimumPasswordLength: 0 RelaxMinimumPasswordLengthLimits: 0 MinimumPasswordLengthAudit: -1 For more information see https://go.microsoft.com/fwlink/?LinkId=2097191.",
+    "data": {
+      "MinimumPasswordLength": "0",
+      "RelaxMinimumPasswordLengthLimits": "0",
+      "MinimumPasswordLengthAudit": "-1"
+    }
+  },
+  {
+    "record_id": 27986,
+    "time": "2026-10-06T05:54:06.774328Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-Directory-Services-SAM",
+    "event_id": 16962,
+    "level": "information",
+    "message": "Remote calls to the SAM database are being restricted using the default security descriptor: O:SYG:SYD:(A;;RC;;;BA). For more information please see http://go.microsoft.com/fwlink/?LinkId=787651.",
+    "data": {
+      "Default SD String:": "O:SYG:SYD:(A;;RC;;;BA)"
+    }
+  },
+  {
+    "record_id": 27985,
+    "time": "2026-10-06T05:54:06.745019Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-IsolatedUserMode",
+    "event_id": 5,
+    "level": "information",
+    "message": "Secure Trustlet NULL Id 0 and Pid 0 started with status STATUS_SUCCESS.",
+    "data": {
+      "TrustletIdentity": "0",
+      "NormalProcessId": "0",
+      "Status": "0",
+      "ImageName": "NULL"
+    }
+  },
+  {
+    "record_id": 27984,
+    "time": "2026-10-06T05:54:06.686990Z",
+    "log": "System",
+    "provider": "LsaSrv",
+    "event_id": 6156,
+    "level": "information",
+    "message": "Credential Guard auto enablement status. Hardware Requirements for Virtualization Based Security: 1 Domain Joined: 0 Azure AD Joined: 0 Licensed for Credential Guard: 0 Domain Controller: 0",
+    "data": {
+      "HardwareChecks": "1",
+      "ADDomainJoin": "0",
+      "AADDomainJoin": "0",
+      "IsLicensed": "0",
+      "DomainController": "0"
+    }
+  },
+  {
+    "record_id": 27983,
+    "time": "2026-10-06T05:54:06.640287Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-Wininit",
+    "event_id": 12,
+    "level": "information",
+    "message": "LSASS.exe was started as a protected process with level: 4.",
+    "data": {
+      "Level": "4"
+    }
+  },
+  {
+    "record_id": 27982,
+    "time": "2026-10-06T05:54:06.639061Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-Wininit",
+    "event_id": 18,
+    "level": "information",
+    "message": "VBS Key Isolation was started and will protect VSM-isolated keys.",
+    "data": {}
+  },
+  {
+    "record_id": 27981,
+    "time": "2026-10-06T05:54:06.638807Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-IsolatedUserMode",
+    "event_id": 1,
+    "level": "information",
+    "message": "Secure Trustlet \\??\\C:\\Windows\\system32\\lsaiso.exe Id 1 and Pid 1764 started with status STATUS_SUCCESS.",
+    "data": {
+      "TrustletIdentity": "1",
+      "NormalProcessId": "1764",
+      "Status": "0",
+      "ImageName": "\\??\\C:\\Windows\\system32\\lsaiso.exe"
+    }
+  },
+  {
+    "record_id": 27980,
+    "time": "2026-10-06T05:54:06.638494Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-IsolatedUserMode",
+    "event_id": 5,
+    "level": "information",
+    "message": "Secure Trustlet NULL Id 0 and Pid 0 started with status STATUS_SUCCESS.",
+    "data": {
+      "TrustletIdentity": "0",
+      "NormalProcessId": "0",
+      "Status": "0",
+      "ImageName": "NULL"
+    }
+  },
+  {
+    "record_id": 27979,
+    "time": "2026-10-06T05:54:06.636214Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-Wininit",
+    "event_id": 14,
+    "level": "information",
+    "message": "Credential Guard configuration: Registry Configuration: 0x0 Test Configuration: 0 Auto Enablement: 0",
+    "data": {
+      "Config": "0",
+      "IsTestConfig": "0",
+      "IsAutoEnabled": "0"
+    }
+  },
+  {
+    "record_id": 27978,
+    "time": "2026-10-06T05:54:06.589369Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-Wininit",
+    "event_id": 23,
+    "level": "information",
+    "message": "Boot App Anti-Rollback: Initialize Completed with status: HRESULT: The operation completed successfully. New timer needed: false New timer waiting for system update completion: false Previous latch timer exists but disabled by registry: false",
+    "data": {
+      "HRESULT": "0",
+      "NewTimerNeeded": "false",
+      "NewTimerWaitingUpdateCompletion": "false",
+      "PreviousTimerExistsButDisabled": "false"
+    }
+  },
+  {
+    "record_id": 27977,
+    "time": "2026-10-06T05:54:06.588830Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-Wininit",
+    "event_id": 25,
+    "level": "information",
+    "message": "Boot App Anti-Rollback: Previous timer resumed with status: HRESULT: The operation completed successfully. Previous timer present: true Start time: ‎2026‎-‎09‎-‎17T23:10:39.384870400Z Grace period: 51840000000000 Attempted recovery enforcement succeeded: false",
+    "data": {
+      "HRESULT": "0",
+      "PreviousTimerExists": "true",
+      "PreviousTimerStartTime": "2026-09-17T23:10:39.3848704Z",
+      "GracePeriod": "51840000000000",
+      "AttemptedRecoveryEnforcementSucceeded": "false"
+    }
+  },
+  {
+    "record_id": 27976,
+    "time": "2026-10-06T05:54:06.588829Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-Wininit",
+    "event_id": 24,
+    "level": "information",
+    "message": "Boot App Anti-Rollback: Timer start completed with status: Win32Error: 0 Start time: ‎2026‎-‎09‎-‎17T23:10:39.384870400Z Grace period: 51840000000000 Due time: ‎2026‎-‎11‎-‎16T23:10:39.384870400Z",
+    "data": {
+      "win32Error": "0",
+      "FileStartTime": "2026-09-17T23:10:39.3848704Z",
+      "GracePeriod": "51840000000000",
+      "DueTime": "2026-11-16T23:10:39.3848704Z"
+    }
+  },
+  {
+    "record_id": 27975,
+    "time": "2026-10-06T05:54:06.588809Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-Wininit",
+    "event_id": 19,
+    "level": "information",
+    "message": "Virtualization Based Security new timer creation status HRESULT: The operation completed successfully. New latch timer needed: false New latch timer waiting for system update completion: false Previous latch timer exists but disabled by registry: false Policy file exists: true",
+    "data": {
+      "HRESULT": "0",
+      "NewLatchTimerNeeded": "false",
+      "NewLatchTimerWaitingSystemUpdateCompletion": "false",
+      "PreviousLatchTimerExistsButDisabled": "false",
+      "PolicyFileExists": "true"
+    }
+  },
+  {
+    "record_id": 27974,
+    "time": "2026-10-06T05:54:06.588746Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-Wininit",
+    "event_id": 21,
+    "level": "information",
+    "message": "Virtualization Based Security previous timer resume status HRESULT: The operation completed successfully. Previous timer present: true Start time: ‎2026‎-‎09‎-‎17T23:10:39.378835100Z Grace period: 51840000000000 Policy version: 2814751710707712 Attempted recovery increment succeeded: false Previous timer invalid: false Unlatched policy file exists: true",
+    "data": {
+      "HRESULT": "0",
+      "PreviousTimerPresent": "true",
+      "ftStartTime": "2026-09-17T23:10:39.3788351Z",
+      "ullDelay": "51840000000000",
+      "PolicyVersion": "2814751710707712",
+      "fAttemptedRecoveryIncrementCounterSucceeded": "false",
+      "fPreviousLatchTimerInvalid": "false",
+      "fPolicyFileExists": "true"
+    }
+  },
+  {
+    "record_id": 27973,
+    "time": "2026-10-06T05:54:06.588745Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-Wininit",
+    "event_id": 20,
+    "level": "information",
+    "message": "Virtualization Based Security master key timer start status Win32Error: 0 Start time: ‎2026‎-‎09‎-‎17T23:10:39.378835100Z Grace period: 51840000000000 Due time: ‎2026‎-‎11‎-‎16T23:10:39.378835100Z Policy version: 2814751710707712",
+    "data": {
+      "win32Error": "0",
+      "ftStartTime": "2026-09-17T23:10:39.3788351Z",
+      "ullDelay": "51840000000000",
+      "ftDueTime": "2026-11-16T23:10:39.3788351Z",
+      "PolicyVersion": "2814751710707712"
+    }
+  },
+  {
+    "record_id": 27972,
+    "time": "2026-10-06T05:54:03.077313Z",
+    "log": "System",
+    "provider": "CirrusLogic-Drv-XuCsMe",
+    "event_id": 111,
+    "level": "information",
+    "message": "Device <Bus3>/4243.0:03: Jack Selected Mode: Unplugged.",
+    "data": {
+      "DeviceInstance": "<Bus3>/4243.0:03",
+      "Selected_Mode": "0",
+      "Detected_Mode": "0",
+      "Status": "0x0",
+      "RegCnt": "7",
+      "Reg": "0x0",
+      "Reg_2": "0xd0040f3",
+      "Reg_3": "0x2",
+      "Reg_4": "0x0",
+      "Reg_5": "0x38000000",
+      "Reg_6": "0x78000000",
+      "Reg_7": "0xe6000000"
+    }
+  },
+  {
+    "record_id": 27971,
+    "time": "2026-10-06T05:54:02.763944Z",
+    "log": "System",
+    "provider": "CirrusLogic-Drv-XuCsMe",
+    "event_id": 107,
+    "level": "information",
+    "message": "Device <Bus2>/3556.1:01 ready latency is 704359 micro-seconds.",
+    "data": {
+      "DeviceInstance": "<Bus2>/3556.1:01",
+      "Latency": "704359"
+    }
+  },
+  {
+    "record_id": 27970,
+    "time": "2026-10-06T05:54:02.763943Z",
+    "log": "System",
+    "provider": "CirrusLogic-Drv-XuCsMe",
+    "event_id": 100,
+    "level": "information",
+    "message": "Device <Bus2>/3556.1:01 FW version 3.13.4.",
+    "data": {
+      "DeviceInstance": "<Bus2>/3556.1:01",
+      "Major": "3",
+      "Minor": "13",
+      "Patch": "4"
+    }
+  },
+  {
+    "record_id": 27969,
+    "time": "2026-10-06T05:54:02.763670Z",
+    "log": "System",
+    "provider": "CirrusLogic-Drv-XuCsMe",
+    "event_id": 107,
+    "level": "information",
+    "message": "Device <Bus2>/3556.0:01 ready latency is 703209 micro-seconds.",
+    "data": {
+      "DeviceInstance": "<Bus2>/3556.0:01",
+      "Latency": "703209"
+    }
+  },
+  {
+    "record_id": 27968,
+    "time": "2026-10-06T05:54:02.763670Z",
+    "log": "System",
+    "provider": "CirrusLogic-Drv-XuCsMe",
+    "event_id": 100,
+    "level": "information",
+    "message": "Device <Bus2>/3556.0:01 FW version 3.13.4.",
+    "data": {
+      "DeviceInstance": "<Bus2>/3556.0:01",
+      "Major": "3",
+      "Minor": "13",
+      "Patch": "4"
+    }
+  },
+  {
+    "record_id": 27967,
+    "time": "2026-10-06T05:54:02.576911Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-Kernel-PnP",
+    "event_id": 219,
+    "level": "warning",
+    "message": "The driver \\Driver\\WUDFRd failed to load. Device: HID\\HID_DEVICE_SYSTEM_VHF&Col02\\[INSTANCE-1] Status: 0xC0000365",
+    "data": {
+      "DriverNameLength": "49",
+      "DriverName": "HID\\HID_DEVICE_SYSTEM_VHF&Col02\\[INSTANCE-1]",
+      "Status": "3221226341",
+      "FailureNameLength": "14",
+      "FailureName": "\\Driver\\WUDFRd",
+      "Version": "0"
+    }
+  },
+  {
+    "record_id": 27966,
+    "time": "2026-10-06T05:54:02.576367Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-DriverFrameworks-UserMode",
+    "event_id": 10118,
+    "level": "information",
+    "message": "UMDF reflector is unable to connect to service control manager (SCM). This is expected during boot, when SCM has not started yet. Will retry when it starts.",
+    "data": {}
+  },
+  {
+    "record_id": 27965,
+    "time": "2026-10-06T05:54:02.340451Z",
+    "log": "System",
+    "provider": "CirrusLogic-Drv-XuCsMe",
+    "event_id": 107,
+    "level": "information",
+    "message": "Device <Bus3>/4243.0:03 ready latency is 273688 micro-seconds.",
+    "data": {
+      "DeviceInstance": "<Bus3>/4243.0:03",
+      "Latency": "273688"
+    }
+  },
+  {
+    "record_id": 27964,
+    "time": "2026-10-06T05:54:02.340450Z",
+    "log": "System",
+    "provider": "CirrusLogic-Drv-XuCsMe",
+    "event_id": 100,
+    "level": "information",
+    "message": "Device <Bus3>/4243.0:03 FW version 2.6.18.",
+    "data": {
+      "DeviceInstance": "<Bus3>/4243.0:03",
+      "Major": "2",
+      "Minor": "6",
+      "Patch": "18"
+    }
+  },
+  {
+    "record_id": 27963,
+    "time": "2026-10-06T05:54:02.338662Z",
+    "log": "System",
+    "provider": "CirrusLogic-Drv-XuCsMe",
+    "event_id": 107,
+    "level": "information",
+    "message": "Device <Bus3>/4243.0:02 ready latency is 280575 micro-seconds.",
+    "data": {
+      "DeviceInstance": "<Bus3>/4243.0:02",
+      "Latency": "280575"
+    }
+  },
+  {
+    "record_id": 27962,
+    "time": "2026-10-06T05:54:02.338662Z",
+    "log": "System",
+    "provider": "CirrusLogic-Drv-XuCsMe",
+    "event_id": 100,
+    "level": "information",
+    "message": "Device <Bus3>/4243.0:02 FW version 2.6.18.",
+    "data": {
+      "DeviceInstance": "<Bus3>/4243.0:02",
+      "Major": "2",
+      "Minor": "6",
+      "Patch": "18"
+    }
+  },
+  {
+    "record_id": 27961,
+    "time": "2026-10-06T05:54:02.334584Z",
+    "log": "System",
+    "provider": "CirrusLogic-Drv-XuCsMe",
+    "event_id": 107,
+    "level": "information",
+    "message": "Device <Bus3>/4243.0:01 ready latency is 276449 micro-seconds.",
+    "data": {
+      "DeviceInstance": "<Bus3>/4243.0:01",
+      "Latency": "276449"
+    }
+  },
+  {
+    "record_id": 27960,
+    "time": "2026-10-06T05:54:02.334584Z",
+    "log": "System",
+    "provider": "CirrusLogic-Drv-XuCsMe",
+    "event_id": 100,
+    "level": "information",
+    "message": "Device <Bus3>/4243.0:01 FW version 2.6.18.",
+    "data": {
+      "DeviceInstance": "<Bus3>/4243.0:01",
+      "Major": "2",
+      "Minor": "6",
+      "Patch": "18"
+    }
+  },
+  {
+    "record_id": 27959,
+    "time": "2026-10-06T05:54:02.055552Z",
+    "log": "System",
+    "provider": "CirrusLogic-Drv-XuCsMe",
+    "event_id": 102,
+    "level": "information",
+    "message": "Device <Bus2>/3556.0:01 added.",
+    "data": {
+      "DeviceInstance": "<Bus2>/3556.0:01",
+      "ChipRevision": "0xb0"
+    }
+  },
+  {
+    "record_id": 27958,
+    "time": "2026-10-06T05:54:01.760213Z",
+    "log": "System",
+    "provider": "CirrusLogic-Drv-XuCsMe",
+    "event_id": 102,
+    "level": "information",
+    "message": "Device <Bus3>/4243.0:03 added.",
+    "data": {
+      "DeviceInstance": "<Bus3>/4243.0:03",
+      "ChipRevision": "0xa1"
+    }
+  },
+  {
+    "record_id": 27957,
+    "time": "2026-10-06T05:54:01.757225Z",
+    "log": "System",
+    "provider": "CirrusLogic-Drv-XuCsMe",
+    "event_id": 102,
+    "level": "information",
+    "message": "Device <Bus3>/4243.0:02 added.",
+    "data": {
+      "DeviceInstance": "<Bus3>/4243.0:02",
+      "ChipRevision": "0xa1"
+    }
+  },
+  {
+    "record_id": 27956,
+    "time": "2026-10-06T05:54:01.733980Z",
+    "log": "System",
+    "provider": "CirrusLogic-Drv-XuCsMe",
+    "event_id": 102,
+    "level": "information",
+    "message": "Device <Bus3>/4243.0:01 added.",
+    "data": {
+      "DeviceInstance": "<Bus3>/4243.0:01",
+      "ChipRevision": "0xa1"
+    }
+  },
+  {
+    "record_id": 27955,
+    "time": "2026-10-06T05:54:01.729108Z",
+    "log": "System",
+    "provider": "CirrusLogic-Drv-XuCsMe",
+    "event_id": 102,
+    "level": "information",
+    "message": "Device <Bus2>/3556.1:01 added.",
+    "data": {
+      "DeviceInstance": "<Bus2>/3556.1:01",
+      "ChipRevision": "0xb0"
+    }
+  },
+  {
+    "record_id": 27954,
+    "time": "2026-10-06T05:54:01.679918Z",
+    "log": "System",
+    "provider": "CirrusLogic-Drv-XuCsMe",
+    "event_id": 1,
+    "level": "information",
+    "message": "Driver 1.0.654.52741 loaded.",
+    "data": {
+      "DriverVersion": "1.0.654.52741"
+    }
+  },
+  {
+    "record_id": 27953,
+    "time": "2026-10-06T05:54:01.276887Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-Kernel-PnP",
+    "event_id": 219,
+    "level": "warning",
+    "message": "The driver \\Driver\\WUDFRd failed to load. Device: HID\\Vid_8087&Pid_0AC2\\[INSTANCE-2] Status: 0xC0000365",
+    "data": {
+      "DriverNameLength": "38",
+      "DriverName": "HID\\Vid_8087&Pid_0AC2\\[INSTANCE-2]",
+      "Status": "3221226341",
+      "FailureNameLength": "14",
+      "FailureName": "\\Driver\\WUDFRd",
+      "Version": "0"
+    }
+  },
+  {
+    "record_id": 27952,
+    "time": "2026-10-06T05:54:01.276517Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-DriverFrameworks-UserMode",
+    "event_id": 10118,
+    "level": "information",
+    "message": "UMDF reflector is unable to connect to service control manager (SCM). This is expected during boot, when SCM has not started yet. Will retry when it starts.",
+    "data": {}
+  },
+  {
+    "record_id": 27951,
+    "time": "2026-10-06T05:54:01.250085Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-Kernel-PnP",
+    "event_id": 219,
+    "level": "warning",
+    "message": "The driver \\Driver\\WUDFRd failed to load. Device: HID\\Vid_8087&Pid_0AC2\\[INSTANCE-3] Status: 0xC0000365",
+    "data": {
+      "DriverNameLength": "39",
+      "DriverName": "HID\\Vid_8087&Pid_0AC2\\[INSTANCE-3]",
+      "Status": "3221226341",
+      "FailureNameLength": "14",
+      "FailureName": "\\Driver\\WUDFRd",
+      "Version": "0"
+    }
+  },
+  {
+    "record_id": 27950,
+    "time": "2026-10-06T05:54:01.249706Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-DriverFrameworks-UserMode",
+    "event_id": 10118,
+    "level": "information",
+    "message": "UMDF reflector is unable to connect to service control manager (SCM). This is expected during boot, when SCM has not started yet. Will retry when it starts.",
+    "data": {}
+  },
+  {
+    "record_id": 27949,
+    "time": "2026-10-06T05:54:00.950968Z",
+    "log": "System",
+    "provider": "BthMini",
+    "event_id": 18,
+    "level": "information",
+    "message": "Windows cannot store Bluetooth authentication codes (link keys) on the local adapter. Bluetooth keyboards might not work in the system BIOS during startup.",
+    "data": {
+      "param1": ""
+    }
+  },
+  {
+    "record_id": 27948,
+    "time": "2026-10-06T05:53:59.210693Z",
+    "log": "System",
+    "provider": "ibtpci",
+    "event_id": 1830,
+    "level": "information",
+    "message": "VER",
+    "data": {
+      "param1": "",
+      "param2": "VER"
+    }
+  },
+  {
+    "record_id": 27947,
+    "time": "2026-10-06T05:53:59.141321Z",
+    "log": "System",
+    "provider": "Netwaw18",
+    "event_id": 7027,
+    "level": "information",
+    "message": "7027 - Wi-Fi Driver Info",
+    "data": {
+      "param1": ""
+    }
+  },
+  {
+    "record_id": 27946,
+    "time": "2026-10-06T05:53:59.103442Z",
+    "log": "System",
+    "provider": "Intel-SST-OED",
+    "event_id": 28,
+    "level": "information",
+    "message": "Loaded DSP FW library: \\??\\C:\\Windows\\System32\\DriverStore\\FileRepository\\intcoed_oemlibpath_dolby.inf_amd64_af20c6d1f94f2600\\fw\\IntelDsp\\Dolby\\ptl\\cl_dolby_lib_ptl.bin, status = STATUS_SUCCESS.",
+    "data": {
+      "Message": "Loaded DSP FW library",
+      "LibName": "\\??\\C:\\Windows\\System32\\DriverStore\\FileRepository\\intcoed_oemlibpath_dolby.inf_amd64_af20c6d1f94f2600\\fw\\IntelDsp\\Dolby\\ptl\\cl_dolby_lib_ptl.bin",
+      "status": "0"
+    }
+  },
+  {
+    "record_id": 27944,
+    "time": "2026-10-06T05:53:59.053844Z",
+    "log": "System",
+    "provider": "Intel-SST-OED",
+    "event_id": 28,
+    "level": "information",
+    "message": "Loaded DSP FW library: Libs\\dsp_lib_whm_release.bin, status = STATUS_SUCCESS.",
+    "data": {
+      "Message": "Loaded DSP FW library",
+      "LibName": "Libs\\dsp_lib_whm_release.bin",
+      "status": "0"
+    }
+  },
+  {
+    "record_id": 27945,
+    "time": "2026-10-06T05:53:59.047260Z",
+    "log": "System",
+    "provider": "Netwaw18",
+    "event_id": 7017,
+    "level": "information",
+    "message": "7017 - Wi-Fi Driver Info",
+    "data": {
+      "param1": ""
+    }
+  },
+  {
+    "record_id": 27943,
+    "time": "2026-10-06T05:53:59.031593Z",
+    "log": "System",
+    "provider": "Netwaw18",
+    "event_id": 7028,
+    "level": "information",
+    "message": "7028 - Wi-Fi Driver Info",
+    "data": {
+      "param1": ""
+    }
+  },
+  {
+    "record_id": 27942,
+    "time": "2026-10-06T05:53:59.020824Z",
+    "log": "System",
+    "provider": "Intel-SST-OED",
+    "event_id": 28,
+    "level": "information",
+    "message": "Loaded DSP FW library: Libs\\dsp_lib_psns96k_release.bin, status = STATUS_SUCCESS.",
+    "data": {
+      "Message": "Loaded DSP FW library",
+      "LibName": "Libs\\dsp_lib_psns96k_release.bin",
+      "status": "0"
+    }
+  },
+  {
+    "record_id": 27941,
+    "time": "2026-10-06T05:53:58.957460Z",
+    "log": "System",
+    "provider": "Intel-SST-OED",
+    "event_id": 28,
+    "level": "information",
+    "message": "Loaded DSP FW library: Libs\\dsp_lib_psns48k_release.bin, status = STATUS_SUCCESS.",
+    "data": {
+      "Message": "Loaded DSP FW library",
+      "LibName": "Libs\\dsp_lib_psns48k_release.bin",
+      "status": "0"
+    }
+  },
+  {
+    "record_id": 27940,
+    "time": "2026-10-06T05:53:58.898400Z",
+    "log": "System",
+    "provider": "Intel-SST-OED",
+    "event_id": 28,
+    "level": "information",
+    "message": "Loaded DSP FW library: Libs\\dsp_lib_nld_release.bin, status = STATUS_SUCCESS.",
+    "data": {
+      "Message": "Loaded DSP FW library",
+      "LibName": "Libs\\dsp_lib_nld_release.bin",
+      "status": "0"
+    }
+  },
+  {
+    "record_id": 27939,
+    "time": "2026-10-06T05:53:58.878909Z",
+    "log": "System",
+    "provider": "Intel-SST-OED",
+    "event_id": 28,
+    "level": "information",
+    "message": "Loaded DSP FW library: Libs\\dsp_lib_intel_wov_release.bin, status = STATUS_SUCCESS.",
+    "data": {
+      "Message": "Loaded DSP FW library",
+      "LibName": "Libs\\dsp_lib_intel_wov_release.bin",
+      "status": "0"
+    }
+  },
+  {
+    "record_id": 27938,
+    "time": "2026-10-06T05:53:58.848708Z",
+    "log": "System",
+    "provider": "Intel-SST-OED",
+    "event_id": 28,
+    "level": "information",
+    "message": "Loaded DSP FW library: Libs\\dsp_lib_intel_aca_release.bin, status = STATUS_SUCCESS.",
+    "data": {
+      "Message": "Loaded DSP FW library",
+      "LibName": "Libs\\dsp_lib_intel_aca_release.bin",
+      "status": "0"
+    }
+  },
+  {
+    "record_id": 27937,
+    "time": "2026-10-06T05:53:58.754436Z",
+    "log": "System",
+    "provider": "Intel-SST-OED",
+    "event_id": 28,
+    "level": "information",
+    "message": "Loaded DSP FW library: Libs\\dsp_lib_asrc_release.bin, status = STATUS_SUCCESS.",
+    "data": {
+      "Message": "Loaded DSP FW library",
+      "LibName": "Libs\\dsp_lib_asrc_release.bin",
+      "status": "0"
+    }
+  },
+  {
+    "record_id": 27936,
+    "time": "2026-10-06T05:53:58.624051Z",
+    "log": "System",
+    "provider": "Netwaw18",
+    "event_id": 7010,
+    "level": "information",
+    "message": "7010 - Wi-Fi Driver Enabled",
+    "data": {
+      "param1": ""
+    }
+  },
+  {
+    "record_id": 27935,
+    "time": "2026-10-06T05:53:58.576916Z",
+    "log": "System",
+    "provider": "Netwaw18",
+    "event_id": 7005,
+    "level": "information",
+    "message": "7005 - Wi-Fi Driver Info",
+    "data": {
+      "param1": ""
+    }
+  },
+  {
+    "record_id": 27934,
+    "time": "2026-10-06T05:53:58.576916Z",
+    "log": "System",
+    "provider": "Netwaw18",
+    "event_id": 7006,
+    "level": "information",
+    "message": "7006 - Wi-Fi Driver Info",
+    "data": {
+      "param1": ""
+    }
+  },
+  {
+    "record_id": 27933,
+    "time": "2026-10-06T05:53:58.545330Z",
+    "log": "System",
+    "provider": "Netwaw18",
+    "event_id": 7027,
+    "level": "information",
+    "message": "7027 - Wi-Fi Driver Info",
+    "data": {
+      "param1": ""
+    }
+  },
+  {
+    "record_id": 27932,
+    "time": "2026-10-06T05:53:58.513079Z",
+    "log": "System",
+    "provider": "Netwaw18",
+    "event_id": 7029,
+    "level": "information",
+    "message": "7029 - Wi-Fi Driver Initialization",
+    "data": {
+      "param1": ""
+    }
+  },
+  {
+    "record_id": 27931,
+    "time": "2026-10-06T05:53:56.916977Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-Kernel-Power",
+    "event_id": 521,
+    "level": "information",
+    "message": "Active battery count change.",
+    "data": {
+      "ValidBatteryCount": "1",
+      "ErrorBatteryCount": "0",
+      "AbandonedBatteryCount": "0"
+    }
+  },
+  {
+    "record_id": 27930,
+    "time": "2026-10-06T05:53:56.916877Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-Kernel-Power",
+    "event_id": 105,
+    "level": "information",
+    "message": "Power source change.",
+    "data": {
+      "AcOnline": "false",
+      "RemainingCapacity": "0",
+      "FullChargeCapacity": "0"
+    }
+  },
+  {
+    "record_id": 27929,
+    "time": "2026-10-06T05:53:56.890269Z",
+    "log": "System",
+    "provider": "MEIx64",
+    "event_id": 2,
+    "level": "information",
+    "message": "Intel(R) Management Engine Interface driver has started successfully.",
+    "data": {
+      "param1": ""
+    }
+  },
+  {
+    "record_id": 27928,
+    "time": "2026-10-06T05:53:56.886811Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-Kernel-Power",
+    "event_id": 521,
+    "level": "information",
+    "message": "Active battery count change.",
+    "data": {
+      "ValidBatteryCount": "0",
+      "ErrorBatteryCount": "0",
+      "AbandonedBatteryCount": "0"
+    }
+  },
+  {
+    "record_id": 27927,
+    "time": "2026-10-06T05:53:56.884780Z",
+    "log": "System",
+    "provider": "VfpExt",
+    "event_id": 7036,
+    "level": "information",
+    "message": "The service entered the Filter restart complete state.",
+    "data": {
+      "param1": "",
+      "param2": "Filter restart complete"
+    }
+  },
+  {
+    "record_id": 27926,
+    "time": "2026-10-06T05:53:56.884780Z",
+    "log": "System",
+    "provider": "VfpExt",
+    "event_id": 7036,
+    "level": "information",
+    "message": "The service entered the Filter restart start state.",
+    "data": {
+      "param1": "",
+      "param2": "Filter restart start"
+    }
+  },
+  {
+    "record_id": 27925,
+    "time": "2026-10-06T05:53:56.884780Z",
+    "log": "System",
+    "provider": "VfpExt",
+    "event_id": 7036,
+    "level": "information",
+    "message": "The service entered the Filter attach complete state.",
+    "data": {
+      "param1": "",
+      "param2": "Filter attach complete"
+    }
+  },
+  {
+    "record_id": 27924,
+    "time": "2026-10-06T05:53:56.884780Z",
+    "log": "System",
+    "provider": "VfpExt",
+    "event_id": 7036,
+    "level": "information",
+    "message": "The service entered the Filter attach start state.",
+    "data": {
+      "param1": "",
+      "param2": "Filter attach start"
+    }
+  },
+  {
+    "record_id": 27923,
+    "time": "2026-10-06T05:53:56.635689Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-Kernel-Processor-Power",
+    "event_id": 55,
+    "level": "information",
+    "message": "Processor 15 in group 0 exposes the following power management capabilities: Idle state type: Micro Power Engine Plugin (11 state(s)) Performance state type: ACPI Collaborative Processor Performance Control Nominal Frequency (MHz): 1600 Maximum performance percentage: 218 Minimum performance percentage: 100 Minimum throttle percentage: 6",
+    "data": {
+      "Group": "0",
+      "Number": "15",
+      "IdleStateCount": "11",
+      "IdleImplementation": "3",
+      "NominalFrequency": "1600",
+      "MaximumPerformancePercent": "218",
+      "MinimumPerformancePercent": "100",
+      "MinimumThrottlePercent": "6",
+      "PerformanceImplementation": "3"
+    }
+  },
+  {
+    "record_id": 27922,
+    "time": "2026-10-06T05:53:56.578511Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-Kernel-Processor-Power",
+    "event_id": 55,
+    "level": "information",
+    "message": "Processor 14 in group 0 exposes the following power management capabilities: Idle state type: Micro Power Engine Plugin (11 state(s)) Performance state type: ACPI Collaborative Processor Performance Control Nominal Frequency (MHz): 1600 Maximum performance percentage: 218 Minimum performance percentage: 100 Minimum throttle percentage: 6",
+    "data": {
+      "Group": "0",
+      "Number": "14",
+      "IdleStateCount": "11",
+      "IdleImplementation": "3",
+      "NominalFrequency": "1600",
+      "MaximumPerformancePercent": "218",
+      "MinimumPerformancePercent": "100",
+      "MinimumThrottlePercent": "6",
+      "PerformanceImplementation": "3"
+    }
+  },
+  {
+    "record_id": 27921,
+    "time": "2026-10-06T05:53:56.576222Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-Kernel-Processor-Power",
+    "event_id": 55,
+    "level": "information",
+    "message": "Processor 13 in group 0 exposes the following power management capabilities: Idle state type: Micro Power Engine Plugin (11 state(s)) Performance state type: ACPI Collaborative Processor Performance Control Nominal Frequency (MHz): 1600 Maximum performance percentage: 218 Minimum performance percentage: 100 Minimum throttle percentage: 6",
+    "data": {
+      "Group": "0",
+      "Number": "13",
+      "IdleStateCount": "11",
+      "IdleImplementation": "3",
+      "NominalFrequency": "1600",
+      "MaximumPerformancePercent": "218",
+      "MinimumPerformancePercent": "100",
+      "MinimumThrottlePercent": "6",
+      "PerformanceImplementation": "3"
+    }
+  },
+  {
+    "record_id": 27920,
+    "time": "2026-10-06T05:53:56.573903Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-Kernel-Processor-Power",
+    "event_id": 55,
+    "level": "information",
+    "message": "Processor 12 in group 0 exposes the following power management capabilities: Idle state type: Micro Power Engine Plugin (11 state(s)) Performance state type: ACPI Collaborative Processor Performance Control Nominal Frequency (MHz): 1600 Maximum performance percentage: 218 Minimum performance percentage: 100 Minimum throttle percentage: 6",
+    "data": {
+      "Group": "0",
+      "Number": "12",
+      "IdleStateCount": "11",
+      "IdleImplementation": "3",
+      "NominalFrequency": "1600",
+      "MaximumPerformancePercent": "218",
+      "MinimumPerformancePercent": "100",
+      "MinimumThrottlePercent": "6",
+      "PerformanceImplementation": "3"
+    }
+  },
+  {
+    "record_id": 27919,
+    "time": "2026-10-06T05:53:56.571462Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-Kernel-Processor-Power",
+    "event_id": 55,
+    "level": "information",
+    "message": "Processor 11 in group 0 exposes the following power management capabilities: Idle state type: Micro Power Engine Plugin (11 state(s)) Performance state type: ACPI Collaborative Processor Performance Control Nominal Frequency (MHz): 1600 Maximum performance percentage: 243 Minimum performance percentage: 93 Minimum throttle percentage: 6",
+    "data": {
+      "Group": "0",
+      "Number": "11",
+      "IdleStateCount": "11",
+      "IdleImplementation": "3",
+      "NominalFrequency": "1600",
+      "MaximumPerformancePercent": "243",
+      "MinimumPerformancePercent": "93",
+      "MinimumThrottlePercent": "6",
+      "PerformanceImplementation": "3"
+    }
+  },
+  {
+    "record_id": 27918,
+    "time": "2026-10-06T05:53:56.569054Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-Kernel-Processor-Power",
+    "event_id": 55,
+    "level": "information",
+    "message": "Processor 10 in group 0 exposes the following power management capabilities: Idle state type: Micro Power Engine Plugin (11 state(s)) Performance state type: ACPI Collaborative Processor Performance Control Nominal Frequency (MHz): 1600 Maximum performance percentage: 243 Minimum performance percentage: 93 Minimum throttle percentage: 6",
+    "data": {
+      "Group": "0",
+      "Number": "10",
+      "IdleStateCount": "11",
+      "IdleImplementation": "3",
+      "NominalFrequency": "1600",
+      "MaximumPerformancePercent": "243",
+      "MinimumPerformancePercent": "93",
+      "MinimumThrottlePercent": "6",
+      "PerformanceImplementation": "3"
+    }
+  },
+  {
+    "record_id": 27917,
+    "time": "2026-10-06T05:53:56.566505Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-Kernel-Processor-Power",
+    "event_id": 55,
+    "level": "information",
+    "message": "Processor 9 in group 0 exposes the following power management capabilities: Idle state type: Micro Power Engine Plugin (11 state(s)) Performance state type: ACPI Collaborative Processor Performance Control Nominal Frequency (MHz): 1600 Maximum performance percentage: 243 Minimum performance percentage: 93 Minimum throttle percentage: 6",
+    "data": {
+      "Group": "0",
+      "Number": "9",
+      "IdleStateCount": "11",
+      "IdleImplementation": "3",
+      "NominalFrequency": "1600",
+      "MaximumPerformancePercent": "243",
+      "MinimumPerformancePercent": "93",
+      "MinimumThrottlePercent": "6",
+      "PerformanceImplementation": "3"
+    }
+  },
+  {
+    "record_id": 27916,
+    "time": "2026-10-06T05:53:56.564190Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-Kernel-Processor-Power",
+    "event_id": 55,
+    "level": "information",
+    "message": "Processor 8 in group 0 exposes the following power management capabilities: Idle state type: Micro Power Engine Plugin (11 state(s)) Performance state type: ACPI Collaborative Processor Performance Control Nominal Frequency (MHz): 1600 Maximum performance percentage: 243 Minimum performance percentage: 93 Minimum throttle percentage: 6",
+    "data": {
+      "Group": "0",
+      "Number": "8",
+      "IdleStateCount": "11",
+      "IdleImplementation": "3",
+      "NominalFrequency": "1600",
+      "MaximumPerformancePercent": "243",
+      "MinimumPerformancePercent": "93",
+      "MinimumThrottlePercent": "6",
+      "PerformanceImplementation": "3"
+    }
+  },
+  {
+    "record_id": 27915,
+    "time": "2026-10-06T05:53:56.562567Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-Kernel-Processor-Power",
+    "event_id": 55,
+    "level": "information",
+    "message": "Processor 7 in group 0 exposes the following power management capabilities: Idle state type: Micro Power Engine Plugin (11 state(s)) Performance state type: ACPI Collaborative Processor Performance Control Nominal Frequency (MHz): 1600 Maximum performance percentage: 243 Minimum performance percentage: 100 Minimum throttle percentage: 6",
+    "data": {
+      "Group": "0",
+      "Number": "7",
+      "IdleStateCount": "11",
+      "IdleImplementation": "3",
+      "NominalFrequency": "1600",
+      "MaximumPerformancePercent": "243",
+      "MinimumPerformancePercent": "100",
+      "MinimumThrottlePercent": "6",
+      "PerformanceImplementation": "3"
+    }
+  },
+  {
+    "record_id": 27914,
+    "time": "2026-10-06T05:53:56.561083Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-Kernel-Processor-Power",
+    "event_id": 55,
+    "level": "information",
+    "message": "Processor 6 in group 0 exposes the following power management capabilities: Idle state type: Micro Power Engine Plugin (11 state(s)) Performance state type: ACPI Collaborative Processor Performance Control Nominal Frequency (MHz): 1600 Maximum performance percentage: 243 Minimum performance percentage: 100 Minimum throttle percentage: 6",
+    "data": {
+      "Group": "0",
+      "Number": "6",
+      "IdleStateCount": "11",
+      "IdleImplementation": "3",
+      "NominalFrequency": "1600",
+      "MaximumPerformancePercent": "243",
+      "MinimumPerformancePercent": "100",
+      "MinimumThrottlePercent": "6",
+      "PerformanceImplementation": "3"
+    }
+  },
+  {
+    "record_id": 27913,
+    "time": "2026-10-06T05:53:56.559516Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-Kernel-Processor-Power",
+    "event_id": 55,
+    "level": "information",
+    "message": "Processor 5 in group 0 exposes the following power management capabilities: Idle state type: Micro Power Engine Plugin (11 state(s)) Performance state type: ACPI Collaborative Processor Performance Control Nominal Frequency (MHz): 1600 Maximum performance percentage: 243 Minimum performance percentage: 100 Minimum throttle percentage: 6",
+    "data": {
+      "Group": "0",
+      "Number": "5",
+      "IdleStateCount": "11",
+      "IdleImplementation": "3",
+      "NominalFrequency": "1600",
+      "MaximumPerformancePercent": "243",
+      "MinimumPerformancePercent": "100",
+      "MinimumThrottlePercent": "6",
+      "PerformanceImplementation": "3"
+    }
+  },
+  {
+    "record_id": 27912,
+    "time": "2026-10-06T05:53:56.557854Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-Kernel-Processor-Power",
+    "event_id": 55,
+    "level": "information",
+    "message": "Processor 4 in group 0 exposes the following power management capabilities: Idle state type: Micro Power Engine Plugin (11 state(s)) Performance state type: ACPI Collaborative Processor Performance Control Nominal Frequency (MHz): 1600 Maximum performance percentage: 243 Minimum performance percentage: 100 Minimum throttle percentage: 6",
+    "data": {
+      "Group": "0",
+      "Number": "4",
+      "IdleStateCount": "11",
+      "IdleImplementation": "3",
+      "NominalFrequency": "1600",
+      "MaximumPerformancePercent": "243",
+      "MinimumPerformancePercent": "100",
+      "MinimumThrottlePercent": "6",
+      "PerformanceImplementation": "3"
+    }
+  },
+  {
+    "record_id": 27911,
+    "time": "2026-10-06T05:53:56.556410Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-Kernel-Processor-Power",
+    "event_id": 55,
+    "level": "information",
+    "message": "Processor 3 in group 0 exposes the following power management capabilities: Idle state type: Micro Power Engine Plugin (11 state(s)) Performance state type: ACPI Collaborative Processor Performance Control Nominal Frequency (MHz): 2100 Maximum performance percentage: 234 Minimum performance percentage: 73 Minimum throttle percentage: 4",
+    "data": {
+      "Group": "0",
+      "Number": "3",
+      "IdleStateCount": "11",
+      "IdleImplementation": "3",
+      "NominalFrequency": "2100",
+      "MaximumPerformancePercent": "234",
+      "MinimumPerformancePercent": "73",
+      "MinimumThrottlePercent": "4",
+      "PerformanceImplementation": "3"
+    }
+  },
+  {
+    "record_id": 27910,
+    "time": "2026-10-06T05:53:56.555175Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-Kernel-Processor-Power",
+    "event_id": 55,
+    "level": "information",
+    "message": "Processor 2 in group 0 exposes the following power management capabilities: Idle state type: Micro Power Engine Plugin (11 state(s)) Performance state type: ACPI Collaborative Processor Performance Control Nominal Frequency (MHz): 2100 Maximum performance percentage: 234 Minimum performance percentage: 73 Minimum throttle percentage: 4",
+    "data": {
+      "Group": "0",
+      "Number": "2",
+      "IdleStateCount": "11",
+      "IdleImplementation": "3",
+      "NominalFrequency": "2100",
+      "MaximumPerformancePercent": "234",
+      "MinimumPerformancePercent": "73",
+      "MinimumThrottlePercent": "4",
+      "PerformanceImplementation": "3"
+    }
+  },
+  {
+    "record_id": 27909,
+    "time": "2026-10-06T05:53:56.553812Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-Kernel-Processor-Power",
+    "event_id": 55,
+    "level": "information",
+    "message": "Processor 1 in group 0 exposes the following power management capabilities: Idle state type: Micro Power Engine Plugin (11 state(s)) Performance state type: ACPI Collaborative Processor Performance Control Nominal Frequency (MHz): 2100 Maximum performance percentage: 234 Minimum performance percentage: 73 Minimum throttle percentage: 4",
+    "data": {
+      "Group": "0",
+      "Number": "1",
+      "IdleStateCount": "11",
+      "IdleImplementation": "3",
+      "NominalFrequency": "2100",
+      "MaximumPerformancePercent": "234",
+      "MinimumPerformancePercent": "73",
+      "MinimumThrottlePercent": "4",
+      "PerformanceImplementation": "3"
+    }
+  },
+  {
+    "record_id": 27908,
+    "time": "2026-10-06T05:53:56.552342Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-Kernel-Processor-Power",
+    "event_id": 55,
+    "level": "information",
+    "message": "Processor 0 in group 0 exposes the following power management capabilities: Idle state type: Micro Power Engine Plugin (11 state(s)) Performance state type: ACPI Collaborative Processor Performance Control Nominal Frequency (MHz): 2100 Maximum performance percentage: 239 Minimum performance percentage: 73 Minimum throttle percentage: 4",
+    "data": {
+      "Group": "0",
+      "Number": "0",
+      "IdleStateCount": "11",
+      "IdleImplementation": "3",
+      "NominalFrequency": "2100",
+      "MaximumPerformancePercent": "239",
+      "MinimumPerformancePercent": "73",
+      "MinimumThrottlePercent": "4",
+      "PerformanceImplementation": "3"
+    }
+  },
+  {
+    "record_id": 27907,
+    "time": "2026-10-06T05:53:51.582213Z",
+    "log": "System",
+    "provider": "Wdf01000",
+    "event_id": 3,
+    "level": "warning",
+    "message": "Driver companion failed to load. - Service:USBXHCI, Companion:UsbXhciCompanion, Status:0xc0000034.",
+    "data": {
+      "param1": "",
+      "param2": "Service:USBXHCI, Companion:UsbXhciCompanion, Status:0xc0000034"
+    }
+  },
+  {
+    "record_id": 27906,
+    "time": "2026-10-06T05:53:49.842501Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-Kernel-General",
+    "event_id": 24,
+    "level": "information",
+    "message": "The time zone information was refreshed with exit reason 0. Current time zone bias is 360.",
+    "data": {
+      "ExitReason": "0",
+      "CurrentBias": "360",
+      "CurrentTimeZoneID": "2",
+      "TimeZoneInfoCacheUpdated": "0",
+      "FirstRefresh": "0"
+    }
+  },
+  {
+    "record_id": 27905,
+    "time": "2026-10-06T05:53:49.760506Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-Kernel-General",
+    "event_id": 15,
+    "level": "information",
+    "message": "Hive \\SystemRoot\\System32\\Config\\SOFTWARE was reorganized with a starting size of 120193024 bytes and an ending size of 110960640 bytes.",
+    "data": {
+      "HiveNameLength": "36",
+      "HiveName": "\\SystemRoot\\System32\\Config\\SOFTWARE",
+      "OriginalSize": "120193024",
+      "NewSize": "110960640"
+    }
+  },
+  {
+    "record_id": 27904,
+    "time": "2026-10-06T05:53:48.536068Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-Kernel-PnP",
+    "event_id": 219,
+    "level": "warning",
+    "message": "The driver \\Driver\\WUDFRd failed to load. Device: PCI\\VEN_8086&DEV_B01D&SUBSYS_15F41043&REV_0F\\[INSTANCE-4] Status: 0xC0000365",
+    "data": {
+      "DriverNameLength": "60",
+      "DriverName": "PCI\\VEN_8086&DEV_B01D&SUBSYS_15F41043&REV_0F\\[INSTANCE-4]",
+      "Status": "3221226341",
+      "FailureNameLength": "14",
+      "FailureName": "\\Driver\\WUDFRd",
+      "Version": "0"
+    }
+  },
+  {
+    "record_id": 27903,
+    "time": "2026-10-06T05:53:48.534497Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-DriverFrameworks-UserMode",
+    "event_id": 10118,
+    "level": "information",
+    "message": "UMDF reflector is unable to connect to service control manager (SCM). This is expected during boot, when SCM has not started yet. Will retry when it starts.",
+    "data": {}
+  },
+  {
+    "record_id": 27902,
+    "time": "2026-10-06T05:53:47.943567Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-Ntfs",
+    "event_id": 98,
+    "level": "information",
+    "message": "Volume \\\\?\\Volume{d22408ca-df95-432f-b657-2958133d3979} (\\Device\\HarddiskVolume5) is healthy. No action is needed.",
+    "data": {
+      "DriveName": "\\\\?\\Volume{d22408ca-df95-432f-b657-2958133d3979}",
+      "DeviceName": "\\Device\\HarddiskVolume5",
+      "CorruptionActionState": "0"
+    }
+  },
+  {
+    "record_id": 27901,
+    "time": "2026-10-06T05:53:47.832744Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-Ntfs",
+    "event_id": 98,
+    "level": "information",
+    "message": "Volume \\\\?\\Volume{d854515f-5e65-4eeb-86a0-c6bb8b017b4c} (\\Device\\HarddiskVolume4) is healthy. No action is needed.",
+    "data": {
+      "DriveName": "\\\\?\\Volume{d854515f-5e65-4eeb-86a0-c6bb8b017b4c}",
+      "DeviceName": "\\Device\\HarddiskVolume4",
+      "CorruptionActionState": "0"
+    }
+  },
+  {
+    "record_id": 27900,
+    "time": "2026-10-06T05:53:47.745264Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-Kernel-PnP",
+    "event_id": 219,
+    "level": "warning",
+    "message": "The driver \\Driver\\WUDFRd failed to load. Device: ROOT\\WINDOWSHELLOFACESOFTWAREDRIVER\\[INSTANCE-5] Status: 0xC0000365",
+    "data": {
+      "DriverNameLength": "40",
+      "DriverName": "ROOT\\WINDOWSHELLOFACESOFTWAREDRIVER\\[INSTANCE-5]",
+      "Status": "3221226341",
+      "FailureNameLength": "14",
+      "FailureName": "\\Driver\\WUDFRd",
+      "Version": "0"
+    }
+  },
+  {
+    "record_id": 27899,
+    "time": "2026-10-06T05:53:47.743926Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-DriverFrameworks-UserMode",
+    "event_id": 10118,
+    "level": "information",
+    "message": "UMDF reflector is unable to connect to service control manager (SCM). This is expected during boot, when SCM has not started yet. Will retry when it starts.",
+    "data": {}
+  },
+  {
+    "record_id": 27898,
+    "time": "2026-10-06T05:53:47.607559Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-Hyper-V-VmSwitch",
+    "event_id": 5,
+    "level": "information",
+    "message": "Miniport NIC 790E58B4-7939-4434-9358-89AE7DDBE87F (Friendly Name: WSL (Hyper-V firewall)) successfully enabled",
+    "data": {
+      "NicNameLen": "36",
+      "NicName": "790E58B4-7939-4434-9358-89AE7DDBE87F",
+      "NicFNameLen": "22",
+      "NicFName": "WSL (Hyper-V firewall)"
+    }
+  },
+  {
+    "record_id": 27897,
+    "time": "2026-10-06T05:53:47.607558Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-Hyper-V-VmSwitch",
+    "event_id": 232,
+    "level": "information",
+    "message": "NIC 790E58B4-7939-4434-9358-89AE7DDBE87F (Friendly Name: WSL (Hyper-V firewall)) successfully connected to port 790E58B4-7939-4434-9358-89AE7DDBE87F (Friendly Name: Host Vnic 790E58B4-7939-4434-9358-89AE7DDBE87E) on switch 790E58B4-7939-4434-9358-89AE7DDBE87E(Friendly Name: WSL (Hyper-V firewall)).",
+    "data": {
+      "NicNameLen": "36",
+      "NicName": "790E58B4-7939-4434-9358-89AE7DDBE87F",
+      "NicFNameLen": "22",
+      "NicFName": "WSL (Hyper-V firewall)",
+      "PortNameLen": "36",
+      "PortName": "790E58B4-7939-4434-9358-89AE7DDBE87F",
+      "PortFNameLen": "46",
+      "PortFName": "Host Vnic 790E58B4-7939-4434-9358-89AE7DDBE87E",
+      "SwitchNameLen": "36",
+      "SwitchName": "790E58B4-7939-4434-9358-89AE7DDBE87E",
+      "SwitchFNameLen": "22",
+      "SwitchFName": "WSL (Hyper-V firewall)"
+    }
+  },
+  {
+    "record_id": 27896,
+    "time": "2026-10-06T05:53:47.607183Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-Hyper-V-VmSwitch",
+    "event_id": 7,
+    "level": "information",
+    "message": "Miniport NIC 790E58B4-7939-4434-9358-89AE7DDBE87F (Friendly Name: WSL (Hyper-V firewall)) successfully initialized.",
+    "data": {
+      "NicNameLen": "36",
+      "NicName": "790E58B4-7939-4434-9358-89AE7DDBE87F",
+      "NicFNameLen": "22",
+      "NicFName": "WSL (Hyper-V firewall)"
+    }
+  },
+  {
+    "record_id": 27895,
+    "time": "2026-10-06T05:53:47.607151Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-Hyper-V-VmSwitch",
+    "event_id": 291,
+    "level": "information",
+    "message": "RSC offload modified for NIC 790E58B4-7939-4434-9358-89AE7DDBE87F (Friendly Name: WSL (Hyper-V firewall)) Previous IPv4: NIC teaming reallocate resources, Current IPv4: NIC teaming reallocate resources, Previous IPv6: NIC teaming reallocate resources, Current IPv6: NIC teaming reallocate resources. Reason: Disabled",
+    "data": {
+      "NicName": "790E58B4-7939-4434-9358-89AE7DDBE87F",
+      "NicFName": "WSL (Hyper-V firewall)",
+      "OldNicIPv4RscEnabled": "0",
+      "OldNicIPv6RscEnabled": "0",
+      "NewNicIPv4RscEnabled": "0",
+      "NewNicIPv6RscEnabled": "0",
+      "RscStateModifiedReason": "4"
+    }
+  },
+  {
+    "record_id": 27894,
+    "time": "2026-10-06T05:53:47.606717Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-Hyper-V-VmSwitch",
+    "event_id": 233,
+    "level": "information",
+    "message": "The operation 'Create' succeeded on nic 790E58B4-7939-4434-9358-89AE7DDBE87F (Friendly Name: WSL (Hyper-V firewall)), Instance Id {00000000-0000-0000-0000-000000000000}.",
+    "data": {
+      "NicNameLen": "36",
+      "NicName": "790E58B4-7939-4434-9358-89AE7DDBE87F",
+      "NicFNameLen": "22",
+      "NicFName": "WSL (Hyper-V firewall)",
+      "Operation": "7",
+      "NicInstanceId": "{00000000-0000-0000-0000-000000000000}"
+    }
+  },
+  {
+    "record_id": 27893,
+    "time": "2026-10-06T05:53:47.606716Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-Hyper-V-VmSwitch",
+    "event_id": 291,
+    "level": "information",
+    "message": "RSC offload modified for NIC 790E58B4-7939-4434-9358-89AE7DDBE87F (Friendly Name: WSL (Hyper-V firewall)) Previous IPv4: NIC teaming reallocate resources, Current IPv4: NIC teaming reallocate resources, Previous IPv6: NIC teaming reallocate resources, Current IPv6: NIC teaming reallocate resources. Reason: RSC OID",
+    "data": {
+      "NicName": "790E58B4-7939-4434-9358-89AE7DDBE87F",
+      "NicFName": "WSL (Hyper-V firewall)",
+      "OldNicIPv4RscEnabled": "0",
+      "OldNicIPv6RscEnabled": "0",
+      "NewNicIPv4RscEnabled": "0",
+      "NewNicIPv6RscEnabled": "0",
+      "RscStateModifiedReason": "3"
+    }
+  },
+  {
+    "record_id": 27892,
+    "time": "2026-10-06T05:53:47.606611Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-Hyper-V-VmSwitch",
+    "event_id": 264,
+    "level": "information",
+    "message": "Internal or External Port 790E58B4-7939-4434-9358-89AE7DDBE87F (Friendly Name: Host Vnic 790E58B4-7939-4434-9358-89AE7DDBE87E) successfully created on switch 790E58B4-7939-4434-9358-89AE7DDBE87E (Friendly Name: WSL (Hyper-V firewall)).",
+    "data": {
+      "PortNameLen": "36",
+      "PortName": "790E58B4-7939-4434-9358-89AE7DDBE87F",
+      "PortFNameLen": "46",
+      "PortFName": "Host Vnic 790E58B4-7939-4434-9358-89AE7DDBE87E",
+      "SwitchNameLen": "36",
+      "SwitchName": "790E58B4-7939-4434-9358-89AE7DDBE87E",
+      "SwitchFNameLen": "22",
+      "SwitchFName": "WSL (Hyper-V firewall)",
+      "Flags": "1",
+      "OwnerService": "1"
+    }
+  },
+  {
+    "record_id": 27891,
+    "time": "2026-10-06T05:53:47.606567Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-Hyper-V-VmSwitch",
+    "event_id": 292,
+    "level": "information",
+    "message": "RSC offload modified for Port 790E58B4-7939-4434-9358-89AE7DDBE87F (Friendly Name: Host Vnic 790E58B4-7939-4434-9358-89AE7DDBE87E) Previous: NIC teaming reallocate resources, Current: Required extensions missing. Reason: NIC create",
+    "data": {
+      "PortName": "790E58B4-7939-4434-9358-89AE7DDBE87F",
+      "PortFName": "Host Vnic 790E58B4-7939-4434-9358-89AE7DDBE87E",
+      "OldPortRscEnabled": "0",
+      "NewPortRscEnabled": "1",
+      "RscStateModifiedReason": "0"
+    }
+  },
+  {
+    "record_id": 27890,
+    "time": "2026-10-06T05:53:47.606534Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-Hyper-V-VmSwitch",
+    "event_id": 9,
+    "level": "information",
+    "message": "Switch 790E58B4-7939-4434-9358-89AE7DDBE87E (Friendly Name: WSL (Hyper-V firewall)) successfully initialized.",
+    "data": {
+      "SwitchNameLen": "36",
+      "SwitchName": "790E58B4-7939-4434-9358-89AE7DDBE87E",
+      "SwitchFNameLen": "22",
+      "SwitchFName": "WSL (Hyper-V firewall)",
+      "Flags": "32",
+      "OwnerService": "1"
+    }
+  },
+  {
+    "record_id": 27889,
+    "time": "2026-10-06T05:53:47.606289Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-Hyper-V-VmSwitch",
+    "event_id": 232,
+    "level": "information",
+    "message": "NIC 790E58B4-7939-4434-9358-89AE7DDBE87E (Friendly Name: WSL (Hyper-V firewall)) successfully connected to port 790E58B4-7939-4434-9358-89AE7DDBE87E (Friendly Name: WSL (Hyper-V firewall)) on switch 790E58B4-7939-4434-9358-89AE7DDBE87E(Friendly Name: WSL (Hyper-V firewall)).",
+    "data": {
+      "NicNameLen": "36",
+      "NicName": "790E58B4-7939-4434-9358-89AE7DDBE87E",
+      "NicFNameLen": "22",
+      "NicFName": "WSL (Hyper-V firewall)",
+      "PortNameLen": "36",
+      "PortName": "790E58B4-7939-4434-9358-89AE7DDBE87E",
+      "PortFNameLen": "22",
+      "PortFName": "WSL (Hyper-V firewall)",
+      "SwitchNameLen": "36",
+      "SwitchName": "790E58B4-7939-4434-9358-89AE7DDBE87E",
+      "SwitchFNameLen": "22",
+      "SwitchFName": "WSL (Hyper-V firewall)"
+    }
+  },
+  {
+    "record_id": 27888,
+    "time": "2026-10-06T05:53:47.606284Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-Hyper-V-VmSwitch",
+    "event_id": 233,
+    "level": "information",
+    "message": "The operation 'Create' succeeded on nic 790E58B4-7939-4434-9358-89AE7DDBE87E (Friendly Name: WSL (Hyper-V firewall)), Instance Id {00000000-0000-0000-0000-000000000000}.",
+    "data": {
+      "NicNameLen": "36",
+      "NicName": "790E58B4-7939-4434-9358-89AE7DDBE87E",
+      "NicFNameLen": "22",
+      "NicFName": "WSL (Hyper-V firewall)",
+      "Operation": "7",
+      "NicInstanceId": "{00000000-0000-0000-0000-000000000000}"
+    }
+  },
+  {
+    "record_id": 27887,
+    "time": "2026-10-06T05:53:47.606284Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-Hyper-V-VmSwitch",
+    "event_id": 291,
+    "level": "information",
+    "message": "RSC offload modified for NIC 790E58B4-7939-4434-9358-89AE7DDBE87E (Friendly Name: WSL (Hyper-V firewall)) Previous IPv4: NIC teaming reallocate resources, Current IPv4: NIC teaming reallocate resources, Previous IPv6: NIC teaming reallocate resources, Current IPv6: NIC teaming reallocate resources. Reason: RSC OID",
+    "data": {
+      "NicName": "790E58B4-7939-4434-9358-89AE7DDBE87E",
+      "NicFName": "WSL (Hyper-V firewall)",
+      "OldNicIPv4RscEnabled": "0",
+      "OldNicIPv6RscEnabled": "0",
+      "NewNicIPv4RscEnabled": "0",
+      "NewNicIPv6RscEnabled": "0",
+      "RscStateModifiedReason": "3"
+    }
+  },
+  {
+    "record_id": 27886,
+    "time": "2026-10-06T05:53:47.606275Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-Hyper-V-VmSwitch",
+    "event_id": 67,
+    "level": "information",
+    "message": "Port 790E58B4-7939-4434-9358-89AE7DDBE87E (Friendly Name: WSL (Hyper-V firewall)) successfully created on switch 790E58B4-7939-4434-9358-89AE7DDBE87E (Friendly Name: WSL (Hyper-V firewall)).",
+    "data": {
+      "PortNameLen": "36",
+      "PortName": "790E58B4-7939-4434-9358-89AE7DDBE87E",
+      "PortFNameLen": "22",
+      "PortFName": "WSL (Hyper-V firewall)",
+      "SwitchNameLen": "36",
+      "SwitchName": "790E58B4-7939-4434-9358-89AE7DDBE87E",
+      "SwitchFNameLen": "22",
+      "SwitchFName": "WSL (Hyper-V firewall)",
+      "Flags": "0",
+      "OwnerService": "1"
+    }
+  },
+  {
+    "record_id": 27885,
+    "time": "2026-10-06T05:53:47.606237Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-Hyper-V-VmSwitch",
+    "event_id": 292,
+    "level": "information",
+    "message": "RSC offload modified for Port 790E58B4-7939-4434-9358-89AE7DDBE87E (Friendly Name: WSL (Hyper-V firewall)) Previous: NIC teaming reallocate resources, Current: Required extensions missing. Reason: NIC create",
+    "data": {
+      "PortName": "790E58B4-7939-4434-9358-89AE7DDBE87E",
+      "PortFName": "WSL (Hyper-V firewall)",
+      "OldPortRscEnabled": "0",
+      "NewPortRscEnabled": "1",
+      "RscStateModifiedReason": "0"
+    }
+  },
+  {
+    "record_id": 27884,
+    "time": "2026-10-06T05:53:47.605284Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-Hyper-V-VmSwitch",
+    "event_id": 277,
+    "level": "information",
+    "message": "vmswitch.sys build 26100.amd64.ge_release_svc_im, debug false, official true, Sep 12 2026 06:07:25",
+    "data": {
+      "BuildNumber": "26100",
+      "BuildArch": "amd64",
+      "BuildBranch": "ge_release_svc_im",
+      "Debug": "false",
+      "Official": "true",
+      "Date": "Sep 12 2026",
+      "Time": "06:07:25"
+    }
+  },
+  {
+    "record_id": 27883,
+    "time": "2026-10-06T05:53:47.298312Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-Kernel-General",
+    "event_id": 16,
+    "level": "information",
+    "message": "The access history in hive \\SystemRoot\\System32\\Config\\DEFAULT was cleared updating 992 keys and creating 110 modified pages.",
+    "data": {
+      "HiveNameLength": "35",
+      "HiveName": "\\SystemRoot\\System32\\Config\\DEFAULT",
+      "KeysUpdated": "992",
+      "DirtyPages": "110"
+    }
+  },
+  {
+    "record_id": 27882,
+    "time": "2026-10-06T05:53:47.277111Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-Kernel-General",
+    "event_id": 16,
+    "level": "information",
+    "message": "The access history in hive \\SystemRoot\\System32\\Config\\SECURITY was cleared updating 90 keys and creating 5 modified pages.",
+    "data": {
+      "HiveNameLength": "36",
+      "HiveName": "\\SystemRoot\\System32\\Config\\SECURITY",
+      "KeysUpdated": "90",
+      "DirtyPages": "5"
+    }
+  },
+  {
+    "record_id": 27881,
+    "time": "2026-10-06T05:53:47.277000Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-Kernel-General",
+    "event_id": 16,
+    "level": "information",
+    "message": "The access history in hive \\SystemRoot\\System32\\Config\\SAM was cleared updating 57 keys and creating 6 modified pages.",
+    "data": {
+      "HiveNameLength": "31",
+      "HiveName": "\\SystemRoot\\System32\\Config\\SAM",
+      "KeysUpdated": "57",
+      "DirtyPages": "6"
+    }
+  },
+  {
+    "record_id": 27880,
+    "time": "2026-10-06T05:53:47.276796Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-Kernel-Power",
+    "event_id": 41,
+    "level": "critical",
+    "message": "The system has rebooted without cleanly shutting down first. This error could be caused if the system stopped responding, crashed, or lost power unexpectedly.",
+    "data": {
+      "BugcheckCode": "159",
+      "BugcheckParameter1": "0x4",
+      "BugcheckParameter2": "0x258",
+      "BugcheckParameter3": "0xffffc2887a2632c0",
+      "BugcheckParameter4": "0xffffe482c413f870",
+      "SleepInProgress": "1",
+      "PowerButtonTimestamp": "0",
+      "BootAppStatus": "0",
+      "Checkpoint": "7",
+      "ConnectedStandbyInProgress": "false",
+      "SystemSleepTransitionsToOn": "85",
+      "CsEntryScenarioInstanceId": "46",
+      "BugcheckInfoFromEFI": "false",
+      "CheckpointStatus": "0",
+      "CsEntryScenarioInstanceIdV2": "302",
+      "LongPowerButtonPressDetected": "false",
+      "LidReliability": "false",
+      "InputSuppressionState": "1",
+      "PowerButtonSuppressionState": "1",
+      "LidState": "0",
+      "WHEABootErrorCount": "1"
+    }
+  },
+  {
+    "record_id": 27879,
+    "time": "2026-10-06T05:53:47.268266Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-Kernel-Power",
+    "event_id": 125,
+    "level": "information",
+    "message": "ACPI thermal zone \\_TZ.THRM has been enumerated. _PSV = 0K _TC1 = 0 _TC2 = 0 _TSP = 0ms _AC0 = 0K _AC1 = 0K _AC2 = 0K _AC3 = 0K _AC4 = 0K _AC5 = 0K _AC6 = 0K _AC7 = 0K _AC8 = 0K _AC9 = 0K _CRT = 376K _HOT = 0K minimum throttle = 0 _CR3 = 0K",
+    "data": {
+      "ThermalZoneDeviceInstanceLength": "9",
+      "ThermalZoneDeviceInstance": "\\_TZ.THRM",
+      "_PSV": "0",
+      "_TC1": "0",
+      "_TC2": "0",
+      "_TSP": "0",
+      "_AC0": "0",
+      "_AC1": "0",
+      "_AC2": "0",
+      "_AC3": "0",
+      "_AC4": "0",
+      "_AC5": "0",
+      "_AC6": "0",
+      "_AC7": "0",
+      "_AC8": "0",
+      "_AC9": "0",
+      "_CRT": "376",
+      "_HOT": "0",
+      "MinimumThrottle": "0",
+      "_CR3": "0",
+      "OverThrottleThreshold": "0",
+      "DescriptionLength": "0",
+      "Description": "",
+      "_TZP": "0"
+    }
+  },
+  {
+    "record_id": 27878,
+    "time": "2026-10-06T05:53:47.268264Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-Kernel-Power",
+    "event_id": 125,
+    "level": "information",
+    "message": "ACPI thermal zone \\_TZ.THZ0 has been enumerated. _PSV = 0K _TC1 = 0 _TC2 = 0 _TSP = 0ms _AC0 = 0K _AC1 = 0K _AC2 = 0K _AC3 = 0K _AC4 = 0K _AC5 = 0K _AC6 = 0K _AC7 = 0K _AC8 = 0K _AC9 = 0K _CRT = 0K _HOT = 376K minimum throttle = 0 _CR3 = 0K",
+    "data": {
+      "ThermalZoneDeviceInstanceLength": "9",
+      "ThermalZoneDeviceInstance": "\\_TZ.THZ0",
+      "_PSV": "0",
+      "_TC1": "0",
+      "_TC2": "0",
+      "_TSP": "0",
+      "_AC0": "0",
+      "_AC1": "0",
+      "_AC2": "0",
+      "_AC3": "0",
+      "_AC4": "0",
+      "_AC5": "0",
+      "_AC6": "0",
+      "_AC7": "0",
+      "_AC8": "0",
+      "_AC9": "0",
+      "_CRT": "0",
+      "_HOT": "376",
+      "MinimumThrottle": "0",
+      "_CR3": "0",
+      "OverThrottleThreshold": "0",
+      "DescriptionLength": "0",
+      "Description": "",
+      "_TZP": "0"
+    }
+  },
+  {
+    "record_id": 27877,
+    "time": "2026-10-06T05:53:47.118478Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-FilterManager",
+    "event_id": 6,
+    "level": "information",
+    "message": "File System Filter 'npsvctrig' (10.0, ‎1978‎-‎05‎-‎14T03:13:30.000000000Z) has successfully loaded and registered with Filter Manager.",
+    "data": {
+      "FinalStatus": "0x0",
+      "DeviceVersionMajor": "10",
+      "DeviceVersionMinor": "0",
+      "DeviceNameLength": "9",
+      "DeviceName": "npsvctrig",
+      "DeviceTime": "1978-05-14T03:13:30.0000000Z"
+    }
+  },
+  {
+    "record_id": 27876,
+    "time": "2026-10-06T05:53:46.936636Z",
+    "log": "System",
+    "provider": "VfpExt",
+    "event_id": 7036,
+    "level": "information",
+    "message": "The service entered the Driver load complete state.",
+    "data": {
+      "param1": "",
+      "param2": "Driver load complete"
+    }
+  },
+  {
+    "record_id": 27875,
+    "time": "2026-10-06T05:53:46.936636Z",
+    "log": "System",
+    "provider": "VfpExt",
+    "event_id": 7036,
+    "level": "information",
+    "message": "The service entered the Driver load start state.",
+    "data": {
+      "param1": "",
+      "param2": "Driver load start"
+    }
+  },
+  {
+    "record_id": 27874,
+    "time": "2026-10-06T05:53:46.540080Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-FilterManager",
+    "event_id": 6,
+    "level": "information",
+    "message": "File System Filter 'UCPD' (10.0, ‎2104‎-‎11‎-‎24T17:34:34.000000000Z) has successfully loaded and registered with Filter Manager.",
+    "data": {
+      "FinalStatus": "0x0",
+      "DeviceVersionMajor": "10",
+      "DeviceVersionMinor": "0",
+      "DeviceNameLength": "4",
+      "DeviceName": "UCPD",
+      "DeviceTime": "2104-11-24T17:34:34.0000000Z"
+    }
+  },
+  {
+    "record_id": 27873,
+    "time": "2026-10-06T05:53:46.415197Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-FilterManager",
+    "event_id": 6,
+    "level": "information",
+    "message": "File System Filter 'FileCrypt' (10.0, ‎2075‎-‎08‎-‎31T16:07:07.000000000Z) has successfully loaded and registered with Filter Manager.",
+    "data": {
+      "FinalStatus": "0x0",
+      "DeviceVersionMajor": "10",
+      "DeviceVersionMinor": "0",
+      "DeviceNameLength": "9",
+      "DeviceName": "FileCrypt",
+      "DeviceTime": "2075-08-31T16:07:07.0000000Z"
+    }
+  },
+  {
+    "record_id": 27872,
+    "time": "2026-10-06T05:53:38.514774Z",
+    "log": "System",
+    "provider": "volmgr",
+    "event_id": 162,
+    "level": "error",
+    "message": "Dump file generation succeded.",
+    "data": {
+      "param1": "\\Device\\HarddiskVolume3"
+    }
+  },
+  {
+    "record_id": 27871,
+    "time": "2026-10-06T05:53:36.414836Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-Ntfs",
+    "event_id": 98,
+    "level": "information",
+    "message": "Volume C: (\\Device\\HarddiskVolume3) is healthy. No action is needed.",
+    "data": {
+      "DriveName": "C:",
+      "DeviceName": "\\Device\\HarddiskVolume3",
+      "CorruptionActionState": "0"
+    }
+  },
+  {
+    "record_id": 27870,
+    "time": "2026-10-06T05:53:35.609513Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-Ntfs",
+    "event_id": 98,
+    "level": "information",
+    "message": "Volume D: (\\Device\\HarddiskVolume8) is healthy. No action is needed.",
+    "data": {
+      "DriveName": "D:",
+      "DeviceName": "\\Device\\HarddiskVolume8",
+      "CorruptionActionState": "0"
+    }
+  },
+  {
+    "record_id": 27869,
+    "time": "2026-10-06T05:53:35.126567Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-BitLocker-Driver",
+    "event_id": 24709,
+    "level": "information",
+    "message": "This event contains the boot-time final TPM PCR values and TCG log data.",
+    "data": {
+      "DateTime": "2026-10-05T23:53:26.0000000Z",
+      "IsSecureBootOn": "true",
+      "TcgLogHashAlgorithm": "0xb",
+      "TcgLogHashAlgorithmSize": "32",
+      "AllFinalPcrValuesPcrBitmap": "0x8b5",
+      "CountPcrsInAllFinalPcrValuesPcrBitmap": "6",
+      "AllPcrDatasPcrBitmap": "0x8b5",
+      "CountPcrsInAllPcrDatasPcrBitmap": "6",
+      "FinalPcrValuesSize": "192",
+      "FinalPcrValues": "6C0862B56E09ECF4483BACBB61F29E5318FA70BB4A0C7BB4C6F00F48E6262CED3D458CFE55CC03EA1F443F1562BEEC8DF51C75E14A9FCF9A7234A13F198E7969B4CC7976D73C2771713EBF10546E13A42810B50E45DD5301BB987983165F6F2212C87FBF28C26BA75177165067A4BC03C75DF6096EB86E3D3A7F7FBA9877A7DA91F68BBC6E0C4147111DE0578D64719D4DE813B3B000903346B8BD8B2A6560750000000000000000000000000000000000000000000000000000000000000000",
+      "SealedPcrDigestsDatumsSize": "1480",
+      "SealedPcrDigestsDatums": "A40100001C000100010000000700360000001B00030000000300000028001C001A0003000000000000000000000000000000000000000000000000000000000000000000360000001B00010001000800000028001C001A0001009F31950EEDD760476BD455FC80CA33BD2F6BE95033952801A1A8E6F2EDB0D474360000001B00010002000100000028001C001A000100451E40ECB0C6F5475DD3D448FD9BCCF3C83C0E77BFDB35BC709A284876382443360000001B00010003000100000028001C001A000100CD64F5B0381A13853D2927293DE7F03F854317DA6DF0C4E6A68C12DAECED0417360000001B00010004000A00008028001C001A000100FBEDDE057F0BFA5D1CCFA44AFFBA65BB651042CAF86C0554318964065A2B9BB6520000001B0001000500040000001C0…"
+    }
+  },
+  {
+    "record_id": 27868,
+    "time": "2026-10-06T05:53:34.974541Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-BitLocker-Driver",
+    "event_id": 24641,
+    "level": "error",
+    "message": "An unexpected error was encountered attempting to retrieve the BitLocker volume master key during restart.",
+    "data": {
+      "ErrorCode": "0x0",
+      "Volume": "C:",
+      "WritePhase": "0x0",
+      "VolumeGUID": "{44d718b5-6f39-4bc4-9cd0-ab8994a87765}",
+      "OptionalGUID": "{00000000-0000-0000-0000-000000000000}",
+      "Flags": "0x1"
+    }
+  },
+  {
+    "record_id": 27867,
+    "time": "2026-10-06T05:53:34.974430Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-BitLocker-Driver",
+    "event_id": 24641,
+    "level": "error",
+    "message": "An unexpected error was encountered attempting to retrieve the BitLocker volume master key during restart.",
+    "data": {
+      "ErrorCode": "0x2000880",
+      "Volume": "C:",
+      "WritePhase": "0x0",
+      "VolumeGUID": "{44d718b5-6f39-4bc4-9cd0-ab8994a87765}",
+      "OptionalGUID": "{802b0d14-e5a1-4d53-8e39-b003f64b934e}",
+      "Flags": "0x4"
+    }
+  },
+  {
+    "record_id": 27866,
+    "time": "2026-10-06T05:53:34.974315Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-BitLocker-Driver",
+    "event_id": 24711,
+    "level": "information",
+    "message": "A V2 TPM protector was used to start Windows. Binding ID: {e0f3b476-a73e-4425-805b-0c939f260e04}.",
+    "data": {
+      "ErrorCode": "0x0",
+      "Volume": "C:",
+      "WritePhase": "0x0",
+      "VolumeGUID": "{44d718b5-6f39-4bc4-9cd0-ab8994a87765}",
+      "OptionalGUID": "{e0f3b476-a73e-4425-805b-0c939f260e04}",
+      "Flags": "0x0"
+    }
+  },
+  {
+    "record_id": 27865,
+    "time": "2026-10-06T05:53:34.974150Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-BitLocker-Driver",
+    "event_id": 24709,
+    "level": "information",
+    "message": "This event contains the boot-time final TPM PCR values and TCG log data.",
+    "data": {
+      "DateTime": "2026-10-05T23:53:26.0000000Z",
+      "IsSecureBootOn": "true",
+      "TcgLogHashAlgorithm": "0xb",
+      "TcgLogHashAlgorithmSize": "32",
+      "AllFinalPcrValuesPcrBitmap": "0x8b5",
+      "CountPcrsInAllFinalPcrValuesPcrBitmap": "6",
+      "AllPcrDatasPcrBitmap": "0x8b5",
+      "CountPcrsInAllPcrDatasPcrBitmap": "6",
+      "FinalPcrValuesSize": "192",
+      "FinalPcrValues": "6C0862B56E09ECF4483BACBB61F29E5318FA70BB4A0C7BB4C6F00F48E6262CED3D458CFE55CC03EA1F443F1562BEEC8DF51C75E14A9FCF9A7234A13F198E7969B4CC7976D73C2771713EBF10546E13A42810B50E45DD5301BB987983165F6F2212C87FBF28C26BA75177165067A4BC03C75DF6096EB86E3D3A7F7FBA9877A7DA91F68BBC6E0C4147111DE0578D64719D4DE813B3B000903346B8BD8B2A6560750000000000000000000000000000000000000000000000000000000000000000",
+      "SealedPcrDigestsDatumsSize": "1480",
+      "SealedPcrDigestsDatums": "A40100001C000100010000000700360000001B00030000000300000028001C001A0003000000000000000000000000000000000000000000000000000000000000000000360000001B00010001000800000028001C001A0001009F31950EEDD760476BD455FC80CA33BD2F6BE95033952801A1A8E6F2EDB0D474360000001B00010002000100000028001C001A000100451E40ECB0C6F5475DD3D448FD9BCCF3C83C0E77BFDB35BC709A284876382443360000001B00010003000100000028001C001A000100CD64F5B0381A13853D2927293DE7F03F854317DA6DF0C4E6A68C12DAECED0417360000001B00010004000A00008028001C001A000100FBEDDE057F0BFA5D1CCFA44AFFBA65BB651042CAF86C0554318964065A2B9BB6520000001B0001000500040000001C0…"
+    }
+  },
+  {
+    "record_id": 27864,
+    "time": "2026-10-06T05:53:34.839499Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-FilterManager",
+    "event_id": 6,
+    "level": "information",
+    "message": "File System Filter 'WdFilter' (10.0, ‎2048‎-‎07‎-‎08T13:08:07.000000000Z) has successfully loaded and registered with Filter Manager.",
+    "data": {
+      "FinalStatus": "0x0",
+      "DeviceVersionMajor": "10",
+      "DeviceVersionMinor": "0",
+      "DeviceNameLength": "8",
+      "DeviceName": "WdFilter",
+      "DeviceTime": "2048-07-08T13:08:07.0000000Z"
+    }
+  },
+  {
+    "record_id": 27863,
+    "time": "2026-10-06T05:53:34.837937Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-FilterManager",
+    "event_id": 6,
+    "level": "information",
+    "message": "File System Filter 'Wof' (10.0, ‎2010‎-‎05‎-‎10T02:46:27.000000000Z) has successfully loaded and registered with Filter Manager.",
+    "data": {
+      "FinalStatus": "0x0",
+      "DeviceVersionMajor": "10",
+      "DeviceVersionMinor": "0",
+      "DeviceNameLength": "3",
+      "DeviceName": "Wof",
+      "DeviceTime": "2010-05-10T02:46:27.0000000Z"
+    }
+  },
+  {
+    "record_id": 27862,
+    "time": "2026-10-06T05:53:34.836984Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-FilterManager",
+    "event_id": 6,
+    "level": "information",
+    "message": "File System Filter 'FileInfo' (10.0, ‎2093‎-‎04‎-‎01T19:29:43.000000000Z) has successfully loaded and registered with Filter Manager.",
+    "data": {
+      "FinalStatus": "0x0",
+      "DeviceVersionMajor": "10",
+      "DeviceVersionMinor": "0",
+      "DeviceNameLength": "8",
+      "DeviceName": "FileInfo",
+      "DeviceTime": "2093-04-01T19:29:43.0000000Z"
+    }
+  },
+  {
+    "record_id": 27861,
+    "time": "2026-10-06T05:53:33.477607Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-HAL",
+    "event_id": 16,
+    "level": "information",
+    "message": "IOMMU fault reporting has been initialized.",
+    "data": {}
+  },
+  {
+    "record_id": 27857,
+    "time": "2026-10-06T05:53:33.419674Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-Kernel-General",
+    "event_id": 20,
+    "level": "information",
+    "message": "The leap second configuration has been updated. Reason: Leap second data initialized from registry during boot Leap seconds enabled: true New leap second count: 0 Old leap second count: 0",
+    "data": {
+      "UpdateReason": "0",
+      "EnabledNew": "true",
+      "CountNew": "0",
+      "CountOld": "0"
+    }
+  },
+  {
+    "record_id": 27856,
+    "time": "2026-10-06T05:53:33.419483Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-Kernel-Boot",
+    "event_id": 30,
+    "level": "information",
+    "message": "The firmware reported boot metrics.",
+    "data": {
+      "ResetEndStart": "0",
+      "LoadOSImageStart": "5156",
+      "StartOSImageStart": "5209",
+      "ExitBootServicesEntry": "9448",
+      "ExitBootServicesExit": "9559"
+    }
+  },
+  {
+    "record_id": 27855,
+    "time": "2026-10-06T05:53:33.419468Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-IsolatedUserMode",
+    "event_id": 3,
+    "level": "information",
+    "message": "Secure Kernel started with status STATUS_SUCCESS and flags HvciEnabled,HvciStrictMode.",
+    "data": {
+      "Status": "0",
+      "Flags": "130103"
+    }
+  },
+  {
+    "record_id": 27853,
+    "time": "2026-10-06T05:53:33.416910Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-Hyper-V-Hypervisor",
+    "event_id": 165,
+    "level": "information",
+    "message": "Hypervisor configured mitigations for CVE-2019-11091, CVE-2018-12126, CVE-2018-12127, CVE-2018-12130 for virtual machines. Processor not affected: true Processor family not affected: false Processor supports microarchitectural buffer flush: true Buffer flush needed: false",
+    "data": {
+      "NotAffectedMdsNo": "true",
+      "NotAffectedAtom": "false",
+      "MdClearSupported": "true",
+      "BufferFlushNeeded": "false"
+    }
+  },
+  {
+    "record_id": 27852,
+    "time": "2026-10-06T05:53:33.416909Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-Hyper-V-Hypervisor",
+    "event_id": 156,
+    "level": "information",
+    "message": "Hypervisor configured mitigations for CVE-2018-3646 for virtual machines. Processor not affected: true Processor family not affected: false Processor supports cache flush: true HyperThreading enabled: false Parent hypervisor applies mitigations: false Mitigations disabled by bcdedit: false Mitigations enabled: true Cache flush needed: false",
+    "data": {
+      "NotAffectedRdclNo": "true",
+      "NotAffectedAtom": "false",
+      "CacheFlushSupported": "true",
+      "SmtEnabled": "false",
+      "ParentHypervisorFlushes": "false",
+      "DisabledLoadOption": "false",
+      "Enabled": "true",
+      "CacheFlushNeeded": "false"
+    }
+  },
+  {
+    "record_id": 27851,
+    "time": "2026-10-06T05:53:33.416908Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-Hyper-V-Hypervisor",
+    "event_id": 129,
+    "level": "information",
+    "message": "Hypervisor initialized I/O remapping. Hardware present: true Hardware enabled: true Policy: 0x1 Enabled features: 0x163 Internal information: 0x0 Problems: 0x0 Additional information: 0x0",
+    "data": {
+      "HardwarePresent": "true",
+      "HardwareEnabled": "true",
+      "Policy": "0x1",
+      "EnabledFeatures": "0x163",
+      "InternalInfo": "0x0",
+      "Problems": "0x0",
+      "AdditionalInfo": "0x0"
+    }
+  },
+  {
+    "record_id": 27850,
+    "time": "2026-10-06T05:53:33.416904Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-Hyper-V-Hypervisor",
+    "event_id": 2,
+    "level": "information",
+    "message": "Hypervisor scheduler type is 0x4.",
+    "data": {
+      "SchedulerType": "0x4"
+    }
+  },
+  {
+    "record_id": 27849,
+    "time": "2026-10-06T05:53:33.416904Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-Hyper-V-Hypervisor",
+    "event_id": 1,
+    "level": "information",
+    "message": "Hypervisor successfully started.",
+    "data": {}
+  },
+  {
+    "record_id": 27848,
+    "time": "2026-10-06T05:53:33.400622Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-Kernel-Boot",
+    "event_id": 27,
+    "level": "information",
+    "message": "The boot type was 0x0.",
+    "data": {
+      "BootType": "0",
+      "LoadOptions": "NOEXECUTE=OPTIN  HYPERVISORLAUNCHTYPE=AUTO  FVEBOOT=2125824  NOVGA  VSMLAUNCHTYPE=AUTO"
+    }
+  },
+  {
+    "record_id": 27847,
+    "time": "2026-10-06T05:53:33.400622Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-Kernel-Boot",
+    "event_id": 25,
+    "level": "information",
+    "message": "The boot menu policy was 0x1.",
+    "data": {
+      "BootMenuPolicy": "1"
+    }
+  },
+  {
+    "record_id": 27846,
+    "time": "2026-10-06T05:53:33.400622Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-Kernel-Boot",
+    "event_id": 242,
+    "level": "information",
+    "message": "SMM isolation detected. Level: 30",
+    "data": {
+      "IsolationLevel": "30"
+    }
+  },
+  {
+    "record_id": 27845,
+    "time": "2026-10-06T05:53:33.400553Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-Kernel-Boot",
+    "event_id": 272,
+    "level": "information",
+    "message": "PPAM Manifest Info: Using PPAM 3k manifest",
+    "data": {
+      "PpamStatus": "2"
+    }
+  },
+  {
+    "record_id": 27844,
+    "time": "2026-10-06T05:53:33.400518Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-Kernel-Boot",
+    "event_id": 238,
+    "level": "information",
+    "message": "EFI time zone bias: 2047. Daylight flags: 0. Firmware time: ‎2026‎-‎10‎-‎05T23:53:30.000000000Z.",
+    "data": {
+      "EfiTimeZoneBias": "2047",
+      "EfiDaylightFlags": "0",
+      "EfiTime": "2026-10-05T23:53:30.0000000Z"
+    }
+  },
+  {
+    "record_id": 27843,
+    "time": "2026-10-06T05:53:33.400468Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-Kernel-Boot",
+    "event_id": 20,
+    "level": "information",
+    "message": "The last shutdown's success status was false. The last boot's success status was true.",
+    "data": {
+      "LastShutdownGood": "false",
+      "LastBootGood": "true",
+      "LastBootId": "42",
+      "BootStatusPolicy": "2"
+    }
+  },
+  {
+    "record_id": 27842,
+    "time": "2026-10-06T05:53:33.400427Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-Kernel-Boot",
+    "event_id": 32,
+    "level": "information",
+    "message": "The bootmgr spent 0 ms waiting for user input.",
+    "data": {
+      "BitlockerUserInputTime": "0"
+    }
+  },
+  {
+    "record_id": 27841,
+    "time": "2026-10-06T05:53:33.400412Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-Kernel-Boot",
+    "event_id": 18,
+    "level": "information",
+    "message": "There are 0x1 boot options on this system.",
+    "data": {
+      "EntryCount": "1"
+    }
+  },
+  {
+    "record_id": 27840,
+    "time": "2026-10-06T05:53:33.400398Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-Kernel-Boot",
+    "event_id": 153,
+    "level": "information",
+    "message": "Virtualization-based security (policies: VBS Enabled,VSM Required,Hvci,Boot Chain Signer Soft Enforced,Measured Launch) is enabled due to VBS registry configuration.",
+    "data": {
+      "Status": "0",
+      "EnableDisableReason": "100",
+      "VsmPolicy": "8835"
+    }
+  },
+  {
+    "record_id": 27839,
+    "time": "2026-10-06T05:53:33.400282Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-Kernel-General",
+    "event_id": 25,
+    "level": "information",
+    "message": "The system time was initialized to ‎2026‎-‎10‎-‎06T05:53:32.500000000Z. Loader time: ‎2026‎-‎10‎-‎06T05:53:30.000000000Z Internal boot flags: 0x2 HAL RTC error code: 0x0 RTC time is in UTC: false Soft boot: false Success: true Phase: 0",
+    "data": {
+      "SystemTime": "2026-10-06T05:53:32.5000000Z",
+      "LoaderTime": "2026-10-06T05:53:30.0000000Z",
+      "InternalBootFlags": "2",
+      "HalRtcErrorCode": "0",
+      "RealTimeIsUniversal": "false",
+      "IsSoftBoot": "false",
+      "Success": "true",
+      "Phase": "0"
+    }
+  },
+  {
+    "record_id": 27838,
+    "time": "2026-10-06T05:53:33.400281Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-Kernel-General",
+    "event_id": 12,
+    "level": "information",
+    "message": "The operating system started at system time ‎2026‎-‎10‎-‎06T05:53:32.500000000Z.",
+    "data": {
+      "MajorVersion": "10",
+      "MinorVersion": "0",
+      "BuildVersion": "26100",
+      "QfeVersion": "9457",
+      "ServiceVersion": "0",
+      "BootMode": "0",
+      "StartTime": "2026-10-06T05:53:32.5000000Z"
+    }
+  },
+  {
+    "record_id": 21155,
+    "time": "2026-10-06T05:46:52.611957Z",
+    "log": "Application",
+    "provider": "Microsoft-Windows-Security-SPP",
+    "event_id": 16384,
+    "level": "information",
+    "message": "Successfully scheduled Software Protection service for re-start at 2126-09-12T05:45:52Z. Reason: RulesEngine.",
+    "data": {
+      "param1": "2126-09-12T05:45:52Z",
+      "param2": "RulesEngine"
+    }
+  },
+  {
+    "record_id": 21154,
+    "time": "2026-10-06T05:46:21.719595Z",
+    "log": "Application",
+    "provider": "Microsoft-Windows-Security-SPP",
+    "event_id": 16394,
+    "level": "information",
+    "message": "Offline downlevel migration succeeded.",
+    "data": {}
+  },
+  {
+    "record_id": 21153,
+    "time": "2026-10-06T05:45:53.920027Z",
+    "log": "Application",
+    "provider": "Microsoft-Windows-Search",
+    "event_id": 10024,
+    "level": "warning",
+    "message": "The filter host process 79112 did not respond and is being forcibly terminated.",
+    "data": {
+      "ExtraInfo": "",
+      "FilterHostProcessID": "79112"
+    }
+  },
+  {
+    "record_id": 21152,
+    "time": "2026-10-06T05:45:32.783159Z",
+    "log": "Application",
+    "provider": "Microsoft-Windows-Security-SPP",
+    "event_id": 16384,
+    "level": "information",
+    "message": "Successfully scheduled Software Protection service for re-start at 2126-09-12T05:45:32Z. Reason: RulesEngine.",
+    "data": {
+      "param1": "2126-09-12T05:45:32Z",
+      "param2": "RulesEngine"
+    }
+  },
+  {
+    "record_id": 21151,
+    "time": "2026-10-06T05:44:31.822219Z",
+    "log": "Application",
+    "provider": "Microsoft-Windows-Security-SPP",
+    "event_id": 16394,
+    "level": "information",
+    "message": "Offline downlevel migration succeeded.",
+    "data": {}
+  },
+  {
+    "record_id": 21150,
+    "time": "2026-10-06T05:44:17.744303Z",
+    "log": "Application",
+    "provider": "edgeupdate",
+    "event_id": 0,
+    "level": "information",
+    "message": "Service stopped.",
+    "data": {
+      "param1": "Service stopped"
+    }
+  },
+  {
+    "record_id": 21149,
+    "time": "2026-10-06T05:44:10.886372Z",
+    "log": "Application",
+    "provider": "IPF",
+    "event_id": 19,
+    "level": "information",
+    "message": "ESIF(2.3.20303.5058) TYPE: INFO MODULE: IPF TIME 1281461115 ms DPTF Build Version: 9.1.10007.1466 DPTF Build Date: Feb 13 2026 08:20:24 Message: EPO Modes Status:DC Endurance Gaming(Status: Enabled);DC Balanced(Status: Enabled);AC Balanced(Status: Enabled);AC Cool & Quiet(Status: Enabled); AC Performance(Status: Enabled); DC Cool & Quiet(Status: Enabled); DC Performance(Status: Enabled); AC Collaboration(Status: Enabled);DC Collaboration(Status: Enabled);AC VC IP Alignment(Status: Enabled);DC VC IP Alignment(Status: Enabled);DC System In Bag Hibernation(Status: Disabled); DC System In Bag Agg…",
+    "data": {
+      "Message": "ESIF(2.3.20303.5058) TYPE: INFO MODULE: IPF TIME 1281461115 ms\n\n    DPTF Build Version:  9.1.10007.1466    DPTF Build Date:  Feb 13 2026 08:20:24    Message:  EPO Modes Status:DC Endurance Gaming(Status: Enabled);DC Balanced(Status: Enabled);AC Balanced(Status: Enabled);AC Cool & Quiet(Status: Enabled); AC Performance(Status: Enabled); DC Cool & Quiet(Status: Enabled); DC Performance(Status: Enabled); AC Collaboration(Status: Enabled);DC Collaboration(Status: Enabled);AC VC IP Alignment(Status: Enabled);DC VC IP Alignment(Status: Enabled);DC System In Bag Hibernation(Status: Disabled); DC Sys…"
+    }
+  },
+  {
+    "record_id": 21148,
+    "time": "2026-10-06T05:44:05.145087Z",
+    "log": "Application",
+    "provider": "ESENT",
+    "event_id": 508,
+    "level": "warning",
+    "message": "svchost (6268,D,0,0) SRUJet: A request to write to the file \"C:\\Windows\\system32\\SRU\\SRUDB.dat\" at offset 18743296 (0x00000000011e0000) for 4096 (0x00001000) bytes succeeded, but took an abnormally long time (15 seconds) to be serviced by the OS. This problem is likely due to faulty hardware. Please contact your hardware vendor for further assistance diagnosing the problem.",
+    "data": {
+      "param1": "svchost",
+      "param2": "6268,D,0,0",
+      "param3": "SRUJet:",
+      "param4": "C:\\Windows\\system32\\SRU\\SRUDB.dat",
+      "param5": "18743296 (0x00000000011e0000)",
+      "param6": "4096 (0x00001000)",
+      "param7": "15"
+    }
+  },
+  {
+    "record_id": 21147,
+    "time": "2026-10-06T05:44:05.093701Z",
+    "log": "Application",
+    "provider": "ESENT",
+    "event_id": 508,
+    "level": "warning",
+    "message": "taskhostw (1880,D,0,0) WebCacheLocal: A request to write to the file \"C:\\Users\\[USER]\\AppData\\Local\\Microsoft\\Windows\\WebCache\\V01.log\" at offset 417792 (0x0000000000066000) for 12288 (0x00003000) bytes succeeded, but took an abnormally long time (23 seconds) to be serviced by the OS. This problem is likely due to faulty hardware. Please contact your hardware vendor for further assistance diagnosing the problem.",
+    "data": {
+      "param1": "taskhostw",
+      "param2": "1880,D,0,0",
+      "param3": "WebCacheLocal:",
+      "param4": "C:\\Users\\[USER]\\AppData\\Local\\Microsoft\\Windows\\WebCache\\V01.log",
+      "param5": "417792 (0x0000000000066000)",
+      "param6": "12288 (0x00003000)",
+      "param7": "23"
+    }
+  },
+  {
+    "record_id": 21146,
+    "time": "2026-10-06T05:44:01.469598Z",
+    "log": "Application",
+    "provider": "IPF",
+    "event_id": 19,
+    "level": "information",
+    "message": "ESIF(2.3.20303.5058) TYPE: INFO MODULE: IPF TIME 1281451698 ms DPTF Build Version: 9.1.10007.1466 DPTF Build Date: Feb 13 2026 08:20:24 Message: EPO Modes Status: Policy: Energy Performance Optimizer Policy [2]",
+    "data": {
+      "Message": "ESIF(2.3.20303.5058) TYPE: INFO MODULE: IPF TIME 1281451698 ms\n\n    DPTF Build Version:  9.1.10007.1466    DPTF Build Date:  Feb 13 2026 08:20:24    Message:  EPO Modes Status:    Policy:  Energy Performance Optimizer Policy [2]"
+    }
+  },
+  {
+    "record_id": 21145,
+    "time": "2026-10-06T05:43:58.420308Z",
+    "log": "Application",
+    "provider": "IPF",
+    "event_id": 19,
+    "level": "information",
+    "message": "ESIF(2.3.20303.5058) TYPE: INFO MODULE: IPF TIME 1281448649 ms <EVENTLOG>DTT Version: 9.1.10007.1466. IPF SDK Version: 1.0.23203.03. Minimum IPF Version Required: 1.0.11904.0.",
+    "data": {
+      "Message": "ESIF(2.3.20303.5058) TYPE: INFO MODULE: IPF TIME 1281448649 ms\n\n<EVENTLOG>DTT Version: 9.1.10007.1466. IPF SDK Version: 1.0.23203.03. Minimum IPF Version Required: 1.0.11904.0."
+    }
+  },
+  {
+    "record_id": 21144,
+    "time": "2026-10-06T05:43:54.037127Z",
+    "log": "Application",
+    "provider": "Microsoft-Windows-Search",
+    "event_id": 10024,
+    "level": "warning",
+    "message": "The filter host process 98260 did not respond and is being forcibly terminated.",
+    "data": {
+      "ExtraInfo": "",
+      "FilterHostProcessID": "98260"
+    }
+  },
+  {
+    "record_id": 27837,
+    "time": "2026-10-06T05:43:53.693471Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-Time-Service",
+    "event_id": 37,
+    "level": "information",
+    "message": "The time provider NtpClient is currently receiving valid time data from time.windows.com,0x9 (ntp.m|0x9|0.0.0.0:123->168.61.215.74:123).",
+    "data": {
+      "TimeSource": "time.windows.com,0x9 (ntp.m|0x9|0.0.0.0:123->168.61.215.74:123)"
+    }
+  },
+  {
+    "record_id": 27836,
+    "time": "2026-10-06T05:43:47.933224Z",
+    "log": "System",
+    "provider": "Service Control Manager",
+    "event_id": 7011,
+    "level": "error",
+    "message": "A timeout (30000 milliseconds) was reached while waiting for a transaction response from the ArmouryCrateService service.",
+    "data": {
+      "param1": "30000",
+      "param2": "ArmouryCrateService"
+    }
+  },
+  {
+    "record_id": 21143,
+    "time": "2026-10-06T05:43:27.758818Z",
+    "log": "Application",
+    "provider": "Microsoft-Windows-Security-SPP",
+    "event_id": 16384,
+    "level": "information",
+    "message": "Successfully scheduled Software Protection service for re-start at 2126-09-12T05:43:25Z. Reason: RulesEngine.",
+    "data": {
+      "param1": "2126-09-12T05:43:25Z",
+      "param2": "RulesEngine"
+    }
+  },
+  {
+    "record_id": 27835,
+    "time": "2026-10-06T05:43:22.959668Z",
+    "log": "System",
+    "provider": "Netwaw18",
+    "event_id": 6062,
+    "level": "warning",
+    "message": "6062 - Wi-Fi Driver Info",
+    "data": {
+      "param1": ""
+    }
+  },
+  {
+    "record_id": 27834,
+    "time": "2026-10-06T05:43:19.920085Z",
+    "log": "System",
+    "provider": "Netwaw18",
+    "event_id": 7021,
+    "level": "information",
+    "message": "7021 - Wi-Fi Driver Info",
+    "data": {
+      "param1": ""
+    }
+  },
+  {
+    "record_id": 21142,
+    "time": "2026-10-06T05:43:18.458913Z",
+    "log": "Application",
+    "provider": "Razer Central Service",
+    "event_id": 0,
+    "level": "information",
+    "message": "PowerEvent handled successfully by the service.",
+    "data": {
+      "param1": "PowerEvent handled successfully by the service."
+    }
+  },
+  {
+    "record_id": 21141,
+    "time": "2026-10-06T05:43:18.017862Z",
+    "log": "Application",
+    "provider": "IntelTraceAgentService",
+    "event_id": 257,
+    "level": "information",
+    "message": "system suspending",
+    "data": {
+      "param1": "system suspending"
+    }
+  },
+  {
+    "record_id": 27833,
+    "time": "2026-10-06T05:43:12.648389Z",
+    "log": "System",
+    "provider": "BthMini",
+    "event_id": 18,
+    "level": "information",
+    "message": "Windows cannot store Bluetooth authentication codes (link keys) on the local adapter. Bluetooth keyboards might not work in the system BIOS during startup.",
+    "data": {
+      "param1": ""
+    }
+  },
+  {
+    "record_id": 27832,
+    "time": "2026-10-06T05:43:12.610738Z",
+    "log": "System",
+    "provider": "ibtpci",
+    "event_id": 1830,
+    "level": "information",
+    "message": "VER",
+    "data": {
+      "param1": "",
+      "param2": "VER"
+    }
+  },
+  {
+    "record_id": 27831,
+    "time": "2026-10-06T05:43:10.239728Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-Time-Service",
+    "event_id": 134,
+    "level": "warning",
+    "message": "NtpClient was unable to set a manual peer to use as a time source because of DNS resolution error on 'time.windows.com,0x9'. NtpClient will try again in 15 minutes and double the reattempt interval thereafter. The error was: No such host is known. (0x80072AF9)",
+    "data": {
+      "ErrorMessage": "No such host is known. (0x80072AF9)",
+      "RetryMinutes": "15",
+      "DomainPeer": "time.windows.com,0x9"
+    }
+  },
+  {
+    "record_id": 27830,
+    "time": "2026-10-06T05:43:09.783951Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-USB-USBHUB3",
+    "event_id": 205,
+    "level": "information",
+    "message": "Re-enumerating a DRIPS blocking device that was previously removed when exiting low power epoch. USB Device: VID: 0xB05 PID: 0x1CE6 REV: 0x17 IsPortCycle: false",
+    "data": {
+      "fid_UsbDevice": "0x3d7746d2b648",
+      "fid_IsPortCycled": "false",
+      "fid_idVendor": "2821",
+      "fid_idProduct": "7398",
+      "fid_bcdDevice": "23",
+      "fid_enteringPowerLevel": "false",
+      "fid_status": "0"
+    }
+  },
+  {
+    "record_id": 27829,
+    "time": "2026-10-06T05:43:09.783399Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-USB-USBHUB3",
+    "event_id": 205,
+    "level": "information",
+    "message": "Re-enumerating a DRIPS blocking device that was previously removed when exiting low power epoch. USB Device: VID: 0x13D3 PID: 0x52C4 REV: 0x2553 IsPortCycle: false",
+    "data": {
+      "fid_UsbDevice": "0x3d7769b6e3a8",
+      "fid_IsPortCycled": "false",
+      "fid_idVendor": "5075",
+      "fid_idProduct": "21188",
+      "fid_bcdDevice": "9555",
+      "fid_enteringPowerLevel": "false",
+      "fid_status": "0"
+    }
+  },
+  {
+    "record_id": 27828,
+    "time": "2026-10-06T05:43:09.782869Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-USB-USBHUB3",
+    "event_id": 205,
+    "level": "information",
+    "message": "Re-enumerating a DRIPS blocking device that was previously removed when exiting low power epoch. USB Device: VID: 0x13D3 PID: 0x52C4 REV: 0x2553 IsPortCycle: false",
+    "data": {
+      "fid_UsbDevice": "0x3d7779a923a8",
+      "fid_IsPortCycled": "false",
+      "fid_idVendor": "5075",
+      "fid_idProduct": "21188",
+      "fid_bcdDevice": "9555",
+      "fid_enteringPowerLevel": "false",
+      "fid_status": "0"
+    }
+  },
+  {
+    "record_id": 27827,
+    "time": "2026-10-06T05:43:09.782819Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-USB-USBHUB3",
+    "event_id": 205,
+    "level": "information",
+    "message": "Re-enumerating a DRIPS blocking device that was previously removed when exiting low power epoch. USB Device: VID: 0x13D3 PID: 0x52C4 REV: 0x2553 IsPortCycle: false",
+    "data": {
+      "fid_UsbDevice": "0x3d7793685648",
+      "fid_IsPortCycled": "false",
+      "fid_idVendor": "5075",
+      "fid_idProduct": "21188",
+      "fid_bcdDevice": "9555",
+      "fid_enteringPowerLevel": "false",
+      "fid_status": "0"
+    }
+  },
+  {
+    "record_id": 27826,
+    "time": "2026-10-06T05:43:09.782763Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-USB-USBHUB3",
+    "event_id": 205,
+    "level": "information",
+    "message": "Re-enumerating a DRIPS blocking device that was previously removed when exiting low power epoch. USB Device: VID: 0xB05 PID: 0x193B REV: 0x2 IsPortCycle: false",
+    "data": {
+      "fid_UsbDevice": "0x3d7795330998",
+      "fid_IsPortCycled": "false",
+      "fid_idVendor": "2821",
+      "fid_idProduct": "6459",
+      "fid_bcdDevice": "2",
+      "fid_enteringPowerLevel": "false",
+      "fid_status": "0"
+    }
+  },
+  {
+    "record_id": 27825,
+    "time": "2026-10-06T05:43:09.671622Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-Kernel-Power",
+    "event_id": 566,
+    "level": "information",
+    "message": "The system session has transitioned from 303 to 304. Reason SxTransition BootId: 42",
+    "data": {
+      "BootId": "42",
+      "Reason": "20",
+      "PreviousSessionId": "303",
+      "PreviousSessionType": "2",
+      "PreviousSessionDurationInUs": "8780395212",
+      "PreviousEnergyCapacityAtStart": "48929",
+      "PreviousFullEnergyCapacityAtStart": "64850",
+      "PreviousEnergyCapacityAtEnd": "46358",
+      "PreviousFullEnergyCapacityAtEnd": "64850",
+      "NextSessionId": "304",
+      "NextSessionType": "3",
+      "PowerStateAc": "false",
+      "MonitorReason": "20"
+    }
+  },
+  {
+    "record_id": 27824,
+    "time": "2026-10-06T05:43:09.671026Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-Kernel-Power",
+    "event_id": 507,
+    "level": "information",
+    "message": "The system is exiting Modern Standby Reason: Sleep, Hibernate, or Shutdown.",
+    "data": {
+      "EnergyDrain": "1059",
+      "ActiveResidencyInUs": "43422867",
+      "NonDripsTimeActivatedInUs": "78977419336",
+      "FirstDripsEntryInUs": "31829801",
+      "DripsResidencyInUs": "8747075072",
+      "DurationInUs": "8790497939",
+      "DripsTransitions": "30",
+      "FullChargeCapacityRatio": "72",
+      "AudioPlaying": "false",
+      "Reason": "20",
+      "AudioPlaybackInUs": "0",
+      "NonActivatedCpuInUs": "15921929",
+      "PowerStateAc": "false",
+      "HwDripsResidencyInUs": "8737762473",
+      "ExitLatencyInUs": "104006",
+      "DisconnectedStandby": "true",
+      "AoAcCompliantNic": "true",
+      "NonAttributedCpuInUs": "1873158",
+      "ModernSleepEnabledActionsBitmask": "7",
+      "ModernSleepAppliedActionsBitmask": "4",
+      "LidOpenState": "false",
+      "ExternalMonitorConnectedState": "false",
+      "ScenarioInstanceId": "48",
+      "IsCsSessionInProgressOnExit": "true",
+      "BatteryRemainingCapacityOnExit": "46358",
+      "BatteryFullChargeCapacityOnExit": "64850",
+      "ScenarioInstanceIdV2": "302",
+      "BootId": "42",
+      "InputSuppressionActionCount": "0",
+      "NonResiliencyTimeInUs": "18446743994749797512",
+      "ResiliencyDripsTimeInUs": "8747075072",
+      "ResiliencyHwDripsTimeInUs": "8737762473",
+      "GdiOnTime": "0",
+      "DwmSyncFlushTime": "0",
+      "MonitorPowerOnTime": "0",
+      "SleepEntered": "true",
+      "ScreenOffEnergyCapacityAtStart": "48944",
+      "ScreenOffEnergyCapacityAtEnd": "48929",
+      "ScreenOffDurationInUs": "10108034",
+      "SleepEnergyCapacityAtStart": "48929",
+      "SleepEnergyCapacityAtEnd": "46358",
+      "SleepDurationInUs": "8780395212",
+      "ScreenOffFullEnergyCapacityAtStart": "64850",
+      "ScreenOffFullEnergyCapacityAtEnd": "64850",
+      "SleepFullEnergyCapacityAtStart": "64850",
+      "SleepFullEnergyCapacityAtEnd": "64850",
+      "PowerSchemeInfo": "20",
+      "PowerButtonSuppressionActionCount": "0",
+      "ScreenOffSwDripsResidencyInUs": "0",
+      "ScreenOffHwDripsResidencyInUs": "0",
+      "SleepSwDripsResidencyInUs": "8747075072",
+      "SleepHwDripsResidencyInUs": "8737762473"
+    }
+  },
+  {
+    "record_id": 27823,
+    "time": "2026-10-06T05:43:09.652696Z",
+    "log": "System",
+    "provider": "Microsoft-Windows-Kernel-Power",
+    "event_id": 172,
+    "level": "information",
+    "message": "Connectivity state in standby: Connected, Reason: None",
+    "data": {
+      "State": "0",
+      "Reason": "0"
+    }
+  }
+]

@@ -43,7 +43,7 @@ class EvalCase(_Model):
     scenario: str = Field(description="Replay directory, relative to the repository root.")
     expected: Expected
     tags: list[str] = Field(default_factory=list)
-    source: Literal["synthetic", "captured"]
+    source: Literal["synthetic", "recorded"]
 
     def public(self) -> dict[str, str]:
         """The only fields a runner may show the model. ``expected`` and ``tags`` are labels."""
