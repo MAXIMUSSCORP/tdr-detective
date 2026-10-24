@@ -6,7 +6,7 @@ from datetime import UTC, datetime, timedelta
 
 import pytest
 
-from pc_diag_mcp.collectors import PowerShellCollector, collect
+from pc_diag_mcp.collectors import CollectorUnavailable, PowerShellCollector, collect
 from pc_diag_mcp.models import (
     DriverInfo,
     DxDiagSummary,
@@ -74,7 +74,13 @@ def test_live_system_info(collector: PowerShellCollector) -> None:
 
 
 def test_live_dxdiag(collector: PowerShellCollector) -> None:
-    assert isinstance(collector.dxdiag(), DxDiagSummary)
+    # A Windows Server CI runner may not offer dxdiag; reporting it unavailable is correct.
+    try:
+        summary = collector.dxdiag()
+    except CollectorUnavailable as exc:
+        assert exc.reason
+        return
+    assert isinstance(summary, DxDiagSummary)
 
 
 def test_live_incident_scan(collector: PowerShellCollector) -> None:

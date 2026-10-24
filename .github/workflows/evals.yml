@@ -1,0 +1,103 @@
+# Paid model runs. Manual dispatch only: this workflow never runs on pushes or PRs.
+name: Evals
+
+on:
+  workflow_dispatch:
+    inputs:
+      config:
+        description: Configuration to run
+        type: choice
+        options: [both, raw_dump, skill_tools]
+        default: both
+      split:
+        description: Case split
+        type: choice
+        options: [dev, test, all]
+        default: dev
+      limit:
+        description: Run at most this many cases per configuration (empty for all)
+        type: string
+        default: ""
+      max_cost_usd:
+        description: Budget in USD for each configuration
+        type: string
+        default: "15"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: evals
+  cancel-in-progress: false
+
+jobs:
+  evals:
+    # ubuntu-latest: the claude-agent-sdk 0.2.165 manylinux x86_64 wheel bundles the
+    # Claude Code CLI, so no separate install is needed. (Its lock has no Windows wheel;
+    # on Windows the sdist would install without a CLI.)
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - uses: astral-sh/setup-uv@1c37ad07a6a961277cf70c0d37d6f313000f5884 # v10.3.0
+        with:
+          python-version: "3.12"
+          enable-cache: true
+
+      - name: Install
+        run: uv sync --locked --all-extras
+
+      - name: Check the Agent SDK's bundled Claude Code CLI
+        if: inputs.config != 'raw_dump'
+        run: |
+          uv run python - <<'EOF'
+          import pathlib
+          import subprocess
+
+          import claude_agent_sdk
+
+          cli = pathlib.Path(claude_agent_sdk.__file__).parent / "_bundled" / "claude"
+          if not cli.is_file():
+              raise SystemExit(f"claude-agent-sdk has no bundled Claude Code CLI at {cli}")
+          version = subprocess.run([str(cli), "--version"], check=True, capture_output=True, text=True)
+          print(f"bundled Claude Code CLI: {version.stdout.strip()} ({cli})")
+          EOF
+
+      - name: Run evals
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          CONFIG: ${{ inputs.config }}
+          SPLIT: ${{ inputs.split }}
+          LIMIT: ${{ inputs.limit }}
+          MAX_COST_USD: ${{ inputs.max_cost_usd }}
+        run: |
+          set -euo pipefail
+          if [ -z "${ANTHROPIC_API_KEY}" ]; then
+            echo "::error::the ANTHROPIC_API_KEY secret is not set"
+            exit 1
+          fi
+          if [ "$CONFIG" = "both" ]; then configs="raw_dump skill_tools"; else configs="$CONFIG"; fi
+          extra=()
+          if [ -n "$LIMIT" ]; then extra+=(--limit "$LIMIT"); fi
+          status=0
+          for config in $configs; do
+            # Run every requested config even if an earlier one fails, then report failure.
+            uv run python -m evals.run --config "$config" --split "$SPLIT" \
+              --max-cost-usd "$MAX_COST_USD" "${extra[@]}" || status=$?
+          done
+          exit "$status"
+
+      - name: Report
+        if: ${{ !cancelled() }}
+        run: uv run python -m evals.report
+
+      - name: Upload results
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: eval-results-${{ github.run_id }}
+          path: evals/results/
+          if-no-files-found: warn
