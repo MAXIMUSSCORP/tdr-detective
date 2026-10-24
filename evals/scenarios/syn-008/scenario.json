@@ -1,0 +1,18 @@
+{
+  "id": "syn-008",
+  "description": "Synthetic replay syn-008: Laptop (12th Gen Intel(R) Core(TM) i5-1240P; Intel(R) Iris(R) Xe Graphics; 16 GB RAM), Microsoft Windows 11 Home build 22621.4317. Event window 2026-10-09T03:45:09Z to 2026-10-09T07:54:09Z.",
+  "now": "2026-10-09T07:54:09Z",
+  "system": {
+    "os_caption": "Microsoft Windows 11 Home",
+    "os_build": "22621.4317",
+    "gpus": [
+      {
+        "name": "Intel(R) Iris(R) Xe Graphics",
+        "vendor": "intel",
+        "driver_version": "31.0.101.5592",
+        "driver_date": "2024-06-27"
+      }
+    ],
+    "utc_offset_minutes": 330
+  }
+}

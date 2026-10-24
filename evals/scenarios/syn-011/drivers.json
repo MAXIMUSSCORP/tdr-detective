@@ -1,0 +1,56 @@
+[
+  {
+    "device_name": "AMD Radeon RX 6800 XT",
+    "device_class": "Display",
+    "provider": "Advanced Micro Devices, Inc.",
+    "version": "31.0.24033.1003",
+    "date": "2024-03-07",
+    "inf_name": "oem61.inf",
+    "signed": true
+  },
+  {
+    "device_name": "Realtek(R) Audio",
+    "device_class": "MEDIA",
+    "provider": "Realtek Semiconductor Corp.",
+    "version": "6.0.9580.1",
+    "date": "2023-09-18",
+    "inf_name": "oem31.inf",
+    "signed": true
+  },
+  {
+    "device_name": "Intel(R) Ethernet Controller I225-V",
+    "device_class": "Net",
+    "provider": "Intel",
+    "version": "1.1.4.43",
+    "date": "2023-08-04",
+    "inf_name": "oem12.inf",
+    "signed": true
+  },
+  {
+    "device_name": "Standard NVM Express Controller",
+    "device_class": "SCSIAdapter",
+    "provider": "Microsoft",
+    "version": "10.0.22621.4111",
+    "date": "2006-06-21",
+    "inf_name": "stornvme.inf",
+    "signed": true
+  },
+  {
+    "device_name": "AMD GPIO Controller",
+    "device_class": "System",
+    "provider": "Advanced Micro Devices, Inc",
+    "version": "2.2.0.130",
+    "date": "2023-02-13",
+    "inf_name": "oem9.inf",
+    "signed": true
+  },
+  {
+    "device_name": "AMD PSP 11.0 Device",
+    "device_class": "SecurityDevices",
+    "provider": "Advanced Micro Devices Inc.",
+    "version": "5.25.0.0",
+    "date": "2023-05-08",
+    "inf_name": "oem15.inf",
+    "signed": true
+  }
+]

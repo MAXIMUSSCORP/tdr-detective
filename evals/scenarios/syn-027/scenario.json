@@ -1,0 +1,18 @@
+{
+  "id": "syn-027",
+  "description": "Synthetic replay syn-027: Desktop (12th Gen Intel(R) Core(TM) i7-12700K; NVIDIA GeForce RTX 3070; 32 GB RAM), Microsoft Windows 11 Home build 22631.4317. Event window 2026-10-15T21:40:31Z to 2026-10-17T01:56:31Z.",
+  "now": "2026-10-17T01:56:31Z",
+  "system": {
+    "os_caption": "Microsoft Windows 11 Home",
+    "os_build": "22631.4317",
+    "gpus": [
+      {
+        "name": "NVIDIA GeForce RTX 3070",
+        "vendor": "nvidia",
+        "driver_version": "32.0.15.6094",
+        "driver_date": "2024-08-14"
+      }
+    ],
+    "utc_offset_minutes": -240
+  }
+}

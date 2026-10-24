@@ -1,0 +1,104 @@
+{
+  "taken_at": "2026-10-05T15:37:40Z",
+  "memory": {
+    "total_bytes": 34359738368,
+    "available_bytes": 18790481920,
+    "commit_used_bytes": 15247133900,
+    "commit_limit_bytes": 39460012032
+  },
+  "disks": [
+    {
+      "name": "0 C:",
+      "queue_length": 38.5,
+      "percent_busy": 100.0,
+      "read_bytes_per_sec": 367001.6,
+      "write_bytes_per_sec": 104857.6
+    },
+    {
+      "name": "1 D:",
+      "queue_length": 0.0,
+      "percent_busy": 0.4,
+      "read_bytes_per_sec": 0.0,
+      "write_bytes_per_sec": 0.0
+    }
+  ],
+  "top_processes": [
+    {
+      "pid": 17640,
+      "name": "StarforgeOnline.exe",
+      "working_set_bytes": 6657199308,
+      "private_bytes": 7516192768,
+      "page_faults": 4102331,
+      "read_bytes": 2149580800,
+      "write_bytes": 325058560,
+      "cpu_seconds": 960.0,
+      "started": "2026-10-05T10:31:57.249655Z"
+    },
+    {
+      "pid": 24892,
+      "name": "chrome.exe",
+      "working_set_bytes": 1181116006,
+      "private_bytes": 1717986918,
+      "page_faults": 3220991,
+      "read_bytes": 325058560,
+      "write_bytes": 440401920,
+      "cpu_seconds": 410.0,
+      "started": "2026-10-05T11:11:20.044453Z"
+    },
+    {
+      "pid": 18548,
+      "name": "MsMpEng.exe",
+      "working_set_bytes": 285975644,
+      "private_bytes": 402965680,
+      "page_faults": 4049602,
+      "read_bytes": 36421829,
+      "write_bytes": 340547514,
+      "cpu_seconds": 42.1,
+      "started": "2026-10-05T11:52:59.446226Z"
+    },
+    {
+      "pid": 21752,
+      "name": "dwm.exe",
+      "working_set_bytes": 139388233,
+      "private_bytes": 290392154,
+      "page_faults": 2800661,
+      "read_bytes": 571330423,
+      "write_bytes": 180046174,
+      "cpu_seconds": 350.2,
+      "started": "2026-10-05T14:30:38.800871Z"
+    },
+    {
+      "pid": 12192,
+      "name": "SearchHost.exe",
+      "working_set_bytes": 186678880,
+      "private_bytes": 112007328,
+      "page_faults": 3470668,
+      "read_bytes": 31437486,
+      "write_bytes": 61448675,
+      "cpu_seconds": 136.5,
+      "started": "2026-10-05T14:22:33.828444Z"
+    },
+    {
+      "pid": 23956,
+      "name": "explorer.exe",
+      "working_set_bytes": 214748364,
+      "private_bytes": 107374182,
+      "page_faults": 1002448,
+      "read_bytes": 62914560,
+      "write_bytes": 41943040,
+      "cpu_seconds": 55.0,
+      "started": "2026-10-05T14:42:35.578469Z"
+    },
+    {
+      "pid": 6764,
+      "name": "svchost.exe",
+      "working_set_bytes": 54116832,
+      "private_bytes": 36077888,
+      "page_faults": 1106486,
+      "read_bytes": 444141563,
+      "write_bytes": 407037191,
+      "cpu_seconds": 122.3,
+      "started": "2026-10-05T13:25:49.371782Z"
+    }
+  ]
+}

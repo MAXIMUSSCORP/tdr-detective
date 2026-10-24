@@ -1,0 +1,18 @@
+{
+  "id": "syn-002",
+  "description": "Synthetic replay syn-002: Desktop (Intel(R) Core(TM) i5-9400F CPU @ 2.90GHz; NVIDIA GeForce GTX 1660 SUPER; 16 GB RAM), Microsoft Windows 10 Pro build 19045.5011. Event window 2026-10-16T21:55:18Z to 2026-10-17T01:07:18Z.",
+  "now": "2026-10-17T01:07:18Z",
+  "system": {
+    "os_caption": "Microsoft Windows 10 Pro",
+    "os_build": "19045.5011",
+    "gpus": [
+      {
+        "name": "NVIDIA GeForce GTX 1660 SUPER",
+        "vendor": "nvidia",
+        "driver_version": "32.0.15.6094",
+        "driver_date": "2024-08-14"
+      }
+    ],
+    "utc_offset_minutes": -300
+  }
+}

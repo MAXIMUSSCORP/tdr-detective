@@ -1,0 +1,20 @@
+{
+  "directx_version": "DirectX 12",
+  "display_devices": [
+    {
+      "name": "NVIDIA GeForce RTX 4080 SUPER",
+      "manufacturer": "NVIDIA",
+      "driver_version": "32.0.15.6094",
+      "driver_date": "2024-08-14",
+      "dedicated_memory_mb": 16376,
+      "feature_levels": [
+        "12_2",
+        "12_1",
+        "12_0",
+        "11_1",
+        "11_0"
+      ]
+    }
+  ],
+  "problems": []
+}
