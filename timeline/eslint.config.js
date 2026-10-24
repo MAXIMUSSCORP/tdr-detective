@@ -1,15 +1,19 @@
 // @ts-check
 const js = require("@eslint/js");
+const { defineConfig } = require("eslint/config");
 const reactHooks = require("eslint-plugin-react-hooks");
 const globals = require("globals");
 const tseslint = require("typescript-eslint");
 
-module.exports = tseslint.config(
+const unusedVars = ["error", { argsIgnorePattern: "^_", varsIgnorePattern: "^_" }];
+
+module.exports = defineConfig(
   { ignores: ["**/node_modules/", "**/dist/", "**/coverage/"] },
   {
     files: ["eslint.config.js", "api/**/*.js"],
     extends: [js.configs.recommended],
     languageOptions: { sourceType: "commonjs", globals: globals.node },
+    rules: { "no-unused-vars": unusedVars },
   },
   {
     files: ["api/test/**/*.js"],
@@ -17,13 +21,8 @@ module.exports = tseslint.config(
   },
   {
     files: ["web/**/*.{ts,tsx}"],
-    extends: [js.configs.recommended, ...tseslint.configs.recommended, reactHooks.configs.flat.recommended],
+    extends: [js.configs.recommended, tseslint.configs.recommended, reactHooks.configs.flat.recommended],
     languageOptions: { globals: globals.browser },
-  },
-  {
-    rules: {
-      "no-unused-vars": "off",
-      "@typescript-eslint/no-unused-vars": ["error", { argsIgnorePattern: "^_", varsIgnorePattern: "^_" }],
-    },
+    rules: { "@typescript-eslint/no-unused-vars": unusedVars },
   },
 );
