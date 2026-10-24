@@ -3,7 +3,8 @@
 Scoring rules (per case):
 
 * ``valid``: a ``Diagnosis`` was obtained, either from ``ResultRow.diagnosis`` or from
-  the *last* fenced ```` ```json ```` block in ``raw_answer``. Anything else (no block,
+  the *last* fenced ```` ```json ```` block in ``raw_answer``
+  (``tdr_agent.answer.extract_diagnosis``). Anything else (no block,
   bad JSON, schema violation, runner error) is a scored failure, never an exception.
 * ``top1``: ``causes[0]`` is the expected primary category.
 * ``acceptable_top1``: ``causes[0]`` is any acceptable category.
@@ -17,43 +18,16 @@ An invalid answer scores ``False`` on every metric.
 
 from __future__ import annotations
 
-import json
 import math
-import re
 import statistics
 from collections import defaultdict
 from collections.abc import Iterable, Sequence
-from dataclasses import dataclass
 
-from pydantic import BaseModel, ConfigDict, ValidationError
+from pydantic import BaseModel, ConfigDict
 
 from evals.schema import EvalCase, ResultRow
-from pc_diag_mcp.models import BugReport, Diagnosis
-
-_JSON_FENCE = re.compile(r"```json[ \t]*\r?\n(.*?)```", re.DOTALL | re.IGNORECASE)
-_ERROR_LIMIT = 500
-
-
-@dataclass(frozen=True)
-class Extraction:
-    diagnosis: Diagnosis | None
-    error: str | None
-
-
-def extract_diagnosis(raw_answer: str) -> Extraction:
-    """Parse the last fenced ```json block of ``raw_answer`` as a ``Diagnosis``."""
-    blocks = _JSON_FENCE.findall(raw_answer)
-    if not blocks:
-        return Extraction(None, "no fenced ```json block found")
-    try:
-        payload = json.loads(blocks[-1])
-    except json.JSONDecodeError as exc:
-        return Extraction(None, f"invalid JSON in ```json block: {exc}")
-    try:
-        return Extraction(Diagnosis.model_validate(payload), None)
-    except ValidationError as exc:
-        detail = str(exc).replace("\n", " ")[:_ERROR_LIMIT]
-        return Extraction(None, f"Diagnosis validation failed: {detail}")
+from pc_diag_mcp.models import BugReport
+from tdr_agent.answer import extract_diagnosis
 
 
 class CaseScore(BaseModel):
@@ -95,10 +69,9 @@ def score_case(case: EvalCase, row: ResultRow) -> CaseScore:
     diagnosis = row.diagnosis
     error = row.error
     if diagnosis is None:
-        extraction = extract_diagnosis(row.raw_answer)
-        diagnosis = extraction.diagnosis
-        if extraction.error:
-            error = f"{error}; {extraction.error}" if error else extraction.error
+        diagnosis, parse_error = extract_diagnosis(row.raw_answer)
+        if parse_error:
+            error = f"{error}; {parse_error}" if error else parse_error
 
     common = {"case_id": case.id, "config": row.config, "model": row.model, "split": case.split}
     if diagnosis is None:
