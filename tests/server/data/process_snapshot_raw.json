@@ -1,0 +1,93 @@
+{
+  "processes": [
+    {
+      "working_set_bytes": 5109338112,
+      "read_bytes": 0,
+      "page_faults": 2821550,
+      "private_bytes": 5379448832,
+      "started": "2026-10-24T01:09:03.6135140Z",
+      "name": "vmmemWSL",
+      "write_bytes": 0,
+      "pid": 43752,
+      "cpu_seconds": 605.734375
+    },
+    {
+      "working_set_bytes": 2083586048,
+      "read_bytes": 0,
+      "page_faults": 8843543,
+      "private_bytes": 9441280,
+      "started": "2026-10-22T20:20:00.9832470Z",
+      "name": "Memory Compression",
+      "write_bytes": 0,
+      "pid": 4952,
+      "cpu_seconds": 644.46875
+    },
+    {
+      "working_set_bytes": 826802176,
+      "read_bytes": 431782109,
+      "page_faults": 5540383,
+      "private_bytes": 821063680,
+      "started": "2026-10-23T19:53:18.2805500Z",
+      "name": "chrome.exe",
+      "write_bytes": 1930390238,
+      "pid": 50872,
+      "cpu_seconds": 1149.171875
+    },
+    {
+      "working_set_bytes": 717570048,
+      "read_bytes": 145276140,
+      "page_faults": 1811306,
+      "private_bytes": 882601984,
+      "started": "2026-10-23T17:57:18.8417420Z",
+      "name": "chrome.exe",
+      "write_bytes": 82776382,
+      "pid": 57020,
+      "cpu_seconds": 137.625
+    },
+    {
+      "working_set_bytes": 665686016,
+      "read_bytes": 157485948,
+      "page_faults": 1679705,
+      "private_bytes": 782336000,
+      "started": "2026-10-24T00:19:00.6550520Z",
+      "name": "chrome.exe",
+      "write_bytes": 78297115,
+      "pid": 51956,
+      "cpu_seconds": 100.21875
+    },
+    {
+      "working_set_bytes": 633044992,
+      "read_bytes": 6496232,
+      "page_faults": 476531,
+      "private_bytes": 569622528,
+      "started": "2026-10-24T01:21:44.6916120Z",
+      "name": "claude.exe",
+      "write_bytes": 28847008,
+      "pid": 14412,
+      "cpu_seconds": 16.4375
+    }
+  ],
+  "memory": {
+    "total_bytes": 33697841152,
+    "available_bytes": 2356002816,
+    "commit_limit_bytes": 72352546816,
+    "commit_used_bytes": 50214342656
+  },
+  "disks": [
+    {
+      "percent_busy": 2,
+      "write_bytes_per_sec": 679258,
+      "read_bytes_per_sec": 247002,
+      "name": "0 C:",
+      "queue_length": 0
+    },
+    {
+      "percent_busy": 0,
+      "write_bytes_per_sec": 0,
+      "read_bytes_per_sec": 0,
+      "name": "1 D:",
+      "queue_length": 0
+    }
+  ],
+  "taken_at": "2026-10-24T01:51:49.9129622Z"
+}

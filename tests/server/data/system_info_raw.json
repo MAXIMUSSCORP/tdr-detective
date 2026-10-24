@@ -1,0 +1,22 @@
+{
+  "ubr": 9711,
+  "os_caption": "Microsoft Windows 11 Home",
+  "gpus": [
+    {
+      "driver_version": "32.0.101.8509",
+      "compatibility": "Intel Corporation",
+      "name": "Intel(R) Graphics",
+      "pci_vendor_id": "8086",
+      "driver_date": "2026-02-05"
+    },
+    {
+      "driver_version": "32.0.16.1742",
+      "compatibility": "NVIDIA",
+      "name": "NVIDIA GeForce RTX 5070 Ti Laptop GPU",
+      "pci_vendor_id": "10DE",
+      "driver_date": "2026-09-30"
+    }
+  ],
+  "utc_offset_minutes": -360,
+  "os_build": "26200"
+}
