@@ -14,13 +14,15 @@ auto-approve on its own.
 
 from __future__ import annotations
 
+import fnmatch
 import json
 import os
 import re
 import shlex
+import stat
 import sys
 import time
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, cast, get_args
 
@@ -45,6 +47,7 @@ from claude_agent_sdk.types import EffortLevel, McpStdioServerConfig
 from pydantic import BaseModel, ConfigDict
 
 from pc_diag_mcp.models import Diagnosis, RunStats
+from pc_diag_mcp.tools.events import TEMPFILE_GLOB, events_temp_dir
 from tdr_agent.answer import extract_diagnosis
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
@@ -86,14 +89,17 @@ SYSTEM_PROMPT = (
 # Compressor arguments: input paths plus the flags that only tune the digest. --map is left
 # out on purpose because it writes a file. Values are validated; argparse prefix
 # abbreviations (e.g. --ma for --map) never match because flags must be exact.
-_PATH_ARG = re.compile(r"^[A-Za-z0-9_./:\\+,@%][A-Za-z0-9_./:\\+,@%=-]*$")
+_PATH_ARG = re.compile(r"^[A-Za-z0-9_./+,@%][A-Za-z0-9_./+,@%=-]*$")
+# UNC (//host, which leaks NTLM over SMB) and drive-qualified paths; backslashes are
+# rejected for the whole command by _SHELL_META.
+_FOREIGN_PATH = re.compile(r"^(?://|[A-Za-z]:)")
 _FLAG_VALUES = {
     "--prefix": re.compile(r"^[A-Za-z]{1,8}$"),
     "--burst-gap": re.compile(r"^[0-9]{1,5}(\.[0-9]{1,3})?$"),
     "--max-noise-lines": re.compile(r"^[0-9]{1,4}$"),
 }
 _HELP_FLAGS = ("-h", "--help")
-_SHELL_META = re.compile(r"[;&|`$<>(){}\[\]*?!~#'\"\n\r]")
+_SHELL_META = re.compile(r"[;&|`$<>(){}\[\]*?!~#'\"\n\r\\]")
 _DATE_SUFFIX = re.compile(r"^-\d{8}$")
 
 
@@ -120,7 +126,25 @@ def _denial(tool_name: str) -> str:
     )
 
 
-def _compressor_args_ok(args: list[str]) -> bool:
+def is_saved_events_file(arg: str, cwd: Path, temp_dir: Path) -> bool:
+    """True only for a regular ``events-*.json`` file directly inside the MCP server's temp
+    dir, after resolving symlinks. Anything else could be a UNC path, a device, a FIFO or
+    simply a file the agent has no business reading."""
+    if _FOREIGN_PATH.match(arg) or not _PATH_ARG.match(arg):
+        return False
+    target = Path(arg)
+    resolved = Path(os.path.realpath(target if target.is_absolute() else cwd / target))
+    if resolved.parent != Path(os.path.realpath(temp_dir)):
+        return False
+    if not fnmatch.fnmatchcase(resolved.name, TEMPFILE_GLOB):
+        return False
+    try:
+        return stat.S_ISREG(os.stat(resolved).st_mode)
+    except OSError:
+        return False
+
+
+def _compressor_args_ok(args: list[str], cwd: Path, temp_dir: Path) -> bool:
     i = 0
     while i < len(args):
         arg = args[i]
@@ -132,16 +156,16 @@ def _compressor_args_ok(args: list[str]) -> bool:
             if not _FLAG_VALUES[flag].match(value):
                 return False
             i += 1 if eq else 2
-        elif arg.startswith("-") or not _PATH_ARG.match(arg):
+        elif arg.startswith("-") or not is_saved_events_file(arg, cwd, temp_dir):
             return False
         else:
             i += 1
     return True
 
 
-def is_compressor_command(command: str) -> bool:
-    """True only for ``python[3] <COMPRESSOR> [files] [digest flags]`` with no shell syntax
-    and no option that writes a file."""
+def is_compressor_command(command: str, cwd: Path, temp_dir: Path) -> bool:
+    """True only for ``python[3] <COMPRESSOR> [saved event files] [digest flags]`` with no
+    shell syntax and no option that writes a file."""
     if _SHELL_META.search(command):
         return False
     try:
@@ -150,7 +174,7 @@ def is_compressor_command(command: str) -> bool:
         return False
     if len(argv) < 2 or argv[0] not in ("python", "python3") or argv[1] != COMPRESSOR:
         return False
-    return _compressor_args_ok(argv[2:])
+    return _compressor_args_ok(argv[2:], cwd, temp_dir)
 
 
 def is_skill_file(file_path: object, cwd: Path) -> bool:
@@ -163,7 +187,7 @@ def is_skill_file(file_path: object, cwd: Path) -> bool:
     return resolved.is_relative_to(root)
 
 
-def is_permitted(tool_name: str, tool_input: dict[str, Any], cwd: Path) -> bool:
+def is_permitted(tool_name: str, tool_input: dict[str, Any], cwd: Path, temp_dir: Path) -> bool:
     """The read-only surface: pc-diag tools, this skill and its files, and the compressor."""
     if tool_name.startswith(MCP_PREFIX):
         return True
@@ -172,20 +196,26 @@ def is_permitted(tool_name: str, tool_input: dict[str, Any], cwd: Path) -> bool:
     if tool_name == "Read":
         return is_skill_file(tool_input.get("file_path"), cwd)
     command = tool_input.get("command")
-    return tool_name == "Bash" and isinstance(command, str) and is_compressor_command(command)
+    return (
+        tool_name == "Bash"
+        and isinstance(command, str)
+        and is_compressor_command(command, cwd, temp_dir)
+    )
 
 
 @dataclass(frozen=True)
 class Guard:
-    """The permission callback and PreToolUse hook for one run, bound to its cwd."""
+    """The permission callback and PreToolUse hook for one run, bound to its cwd and to
+    the pc-diag server's temp dir (the only place the compressor may read from)."""
 
     cwd: Path
+    temp_dir: Path = field(default_factory=events_temp_dir)
 
     async def can_use_tool(
         self, tool_name: str, tool_input: dict[str, Any], context: ToolPermissionContext
     ) -> PermissionResultAllow | PermissionResultDeny:
         """Permission prompt replacement: allow the read-only surface, deny everything else."""
-        if is_permitted(tool_name, tool_input, self.cwd):
+        if is_permitted(tool_name, tool_input, self.cwd, self.temp_dir):
             return PermissionResultAllow()
         return PermissionResultDeny(message=_denial(tool_name))
 
@@ -198,7 +228,7 @@ class Guard:
         if hook_input["hook_event_name"] != "PreToolUse":
             return {}
         tool_name = hook_input["tool_name"]
-        if is_permitted(tool_name, hook_input["tool_input"], self.cwd):
+        if is_permitted(tool_name, hook_input["tool_input"], self.cwd, self.temp_dir):
             return {}  # no decision: the normal permission flow still applies
         return {
             "hookSpecificOutput": {
