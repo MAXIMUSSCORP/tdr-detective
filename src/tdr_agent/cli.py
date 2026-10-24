@@ -4,6 +4,10 @@ tdr-detective ask "Why did my screen go black at 9:42?" [--replay DIR] [--json]
                   [--model M] [--effort E] [--budget USD] [--post http://127.0.0.1:4173]
 tdr-detective schema [--check]
 tdr-detective serve
+
+--post accepts https URLs, or plain http only on a loopback host (127.0.0.1, localhost,
+::1). URLs with credentials are refused, redirects are not followed and no proxy is used.
+Everything printed (and the posted incident) goes through credential redaction.
 """
 
 from __future__ import annotations
@@ -11,24 +15,68 @@ from __future__ import annotations
 import argparse
 import asyncio
 import json
+import math
 import sys
 import urllib.error
 from collections.abc import Sequence
+from email.message import Message
 from pathlib import Path
-from urllib.parse import urlsplit
-from urllib.request import Request, urlopen
+from typing import IO, Any
+from urllib.parse import urlsplit, urlunsplit
+from urllib.request import HTTPRedirectHandler, ProxyHandler, Request, build_opener
 
 from pc_diag_mcp.models import BugReport, Diagnosis, Incident, RunStats
+from tdr_agent.redact import redact
 
 EFFORTS = ("low", "medium", "high", "xhigh", "max")
 POST_TIMEOUT_S = 15.0
+LOOPBACK_HOSTS = frozenset({"127.0.0.1", "localhost", "::1"})
 
 
-def _http_url(value: str) -> str:
-    parts = urlsplit(value)
-    if parts.scheme not in ("http", "https") or not parts.netloc:
-        raise argparse.ArgumentTypeError(f"{value!r} is not an http(s) URL")
-    return value.rstrip("/")
+class _NoRedirect(HTTPRedirectHandler):
+    def redirect_request(
+        self, req: Request, fp: IO[bytes], code: int, msg: str, headers: Message, newurl: str
+    ) -> Request | None:
+        raise urllib.error.HTTPError(req.full_url, code, "redirect not followed", headers, fp)
+
+
+# No proxies (the incident must not leave through one) and no redirects.
+_OPENER = build_opener(ProxyHandler({}), _NoRedirect)
+
+
+def urlopen(request: Request, timeout: float) -> Any:
+    return _OPENER.open(request, timeout=timeout)
+
+
+def _post_url(value: str) -> str:
+    """https anywhere, or http on loopback only; never credentials in the URL. Error
+    messages do not echo the value, so userinfo is never printed."""
+    try:
+        parts = urlsplit(value)
+        host = parts.hostname
+        parts.port  # noqa: B018 - raises ValueError for a malformed port
+    except ValueError:
+        raise argparse.ArgumentTypeError("the --post URL is malformed") from None
+    if parts.username is not None or parts.password is not None or "@" in parts.netloc:
+        raise argparse.ArgumentTypeError("the --post URL must not contain credentials")
+    if not host or not (
+        parts.scheme == "https" or (parts.scheme == "http" and host in LOOPBACK_HOSTS)
+    ):
+        raise argparse.ArgumentTypeError(
+            "--post must be an https URL, or http on 127.0.0.1, localhost or [::1]"
+        )
+    return urlunsplit((parts.scheme, parts.netloc, parts.path.rstrip("/"), "", ""))
+
+
+def _positive_money(text: str) -> float:
+    value = float(text)
+    if not math.isfinite(value) or value <= 0:
+        raise argparse.ArgumentTypeError("must be a finite amount above zero")
+    return value
+
+
+def _out(text: str, *, err: bool = False) -> None:
+    print(redact(text), file=sys.stderr if err else sys.stdout)
 
 
 def bug_report_markdown(report: BugReport) -> str:
@@ -75,13 +123,13 @@ def render_report(diagnosis: Diagnosis) -> str:
 
 
 def post_incident(base_url: str, incident: Incident) -> str:
-    request = Request(  # noqa: S310 - the scheme is checked to be http(s) by _http_url
+    request = Request(  # noqa: S310 - the scheme is checked to be http(s) by _post_url
         f"{base_url}/api/incidents",
-        data=incident.model_dump_json().encode("utf-8"),
+        data=redact(incident.model_dump_json()).encode("utf-8"),
         headers={"Content-Type": "application/json"},
         method="POST",
     )
-    with urlopen(request, timeout=POST_TIMEOUT_S) as response:  # noqa: S310
+    with urlopen(request, timeout=POST_TIMEOUT_S) as response:
         body = json.loads(response.read() or b"{}")
     return f"posted incident {incident.id} ({'created' if body.get('created') else 'updated'})"
 
@@ -100,15 +148,15 @@ def _ask(args: argparse.Namespace) -> int:
         )
     )
     if args.json:
-        print(result.model_dump_json(indent=2))
+        _out(result.model_dump_json(indent=2))
     else:
         if result.diagnosis is not None:
-            print(render_report(result.diagnosis))
+            _out(render_report(result.diagnosis))
         else:
-            print(f"No valid diagnosis: {result.parse_error}\n\nRaw answer:\n{result.answer}")
-        print(f"\nRun: {_run_line(result.run, result.tool_calls)}")
+            _out(f"No valid diagnosis: {result.parse_error}\n\nRaw answer:\n{result.answer}")
+        _out(f"\nRun: {_run_line(result.run, result.tool_calls)}")
         if result.error:
-            print(f"Error: {result.error}")
+            _out(f"Error: {result.error}")
 
     code = 0 if result.diagnosis is not None and result.error is None else 1
     if args.post:
@@ -124,13 +172,13 @@ def _ask(args: argparse.Namespace) -> int:
             args.question, result.diagnosis, collector, run=result.run, replay_dir=args.replay
         )
         try:
-            print(post_incident(args.post, incident), file=sys.stderr)
+            _out(post_incident(args.post, incident), err=True)
         except urllib.error.HTTPError as exc:
             detail = exc.read()[:500].decode("utf-8", "replace")
-            print(f"posting failed: HTTP {exc.code}: {detail}", file=sys.stderr)
+            _out(f"posting failed: HTTP {exc.code}: {detail}", err=True)
             return 1
         except (urllib.error.URLError, OSError) as exc:
-            print(f"posting failed: {exc}", file=sys.stderr)
+            _out(f"posting failed: {exc}", err=True)
             return 1
     return code
 
@@ -148,10 +196,10 @@ def build_parser() -> argparse.ArgumentParser:
     ask.add_argument("--replay", type=Path, help="replay directory instead of the live host")
     ask.add_argument("--model", default="claude-opus-5-5", help="full model id")
     ask.add_argument("--effort", default="medium", choices=EFFORTS)
-    ask.add_argument("--budget", type=float, default=1.0, help="max spend in USD")
+    ask.add_argument("--budget", type=_positive_money, default=1.0, help="max spend in USD")
     ask.add_argument("--json", action="store_true", help="print the TriageResult as JSON")
     ask.add_argument(
-        "--post", type=_http_url, metavar="URL", help="timeline API base URL to POST to"
+        "--post", type=_post_url, metavar="URL", help="timeline API base URL to POST to"
     )
 
     schema = sub.add_parser("schema", help="regenerate schema/incident.schema.json")
