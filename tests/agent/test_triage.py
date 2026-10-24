@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import asyncio
+import os
 import sys
 from collections.abc import AsyncIterator
 from pathlib import Path
@@ -198,7 +199,7 @@ def decide(
     name: str, inp: dict[str, Any], cwd: Path = triage.REPO_ROOT
 ) -> PermissionResultAllow | PermissionResultDeny:
     async def go() -> PermissionResultAllow | PermissionResultDeny:
-        guard = triage.Guard(cwd)
+        guard = triage.Guard(cwd, cwd / "tmp" / "tdr-detective")
         return await guard.can_use_tool(name, inp, ToolPermissionContext(tool_use_id="t1"))
 
     return asyncio.run(go())
@@ -214,7 +215,23 @@ def hook(name: str, inp: dict[str, Any], cwd: Path = triage.REPO_ROOT) -> Any:
         "tool_input": inp,
         "tool_use_id": "t1",
     }
-    return asyncio.run(triage.Guard(cwd).pre_tool_use(hook_input, "t1", {"signal": None}))
+    guard = triage.Guard(cwd, cwd / "tmp" / "tdr-detective")
+    return asyncio.run(guard.pre_tool_use(hook_input, "t1", {"signal": None}))
+
+
+SAVED = "tmp/tdr-detective/events-a1.json"
+SAVED_B = "tmp/tdr-detective/events-b2.json"
+SAVED_VIA_DOTDOT = "tmp/tdr-detective/../tdr-detective/events-a1.json"
+
+
+@pytest.fixture
+def sandbox(tmp_path: Path) -> Path:
+    """A cwd whose pc-diag temp dir holds two saved event files."""
+    temp_dir = tmp_path / "tmp" / "tdr-detective"
+    temp_dir.mkdir(parents=True)
+    for rel in (SAVED, SAVED_B):
+        (tmp_path / rel).write_text("[]", encoding="utf-8")
+    return tmp_path
 
 
 @pytest.mark.parametrize(
@@ -222,16 +239,77 @@ def hook(name: str, inp: dict[str, Any], cwd: Path = triage.REPO_ROOT) -> Any:
     [
         ("mcp__pc-diag__query_events", {"start": "x"}),
         ("Skill", {"skill": "pc-stability-triage"}),
-        ("Bash", {"command": f"python {triage.COMPRESSOR} /tmp/tdr-detective/events-1.json"}),
-        ("Bash", {"command": f"python {triage.COMPRESSOR} /tmp/a.json /tmp/b.json"}),
+        ("Bash", {"command": f"python {triage.COMPRESSOR} {SAVED}"}),
+        ("Bash", {"command": f"python {triage.COMPRESSOR} {SAVED} {SAVED_B}"}),
         ("Bash", {"command": f"python {triage.COMPRESSOR} --help"}),
-        ("Bash", {"command": f"python3 {triage.COMPRESSOR} a.json --prefix F --burst-gap 30"}),
-        ("Bash", {"command": f"python {triage.COMPRESSOR} a.json --max-noise-lines=40"}),
+        ("Bash", {"command": f"python3 {triage.COMPRESSOR} {SAVED} --prefix F --burst-gap 30"}),
+        ("Bash", {"command": f"python {triage.COMPRESSOR} {SAVED} --max-noise-lines=40"}),
+        ("Bash", {"command": f"python {triage.COMPRESSOR} {SAVED_VIA_DOTDOT}"}),
     ],
 )
-def test_guardrail_allows_only_the_read_only_surface(name: str, inp: dict[str, Any]) -> None:
-    assert isinstance(decide(name, inp), PermissionResultAllow)
-    assert hook(name, inp) == {}  # the PreToolUse hook makes no decision
+def test_guardrail_allows_only_the_read_only_surface(
+    sandbox: Path, name: str, inp: dict[str, Any]
+) -> None:
+    assert isinstance(decide(name, inp, sandbox), PermissionResultAllow)
+    assert hook(name, inp, sandbox) == {}  # the PreToolUse hook makes no decision
+
+
+def test_compressor_accepts_the_absolute_temp_path(sandbox: Path) -> None:
+    absolute = (sandbox / SAVED).resolve().as_posix()
+    command = f"python {triage.COMPRESSOR} {absolute}"
+    expected = triage._FOREIGN_PATH.match(absolute) is None  # drive-qualified on Windows
+    assert triage.is_compressor_command(command, sandbox, sandbox / "tmp" / "tdr-detective") is (
+        expected
+    )
+
+
+@pytest.mark.parametrize(
+    "arg",
+    [
+        "//attacker/share/tdr-detective/events-a1.json",  # UNC: NTLM over SMB
+        "C:/Users/x/AppData/Local/Temp/tdr-detective/events-a1.json",
+        "c:events-a1.json",
+        "tmp/tdr-detective/other.json",  # wrong name
+        "tmp/tdr-detective/events-missing.json",
+        "tmp/events-a1.json",  # outside the temp dir
+        "tmp/tdr-detective/nested/events-n.json",
+        "/dev/zero",
+        "/etc/passwd",
+        "tmp/tdr-detective/events-link.json",  # symlink pointing out
+        "tmp/tdr-detective/events-dir.json",  # a directory
+        "tmp/tdr-detective/events-fifo.json",  # a FIFO, where supported
+    ],
+)
+def test_compressor_reads_only_saved_event_files(sandbox: Path, arg: str) -> None:
+    temp_dir = sandbox / "tmp" / "tdr-detective"
+    (sandbox / "tmp" / "events-a1.json").write_text("[]", encoding="utf-8")
+    (temp_dir / "nested").mkdir()
+    (temp_dir / "nested" / "events-n.json").write_text("[]", encoding="utf-8")
+    (temp_dir / "other.json").write_text("[]", encoding="utf-8")
+    outside = sandbox / "secret.json"
+    outside.write_text("[]", encoding="utf-8")
+    (temp_dir / "events-link.json").symlink_to(outside)
+    (temp_dir / "events-dir.json").mkdir()
+    if hasattr(os, "mkfifo"):
+        os.mkfifo(temp_dir / "events-fifo.json")
+    command = f"python {triage.COMPRESSOR} {arg}"
+    assert isinstance(decide("Bash", {"command": command}, sandbox), PermissionResultDeny)
+    assert (
+        hook("Bash", {"command": command}, sandbox)["hookSpecificOutput"]["permissionDecision"]
+        == "deny"
+    )
+
+
+@pytest.mark.parametrize(
+    "command",
+    [
+        f"python {triage.COMPRESSOR} \\\\attacker\\share\\events-a1.json",
+        f"python {triage.COMPRESSOR} tmp\\tdr-detective\\events-a1.json",
+        f"python {triage.COMPRESSOR} \\\\?\\C:\\x\\events-a1.json",
+    ],
+)
+def test_compressor_rejects_backslash_paths(sandbox: Path, command: str) -> None:
+    assert isinstance(decide("Bash", {"command": command}, sandbox), PermissionResultDeny)
 
 
 @pytest.mark.parametrize(

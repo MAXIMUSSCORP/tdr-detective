@@ -70,6 +70,8 @@ def count_by_provider_id(records: list[EventRecord]) -> list[EventCount]:
     ]
 
 
+TEMP_SUBDIR = "tdr-detective"
+TEMPFILE_GLOB = "events-*.json"
 TEMPFILE_MAX_AGE_S = 3600
 TEMPFILE_MAX_COUNT = 50
 
@@ -96,7 +98,7 @@ def _prune(directory: Path) -> None:
     the cap (leaving room for the file about to be written)."""
     now = time.time()
     files: list[tuple[float, Path]] = []
-    for path in directory.glob("events-*.json"):
+    for path in directory.glob(TEMPFILE_GLOB):
         info = os.lstat(path)
         if not stat.S_ISREG(info.st_mode):
             continue
@@ -109,9 +111,14 @@ def _prune(directory: Path) -> None:
         path.unlink(missing_ok=True)
 
 
+def events_temp_dir(base_dir: Path | None = None) -> Path:
+    """Where ``save_to="tempfile"`` writes: ``<system temp>/tdr-detective``."""
+    return Path(base_dir or tempfile.gettempdir()) / TEMP_SUBDIR
+
+
 def save_events_tempfile(records: list[EventRecord], base_dir: Path | None = None) -> Path:
     """Write records to ``<temp>/tdr-detective/events-*.json`` with owner-only permissions."""
-    directory = Path(base_dir or tempfile.gettempdir()) / "tdr-detective"
+    directory = events_temp_dir(base_dir)
     directory.mkdir(mode=0o700, parents=True, exist_ok=True)
     _require_private_dir(directory)
     _prune(directory)
