@@ -47,6 +47,8 @@ from pc_diag_mcp.tools.events import cluster_hits
 from .conftest import sample
 
 T0 = datetime(2026, 10, 6, 5, 0, tzinfo=UTC)
+# Spans every captured sample event (2026-07-30 .. 2026-10-21) within the 90-day cap.
+SAMPLE_WINDOW = (datetime(2026, 7, 29, tzinfo=UTC), datetime(2026, 10, 23, tzinfo=UTC))
 
 
 def rec(record_id: int, minutes: float, provider: str, event_id: int, **kw: object) -> EventRecord:
@@ -141,7 +143,7 @@ def test_query_events_counts_and_validation() -> None:
     stub = StubCollector(records)
     result = query_events(
         stub,
-        "2026-01-01T00:00:00Z",  # type: ignore[arg-type]  # ISO strings, as the skill sends them
+        "2026-07-29T00:00:00Z",  # type: ignore[arg-type]  # ISO strings, as the skill sends them
         "2026-10-23T00:00:00+00:00",  # type: ignore[arg-type]
         levels=["critical", "error", "warning"],  # type: ignore[list-item]
         max_events=100,
@@ -173,8 +175,7 @@ def test_query_events_tempfile_mode(tmp_path: Path, monkeypatch: pytest.MonkeyPa
     records = sample_records()
     result = query_events(
         StubCollector(records),
-        T0 - timedelta(days=200),
-        T0 + timedelta(days=30),
+        *SAMPLE_WINDOW,
         providers=["Windows Error Reporting"],
         event_ids=[1001],
         save_to="tempfile",
@@ -277,9 +278,7 @@ def test_incidents_truncate_signals_and_note_caps() -> None:
 
 
 def test_incidents_on_sample_events() -> None:
-    result = list_tdr_incidents(
-        StubCollector(sample_records()), T0 - timedelta(days=200), T0 + timedelta(days=30)
-    )
+    result = list_tdr_incidents(StubCollector(sample_records()), *SAMPLE_WINDOW)
     codes = {s.code for i in result.incidents for s in i.signals}
     assert "0x9F" in codes and "0x1B0" in codes
     assert all(s.signature_id != "display_tdr_4101" for i in result.incidents for s in i.signals)
@@ -332,7 +331,7 @@ def test_tools_with_replay_collector(tmp_path: Path) -> None:
 
     events = [e.model_dump(mode="json") for e in sample_records()]
     collector = ReplayCollector(write_replay(tmp_path / "r", events=events))
-    result = list_tdr_incidents(collector, T0 - timedelta(days=200), T0 + timedelta(days=30))
+    result = list_tdr_incidents(collector, *SAMPLE_WINDOW)
     assert result.incidents and result.collection.scripts == ["replay:events.json"]
     assert system_info(collector).collection.scripts == ["replay:scenario.json"]
 
