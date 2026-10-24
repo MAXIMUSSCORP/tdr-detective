@@ -12,12 +12,15 @@ script deletes.
 
 from __future__ import annotations
 
+import http.client
 import json
+import os
 import platform
 import shutil
 import subprocess
 import sys
 import urllib.error
+import urllib.parse
 import urllib.request
 from collections.abc import Callable, Mapping, Sequence
 from datetime import UTC, datetime
@@ -76,14 +79,15 @@ DXDIAG_WAIT_S = 90
 SCRIPTS_BY_METHOD: dict[str, tuple[str, ...]] = {
     "events": ("get_events.ps1",),
     "process_snapshot": ("process_snapshot.ps1",),
-    "sensors": ("sensors_cim.ps1",),
+    "sensors": ("lhm_http.ps1", "sensors_cim.ps1"),
     "drivers": ("drivers.ps1",),
     "system_info": ("system_info.ps1",),
     "dxdiag": ("dxdiag.ps1",),
 }
 COMMANDS_BY_METHOD: dict[str, tuple[str, ...]] = {
     "sensors": (
-        f"GET {LHM_URL} (only if LibreHardwareMonitor's web server is running)",
+        f"GET {LHM_URL} (only if LibreHardwareMonitor's web server is running; under WSL "
+        "this request is made by lhm_http.ps1 on the Windows side)",
         f"nvidia-smi --query-gpu={NVIDIA_SMI_QUERY} --format=csv,noheader,nounits",
     ),
 }
@@ -108,11 +112,24 @@ def run_process(
     )
 
 
+class _NoRedirect(urllib.request.HTTPRedirectHandler):
+    """Whatever listens on the port could redirect to /Sensor?action=Set or off-host."""
+
+    def redirect_request(self, *args: Any, **kwargs: Any) -> None:
+        return None
+
+
 def http_get_localhost(url: str, timeout: float) -> bytes:
-    if not url.startswith("http://127.0.0.1:"):
-        raise ValueError("only localhost endpoints may be fetched")
-    # An empty ProxyHandler keeps the request on the loopback interface.
-    opener = urllib.request.build_opener(urllib.request.ProxyHandler({}))
+    parts = urllib.parse.urlsplit(url)
+    if (
+        parts.scheme != "http"
+        or parts.hostname != "127.0.0.1"
+        or parts.path != "/data.json"
+        or (parts.query or parts.username or parts.password)
+    ):
+        raise ValueError("only http://127.0.0.1:<port>/data.json may be fetched")
+    # No proxy (stay on loopback) and no redirects (a 3xx surfaces as an HTTPError).
+    opener = urllib.request.build_opener(urllib.request.ProxyHandler({}), _NoRedirect())
     request = urllib.request.Request(url, method="GET")  # noqa: S310 - fixed http://127.0.0.1 URL
     with opener.open(request, timeout=timeout) as response:
         body: bytes = response.read(16 * 1024 * 1024)
@@ -158,6 +175,14 @@ class PowerShellCollector:
     # ------------------------------------------------------------------ #
 
     def _powershell(self) -> str:
+        # On Windows, prefer the system copy over whatever PATH resolves first.
+        system_root = os.environ.get("SYSTEMROOT")
+        if not self._wsl and sys.platform == "win32" and system_root:
+            pinned = (
+                Path(system_root) / "System32" / "WindowsPowerShell" / "v1.0" / "powershell.exe"
+            )
+            if pinned.is_file():
+                return str(pinned)
         exe = self._which("powershell.exe")
         if exe is None:
             raise CollectorUnavailable("powershell.exe", "not found on PATH")
@@ -229,7 +254,18 @@ class PowerShellCollector:
         )
         if not isinstance(data, list):
             raise CollectorError("get_events.ps1 returned a non-list payload")
-        records = [parse_event(str(item.get("xml") or ""), item.get("message")) for item in data]
+        records: list[EventRecord] = []
+        failures: list[str] = []
+        for item in data:
+            try:
+                records.append(parse_event(str(item.get("xml") or ""), item.get("message")))
+            except CollectorError as exc:
+                failures.append(str(exc))
+        if failures:
+            # One corrupt record must not hide the rest, but losing all of them is an error.
+            if not records:
+                raise CollectorError(f"no event could be parsed: {failures[0]}")
+            record_note(f"skipped {len(failures)} unparseable event(s): {failures[0]}")
         records.sort(key=lambda r: (r.time, r.record_id), reverse=True)
         return records[: query.max_events]
 
@@ -267,12 +303,24 @@ class PowerShellCollector:
             SensorSnapshot(taken_at=datetime.now(UTC), readings=readings, unavailable=unavailable)
         ]
 
-    def _lhm_readings(self) -> list[SensorReading]:
+    def _lhm_body(self) -> bytes:
+        if self._wsl:
+            # 127.0.0.1 inside WSL (NAT mode) is the Linux loopback; fetch on the Windows side.
+            try:
+                data = self._invoke("lhm_http.ps1", {})
+            except CollectorUnavailable as exc:
+                raise OSError(exc.reason) from exc
+            body = data.get("body") if isinstance(data, dict) else None
+            if not isinstance(body, str):
+                raise ValueError("lhm_http.ps1 returned no body")
+            return body.encode("utf-8")
         record_source(f"GET {LHM_URL}")
+        return self._http_get(LHM_URL, 2.0)
+
+    def _lhm_readings(self) -> list[SensorReading]:
         try:
-            body = self._http_get(LHM_URL, 2.0)
-            readings = parse_lhm_data_json(json.loads(body))
-        except (urllib.error.URLError, OSError, TimeoutError) as exc:
+            readings = parse_lhm_data_json(json.loads(self._lhm_body()))
+        except (urllib.error.URLError, http.client.HTTPException, OSError, TimeoutError) as exc:
             raise CollectorUnavailable("librehardwaremonitor", LHM_UNREACHABLE) from exc
         except (ValueError, CollectorError) as exc:
             raise CollectorUnavailable(
@@ -297,7 +345,10 @@ class PowerShellCollector:
         if proc.returncode != 0:
             detail = (proc.stderr or proc.stdout).strip()[:200]
             raise CollectorUnavailable("nvidia-smi", f"nvidia-smi failed: {detail}")
-        return parse_nvidia_smi(proc.stdout)
+        readings = parse_nvidia_smi(proc.stdout)
+        if not readings:
+            raise CollectorUnavailable("nvidia-smi", "nvidia-smi produced no parsable readings")
+        return readings
 
     def _cim_readings(self, unavailable: list[str]) -> list[SensorReading]:
         data = self._invoke("sensors_cim.ps1", {})

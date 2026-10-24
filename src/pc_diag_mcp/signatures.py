@@ -285,7 +285,7 @@ def _decode_kernel_power(record: EventRecord) -> _Decoded:
     if record.data.get("PowerButtonTimestamp", "0").strip() not in {"", "0"}:
         parts.append("the power button was held (PowerButtonTimestamp is non-zero)")
     sleep = record.data.get("SleepInProgress", "0").strip()
-    if sleep not in {"", "0", "false"}:
+    if sleep.lower() not in {"", "0", "false"}:
         parts.append(f"a sleep transition was in progress (SleepInProgress={sleep})")
     return _Decoded(detail="; ".join(parts), code=format_bugcheck(code) if code else None)
 
@@ -394,7 +394,7 @@ SIGNATURES: tuple[Signature, ...] = (
     Signature(
         id="amd_kmd_warning",
         log="System",
-        providers=("amdkmdag", "amdkmdap"),
+        providers=("amdkmdag", "amdkmdap", "atikmdag", "atikmpag"),
         min_level=EventLevel.WARNING,
         meaning="AMD kernel-mode display driver logged a warning or error.",
         severity="medium",
