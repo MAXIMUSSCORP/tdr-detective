@@ -185,9 +185,11 @@ def query_events(
     counts = count_by_provider_id(records)
     if params.save_to == "tempfile":
         path = save_events_tempfile(records, temp_dir)
-        notes = [*manifest.notes, f"records saved to {path} (deleted after 1 hour)"]
+        # Forward slashes work in Git Bash (Claude Code's Bash on Windows), Python and WSL.
+        posix = path.as_posix()
+        notes = [*manifest.notes, f"records saved to {posix} (deleted after 1 hour)"]
         return SavedEventsResult(
-            path=str(path),
+            path=posix,
             count=len(records),
             window=query.window,
             counts_by_provider_id=counts,
