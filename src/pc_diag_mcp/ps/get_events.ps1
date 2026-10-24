@@ -34,10 +34,10 @@ try {
             }
             throw
         }
-        foreach ($event in $events) {
+        foreach ($evt in $events) {
             $message = $null
-            try { $message = $event.Message } catch { $message = $null }
-            [void]$records.Add(@{ xml = $event.ToXml(); message = $message })
+            try { $message = $evt.Message } catch { $message = $null }
+            [void]$records.Add(@{ xml = $evt.ToXml(); message = $message })
         }
     }
     Write-Result @($records.ToArray())

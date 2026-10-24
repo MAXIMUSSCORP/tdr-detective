@@ -312,7 +312,7 @@ def test_identity(runner: FakeRunner) -> None:
 
 
 def test_http_get_refuses_non_localhost() -> None:
-    with pytest.raises(ValueError, match="localhost"):
+    with pytest.raises(ValueError, match="only"):
         http_get_localhost("http://example.com/data.json", 1.0)
 
 
