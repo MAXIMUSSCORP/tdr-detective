@@ -1,0 +1,1 @@
+{"servers": {"pc-diag": {"type": "stdio", "command": "uv", "args": ["run", "--quiet", "pc-diag-mcp"]}}}

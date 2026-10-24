@@ -24,6 +24,9 @@ agent = [
     "anthropic==1.13.0",
 ]
 
+[project.scripts]
+pc-diag-mcp = "pc_diag_mcp.server:main"
+
 [dependency-groups]
 dev = [
     "pytest==9.1.1",
