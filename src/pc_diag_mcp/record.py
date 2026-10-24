@@ -6,6 +6,9 @@ python -m pc_diag_mcp.record scrub SRC DST [--literal TEXT ...]
 ``capture`` writes to ``fixtures/raw/NAME`` (git-ignored). ``scrub`` copies a directory,
 replacing host identifiers with stable placeholders, and fails closed: if any pattern still
 matches afterwards, nothing is written and the exit code is non-zero.
+
+Known limitation: IP addresses, Wi-Fi SSIDs, other hostnames and personal device names (e.g.
+Bluetooth headsets) inside event messages are not detected. Read the output before sharing it.
 """
 
 from __future__ import annotations
