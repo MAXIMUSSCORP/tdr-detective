@@ -5,6 +5,7 @@ from __future__ import annotations
 from datetime import datetime
 
 from pc_diag_mcp.collectors.base import CollectionManifest, Collector, collect
+from pc_diag_mcp.collectors.eventxml import sanitize_label, sanitize_text
 from pc_diag_mcp.collectors.parsers import PROCESS_SORT_KEYS
 from pc_diag_mcp.models import (
     DriverInfo,
@@ -35,13 +36,13 @@ class SensorSnapshotResult(UntrustedResult):
     collection: CollectionManifest
 
 
-class DriverInventoryResult(_Result):
+class DriverInventoryResult(UntrustedResult):
     device_classes: list[str]
     drivers: list[DriverInfo]
     collection: CollectionManifest
 
 
-class DxDiagResult(_Result):
+class DxDiagResult(UntrustedResult):
     dxdiag: DxDiagSummary
     collection: CollectionManifest
 
@@ -49,6 +50,46 @@ class DxDiagResult(_Result):
 class SystemInfoResult(_Result):
     system: SystemInfo
     collection: CollectionManifest
+
+
+def _optional(value: str | None) -> str | None:
+    return sanitize_label(value) if value is not None else None
+
+
+def _sanitize_driver(driver: DriverInfo) -> DriverInfo:
+    """Device and provider names come from driver packages: untrusted text."""
+    return driver.model_copy(
+        update={
+            "device_name": sanitize_label(driver.device_name),
+            "device_class": sanitize_label(driver.device_class),
+            "provider": sanitize_label(driver.provider),
+            "version": sanitize_label(driver.version),
+            "date": _optional(driver.date),
+            "inf_name": _optional(driver.inf_name),
+        }
+    )
+
+
+def _sanitize_dxdiag(summary: DxDiagSummary) -> DxDiagSummary:
+    devices = [
+        device.model_copy(
+            update={
+                "name": sanitize_label(device.name),
+                "manufacturer": sanitize_label(device.manufacturer),
+                "driver_version": sanitize_label(device.driver_version),
+                "driver_date": _optional(device.driver_date),
+                "feature_levels": [sanitize_label(level) for level in device.feature_levels],
+            }
+        )
+        for device in summary.display_devices
+    ]
+    return summary.model_copy(
+        update={
+            "directx_version": sanitize_label(summary.directx_version),
+            "display_devices": devices,
+            "problems": [sanitize_text(problem) for problem in summary.problems],
+        }
+    )
 
 
 def process_snapshot(
@@ -92,12 +133,14 @@ def driver_inventory(
     )
     classes = list(dict.fromkeys(c.upper() for c in params.device_classes))
     drivers, manifest = collect(collector, lambda: collector.drivers(classes))
+    drivers = [_sanitize_driver(d) for d in drivers]
     return DriverInventoryResult(device_classes=classes, drivers=drivers, collection=manifest)
 
 
 def dxdiag_summary(collector: Collector) -> DxDiagResult:
     """DirectX version, display devices and any problems dxdiag reports (takes up to ~90 s)."""
     summary, manifest = collect(collector, collector.dxdiag)
+    summary = _sanitize_dxdiag(summary)
     return DxDiagResult(dxdiag=summary, collection=manifest)
 
 
