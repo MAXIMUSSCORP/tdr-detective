@@ -200,15 +200,28 @@ def _usage(result: ResultMessage | None, model: str, elapsed_ms: int) -> RunStat
         return RunStats(
             config=CONFIG_NAME, model=model, input_tokens=0, output_tokens=0, latency_ms=elapsed_ms
         )
-    usage = result.usage or {}
+    # Same arithmetic as the raw_dump baseline: fresh input includes cache writes and cache
+    # reads are separate. model_usage covers the whole run (every model, subagents and the
+    # harness's own helper calls, system prompt included); usage covers the top-level loop.
+    if result.model_usage:
+        per_model = list(result.model_usage.values())
+        fresh = sum(
+            int(m.get("inputTokens", 0)) + int(m.get("cacheCreationInputTokens", 0))
+            for m in per_model
+        )
+        output = sum(int(m.get("outputTokens", 0)) for m in per_model)
+        cached = sum(int(m.get("cacheReadInputTokens", 0)) for m in per_model)
+    else:
+        usage = result.usage or {}
+        fresh = int(usage.get("input_tokens", 0)) + int(usage.get("cache_creation_input_tokens", 0))
+        output = int(usage.get("output_tokens", 0))
+        cached = int(usage.get("cache_read_input_tokens", 0))
     return RunStats(
         config=CONFIG_NAME,
         model=model,
-        # Cache writes are fresh prompt tokens too; cache reads are reported separately.
-        input_tokens=int(usage.get("input_tokens", 0))
-        + int(usage.get("cache_creation_input_tokens", 0)),
-        output_tokens=int(usage.get("output_tokens", 0)),
-        cache_read_tokens=int(usage.get("cache_read_input_tokens", 0)),
+        input_tokens=fresh,
+        output_tokens=output,
+        cache_read_tokens=cached,
         cost_usd=result.total_cost_usd,
         latency_ms=result.duration_ms,
     )
