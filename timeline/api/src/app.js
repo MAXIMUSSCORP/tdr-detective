@@ -10,6 +10,8 @@ const { INCIDENT_ID_PATTERN } = require("./schema");
 const DEFAULT_LIMIT = 20;
 const MAX_LIMIT = 100;
 const MAX_OFFSET = 1_000_000;
+const MAX_EVAL_SUMMARY_BYTES = 5 * 1024 * 1024;
+const SAFE_METHODS = new Set(["GET", "HEAD", "OPTIONS"]);
 
 /** @type {Record<string, string>} */
 const CLIENT_ERROR_MESSAGES = {
@@ -30,6 +32,7 @@ const CLIENT_ERROR_MESSAGES = {
  * @property {readonly string[]} evidenceKinds
  * @property {string} evalSummaryPath
  * @property {string | null} [webDistPath] directory of the built web app to serve, if any
+ * @property {string | null} [remoteHost] non-loopback HOST the server was explicitly allowed to bind to
  */
 
 /** An error whose message and status are safe to send to the client. */
@@ -82,10 +85,60 @@ function securityHeaders(/** @type {Request} */ _req, /** @type {Response} */ re
     "X-Content-Type-Options": "nosniff",
     "X-Frame-Options": "DENY",
     "Referrer-Policy": "no-referrer",
-    "Content-Security-Policy":
-      "default-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; frame-ancestors 'none'",
+    "Cross-Origin-Resource-Policy": "same-origin",
+    "Content-Security-Policy": [
+      "default-src 'self'",
+      "style-src 'self' 'unsafe-inline'",
+      "img-src 'self' data:",
+      "object-src 'none'",
+      "base-uri 'none'",
+      "form-action 'none'",
+      "frame-ancestors 'none'",
+    ].join("; "),
   });
   next();
+}
+
+/**
+ * Defend against DNS rebinding and cross-site writes. The Host header must name the
+ * loopback interface (or the explicitly allowed remote HOST) on the port this socket
+ * is bound to, and state-changing requests may not carry a foreign Origin.
+ *
+ * @param {string | null} remoteHost
+ */
+function hostGuard(remoteHost) {
+  const names = ["127.0.0.1", "localhost", "[::1]"];
+  if (remoteHost) names.push(remoteHost.includes(":") ? `[${remoteHost}]` : remoteHost);
+
+  /** @param {number | undefined} port */
+  const allowedFor = (port) => {
+    const hosts = names.map((name) => `${name}:${port}`);
+    // Browsers omit the default port from Host and Origin.
+    if (port === 80) hosts.push(...names);
+    return new Set(hosts.map((h) => h.toLowerCase()));
+  };
+
+  return (/** @type {Request} */ req, /** @type {Response} */ _res, /** @type {NextFunction} */ next) => {
+    const allowed = allowedFor(req.socket.localPort);
+    const host = (req.headers.host ?? "").toLowerCase();
+    if (!allowed.has(host)) {
+      throw new HttpError(403, "forbidden host");
+    }
+    const origin = req.headers.origin;
+    if (origin !== undefined && !SAFE_METHODS.has(req.method)) {
+      let originHost = null;
+      try {
+        const url = new URL(origin);
+        if (url.protocol === "http:") originHost = url.host.toLowerCase();
+      } catch {
+        originHost = null;
+      }
+      if (originHost === null || !allowed.has(originHost)) {
+        throw new HttpError(403, "cross-origin request rejected");
+      }
+    }
+    next();
+  };
 }
 
 /**
@@ -94,14 +147,24 @@ function securityHeaders(/** @type {Request} */ _req, /** @type {Response} */ re
  * @param {string} file
  */
 async function readEvalSummary(file) {
-  let text;
+  let handle;
   try {
-    text = await fs.promises.readFile(file, "utf8");
+    handle = await fs.promises.open(file, "r");
   } catch (err) {
     if (/** @type {NodeJS.ErrnoException} */ (err).code === "ENOENT") {
       throw new HttpError(404, "no eval results yet");
     }
     throw err;
+  }
+  let text;
+  try {
+    const stat = await handle.stat();
+    if (!stat.isFile() || stat.size > MAX_EVAL_SUMMARY_BYTES) {
+      throw new HttpError(500, "eval summary is unreadable");
+    }
+    text = await handle.readFile("utf8");
+  } finally {
+    await handle.close();
   }
   let summary;
   try {
@@ -121,14 +184,19 @@ async function readEvalSummary(file) {
  *
  * @param {AppOptions} options
  */
-function createApp({ db, validateIncident, evidenceKinds, evalSummaryPath, webDistPath = null }) {
+function createApp({ db, validateIncident, evidenceKinds, evalSummaryPath, webDistPath = null, remoteHost = null }) {
   const repo = createRepository(db);
   const app = express();
   app.disable("x-powered-by");
   app.set("query parser", "simple");
   app.use(securityHeaders);
+  app.use(hostGuard(remoteHost));
 
   const api = express.Router();
+  api.use((_req, res, next) => {
+    res.set("Cache-Control", "no-store");
+    next();
+  });
   api.use(express.json({ limit: "1mb" }));
 
   api.get("/health", (_req, res) => {
@@ -215,4 +283,4 @@ function createApp({ db, validateIncident, evidenceKinds, evalSummaryPath, webDi
   return app;
 }
 
-module.exports = { createApp, HttpError, DEFAULT_LIMIT, MAX_LIMIT };
+module.exports = { createApp, HttpError, DEFAULT_LIMIT, MAX_LIMIT, MAX_EVAL_SUMMARY_BYTES };

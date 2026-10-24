@@ -3,13 +3,22 @@
 
 const fs = require("node:fs");
 const path = require("node:path");
-const { loadConfig } = require("./config");
+const { isLoopback, loadConfig } = require("./config");
 const { openDatabase } = require("./db");
 const { loadIncidentSchema } = require("./schema");
 const { createApp } = require("./app");
 
 function main() {
   const config = loadConfig();
+  const remote = !isLoopback(config.host);
+  if (remote) {
+    console.error(`Warning: binding to non-loopback address; the API has no authentication (HOST=${config.host}).`);
+    if (!config.allowRemote) {
+      console.error("Refusing to start. Set TDR_ALLOW_REMOTE=1 to bind to a non-loopback address anyway.");
+      process.exitCode = 1;
+      return;
+    }
+  }
   const { validateIncident, evidenceKinds } = loadIncidentSchema(config.schemaPath);
   const db = openDatabase(config.dbPath);
   const app = createApp({
@@ -18,6 +27,7 @@ function main() {
     evidenceKinds,
     evalSummaryPath: config.evalSummaryPath,
     webDistPath: config.webDistPath,
+    remoteHost: remote ? config.host : null,
   });
 
   if (!fs.existsSync(path.join(config.webDistPath, "index.html"))) {

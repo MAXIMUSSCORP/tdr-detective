@@ -10,7 +10,8 @@ export default defineConfig({
     port: 5173,
     strictPort: true,
     proxy: {
-      "/api": `http://127.0.0.1:${apiPort}`,
+      // changeOrigin rewrites Host to the API's own address, which its DNS-rebinding guard requires.
+      "/api": { target: `http://127.0.0.1:${apiPort}`, changeOrigin: true },
     },
   },
   build: {

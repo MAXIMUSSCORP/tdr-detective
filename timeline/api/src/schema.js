@@ -11,6 +11,9 @@ const addFormats = require("ajv-formats").default;
  */
 const INCIDENT_ID_PATTERN = /^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$/;
 
+/** Upper bound on validation issues echoed to the client, so error bodies stay small. */
+const MAX_REPORTED_ERRORS = 20;
+
 /**
  * @typedef {{ instancePath: string, message: string, params?: Record<string, unknown> }} ValidationIssue
  * @typedef {{ ok: true } | { ok: false, errors: ValidationIssue[] }} ValidationResult
@@ -25,7 +28,8 @@ const INCIDENT_ID_PATTERN = /^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$/;
 function loadIncidentSchema(schemaPath) {
   /** @type {any} */
   const schema = JSON.parse(fs.readFileSync(schemaPath, "utf8"));
-  const ajv = new Ajv2020({ allErrors: true, strict: true });
+  // allErrors stays off: stopping at the first failure bounds both CPU time and response size.
+  const ajv = new Ajv2020({ allErrors: false, strict: true });
   addFormats(ajv, ["date-time"]);
   const validateSchema = ajv.compile(schema);
 
@@ -41,7 +45,7 @@ function loadIncidentSchema(schemaPath) {
    */
   function validateIncident(body) {
     if (!validateSchema(body)) {
-      const errors = (validateSchema.errors ?? []).map((e) => ({
+      const errors = (validateSchema.errors ?? []).slice(0, MAX_REPORTED_ERRORS).map((e) => ({
         instancePath: e.instancePath,
         message: e.message ?? "is invalid",
         params: e.params,
@@ -76,10 +80,10 @@ function loadIncidentSchema(schemaPath) {
       }
       seen.add(item.id);
     });
-    return errors.length ? { ok: false, errors } : { ok: true };
+    return errors.length ? { ok: false, errors: errors.slice(0, MAX_REPORTED_ERRORS) } : { ok: true };
   }
 
   return { validateIncident, evidenceKinds };
 }
 
-module.exports = { loadIncidentSchema, INCIDENT_ID_PATTERN };
+module.exports = { loadIncidentSchema, INCIDENT_ID_PATTERN, MAX_REPORTED_ERRORS };

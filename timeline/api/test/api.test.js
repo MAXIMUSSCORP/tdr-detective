@@ -1,14 +1,15 @@
 // @ts-check
 "use strict";
 
+const { spawnSync } = require("node:child_process");
 const fs = require("node:fs");
 const os = require("node:os");
 const path = require("node:path");
 const request = require("supertest");
-const { createApp } = require("../src/app");
+const { createApp, MAX_EVAL_SUMMARY_BYTES } = require("../src/app");
 const { loadConfig } = require("../src/config");
 const { openDatabase } = require("../src/db");
-const { loadIncidentSchema } = require("../src/schema");
+const { loadIncidentSchema, MAX_REPORTED_ERRORS } = require("../src/schema");
 
 const { schemaPath } = loadConfig({});
 const { validateIncident, evidenceKinds } = loadIncidentSchema(schemaPath);
@@ -72,7 +73,7 @@ afterEach(() => {
   fs.rmSync(tmpDir, { recursive: true, force: true });
 });
 
-/** @param {{ evalSummaryPath?: string, webDistPath?: string | null }} [options] */
+/** @param {{ evalSummaryPath?: string, webDistPath?: string | null, remoteHost?: string | null }} [options] */
 function makeApp(options = {}) {
   return createApp({
     db,
@@ -80,7 +81,26 @@ function makeApp(options = {}) {
     evidenceKinds,
     evalSummaryPath: options.evalSummaryPath ?? path.join(tmpDir, "missing-summary.json"),
     webDistPath: options.webDistPath ?? null,
+    remoteHost: options.remoteHost ?? null,
   });
+}
+
+/**
+ * Bind an app to an ephemeral loopback port so tests can send arbitrary Host headers.
+ * @param {import("express").Express} app
+ * @returns {Promise<{ port: number, agent: import("supertest").Agent, close: () => Promise<void> }>}
+ */
+async function listen(app) {
+  /** @type {import("node:http").Server} */
+  const server = await new Promise((resolve) => {
+    const s = app.listen(0, "127.0.0.1", () => resolve(s));
+  });
+  const { port } = /** @type {import("node:net").AddressInfo} */ (server.address());
+  return {
+    port,
+    agent: request.agent(`http://127.0.0.1:${port}`),
+    close: () => new Promise((resolve) => server.close(() => resolve())),
+  };
 }
 
 describe("GET /api/health", () => {
@@ -139,6 +159,23 @@ describe("POST /api/incidents", () => {
     const res = await request(makeApp()).post("/api/incidents").send(incident);
     expect(res.status).toBe(400);
     expect(res.body.details.map((/** @type {any} */ d) => d.instancePath)).toEqual(["/created_at", "/evidence/2/time"]);
+  });
+
+  it("keeps validation error bodies small for large invalid input", async () => {
+    const app = makeApp();
+    const schemaInvalid = exampleIncident();
+    schemaInvalid.evidence = Array.from({ length: 5000 }, (_, i) => ({ id: `x${i}`, kind: "registry", time: "2026-10-20T13:42:00Z", label: "x" }));
+    const res1 = await request(app).post("/api/incidents").send(schemaInvalid);
+    expect(res1.status).toBe(400);
+    expect(res1.body.details.length).toBeLessThanOrEqual(MAX_REPORTED_ERRORS);
+    expect(res1.text.length).toBeLessThan(4096);
+
+    const duplicates = exampleIncident();
+    duplicates.evidence = Array.from({ length: 5000 }, () => ({ id: "same", kind: "event", time: "2026-10-20T13:42:00Z", label: "x" }));
+    const res2 = await request(app).post("/api/incidents").send(duplicates);
+    expect(res2.status).toBe(400);
+    expect(res2.body.details).toHaveLength(MAX_REPORTED_ERRORS);
+    expect(res2.text.length).toBeLessThan(4096);
   });
 
   it("rejects duplicate evidence ids", async () => {
@@ -329,12 +366,110 @@ describe("GET /api/evals", () => {
     expect(res.body).toEqual({ error: "no eval results yet" });
   });
 
+  it("refuses summary files over the size limit", async () => {
+    const file = path.join(tmpDir, "summary.json");
+    fs.writeFileSync(file, Buffer.alloc(MAX_EVAL_SUMMARY_BYTES + 1, 0x20));
+    const res = await request(makeApp({ evalSummaryPath: file })).get("/api/evals");
+    expect(res.status).toBe(500);
+    expect(res.body).toEqual({ error: "eval summary is unreadable" });
+  });
+
   it("returns a generic 500 for a malformed file", async () => {
     const file = path.join(tmpDir, "summary.json");
     fs.writeFileSync(file, "{ not json");
     const res = await request(makeApp({ evalSummaryPath: file })).get("/api/evals");
     expect(res.status).toBe(500);
     expect(res.body).toEqual({ error: "eval summary is not valid JSON" });
+  });
+});
+
+describe("host and origin guard", () => {
+  it.each(["127.0.0.1", "localhost", "LOCALHOST", "[::1]"])("allows Host %s on the bound port", async (name) => {
+    const { port, agent, close } = await listen(makeApp());
+    try {
+      const res = await agent.get("/api/health").set("Host", `${name}:${port}`);
+      expect(res.status).toBe(200);
+    } finally {
+      await close();
+    }
+  });
+
+  it("rejects DNS-rebinding Host headers", async () => {
+    const { port, agent, close } = await listen(makeApp());
+    try {
+      for (const host of [`evil.example:${port}`, "127.0.0.1:1", "localhost", `127.0.0.1.evil.example:${port}`]) {
+        const res = await agent.get("/api/incidents").set("Host", host);
+        expect(res.status).toBe(403);
+        expect(res.body).toEqual({ error: "forbidden host" });
+      }
+    } finally {
+      await close();
+    }
+  });
+
+  it("allows the configured remote HOST only when one is given", async () => {
+    const remote = await listen(makeApp({ remoteHost: "192.168.1.20" }));
+    const local = await listen(makeApp());
+    try {
+      const allowed = await remote.agent.get("/api/health").set("Host", `192.168.1.20:${remote.port}`);
+      expect(allowed.status).toBe(200);
+      const rejected = await local.agent.get("/api/health").set("Host", `192.168.1.20:${local.port}`);
+      expect(rejected.status).toBe(403);
+    } finally {
+      await remote.close();
+      await local.close();
+    }
+  });
+
+  it.each(["http://evil.example", "null", "https://localhost", "not a url"])(
+    "rejects POST with cross-origin Origin %s",
+    async (origin) => {
+      const res = await request(makeApp()).post("/api/incidents").set("Origin", origin).send(exampleIncident());
+      expect(res.status).toBe(403);
+      expect(res.body).toEqual({ error: "cross-origin request rejected" });
+      const list = await request(makeApp()).get("/api/incidents");
+      expect(list.body.total).toBe(0);
+    },
+  );
+
+  it("allows POST from a same-origin Origin", async () => {
+    const { port, agent, close } = await listen(makeApp());
+    try {
+      const res = await agent
+        .post("/api/incidents")
+        .set("Host", `localhost:${port}`)
+        .set("Origin", `http://localhost:${port}`)
+        .send(exampleIncident());
+      expect(res.status).toBe(201);
+    } finally {
+      await close();
+    }
+  });
+});
+
+describe("server startup", () => {
+  it("refuses a non-loopback HOST unless TDR_ALLOW_REMOTE=1", () => {
+    const result = spawnSync(process.execPath, [path.join(__dirname, "..", "src", "server.js")], {
+      env: { ...process.env, HOST: "0.0.0.0", PORT: "0", TDR_DB: path.join(tmpDir, "t.db"), TDR_ALLOW_REMOTE: "" },
+      encoding: "utf8",
+      timeout: 10_000,
+    });
+    expect(result.status).toBe(1);
+    expect(result.stderr).toContain("binding to non-loopback address; the API has no authentication");
+    expect(result.stderr).toContain("TDR_ALLOW_REMOTE=1");
+    expect(fs.existsSync(path.join(tmpDir, "t.db"))).toBe(false);
+  });
+});
+
+describe("response headers", () => {
+  it("sets no-store on the API and hardening headers everywhere", async () => {
+    const res = await request(makeApp()).get("/api/health");
+    expect(res.headers["cache-control"]).toBe("no-store");
+    expect(res.headers["cross-origin-resource-policy"]).toBe("same-origin");
+    const csp = res.headers["content-security-policy"];
+    for (const directive of ["default-src 'self'", "object-src 'none'", "base-uri 'none'", "form-action 'none'", "frame-ancestors 'none'"]) {
+      expect(csp).toContain(directive);
+    }
   });
 });
 
