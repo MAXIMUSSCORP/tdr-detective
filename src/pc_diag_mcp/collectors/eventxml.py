@@ -37,6 +37,11 @@ _WHITESPACE = re.compile(r"\s+")
 # (Co) and unassigned (Cn) code points, variation selectors and the Unicode tag block.
 _INVISIBLE_CATEGORIES = frozenset({"Cf", "Cs", "Co", "Cn"})
 _INVISIBLE_RANGES = ((0xFE00, 0xFE0F), (0xE0000, 0xE007F), (0xE0100, 0xE01EF))
+# Visible-category characters that render as nothing: combining grapheme joiner, Mongolian
+# free variation selectors, Hangul fillers.
+_INVISIBLE_CODES = frozenset({0x034F, 0x180B, 0x180C, 0x180D, 0x115F, 0x1160, 0x3164, 0xFFA0})
+# Line/paragraph separators (Zl/Zp) break lines like control characters do.
+_LINE_BREAKS = frozenset({"\u2028", "\u2029"})
 
 
 def _strip_unsafe(text: str, control_replacement: str) -> str:
@@ -45,13 +50,15 @@ def _strip_unsafe(text: str, control_replacement: str) -> str:
     for char in text:
         code = ord(char)
         category = unicodedata.category(char)
-        if category == "Cc":
+        if category == "Cc" or char in _LINE_BREAKS:
             if char == "\t":
                 out.append(char)
             else:
                 out.append(control_replacement)
-        elif category in _INVISIBLE_CATEGORIES or any(
-            low <= code <= high for low, high in _INVISIBLE_RANGES
+        elif (
+            category in _INVISIBLE_CATEGORIES
+            or code in _INVISIBLE_CODES
+            or any(low <= code <= high for low, high in _INVISIBLE_RANGES)
         ):
             continue
         else:
