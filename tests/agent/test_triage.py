@@ -170,24 +170,47 @@ def test_options(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> None:
     assert o.can_use_tool is not None
     assert isinstance(o.mcp_servers, dict)
     server = o.mcp_servers["pc-diag"]
-    assert server == {
-        "type": "stdio",
-        "command": sys.executable,
-        "args": ["-m", "pc_diag_mcp.server"],
-        "env": {"PC_DIAG_REPLAY": str(REPLAY.resolve())},
-    }
-    assert o.env["PATH"].split(":")[0] == str(Path(sys.executable).parent)
+    assert server["type"] == "stdio"
+    assert server["command"] == sys.executable
+    assert server["args"] == ["-m", "pc_diag_mcp.server"]
+    assert server["env"]["PC_DIAG_REPLAY"] == str(REPLAY.resolve())
+    assert o.env["PATH"].split(os.pathsep)[0] == str(Path(sys.executable).parent)
+    assert o.env["CLAUDE_CODE_SUBPROCESS_ENV_SCRUB"] == "1"
+    assert set(o.env) == {"PATH", "CLAUDE_CODE_SUBPROCESS_ENV_SCRUB"}
 
 
 def test_live_run_passes_no_replay_env(monkeypatch: pytest.MonkeyPatch) -> None:
     q = fake(monkeypatch, good_run())
     triage_sync()
     assert isinstance(q.options.mcp_servers, dict)
-    assert "env" not in q.options.mcp_servers["pc-diag"]
+    assert "PC_DIAG_REPLAY" not in q.options.mcp_servers["pc-diag"]["env"]
     assert q.options.cwd == triage.REPO_ROOT
     assert q.options.model == MODEL
     assert q.options.effort == "medium"
     assert q.options.max_budget_usd == 1.0
+
+
+def test_mcp_server_env_is_minimal_and_credential_free(monkeypatch: pytest.MonkeyPatch) -> None:
+    secrets = {
+        "ANTHROPIC_API_KEY": "sk-ant-api03-secret",
+        "ANTHROPIC_AUTH_TOKEN": "tok",
+        "CLAUDE_CODE_OAUTH_TOKEN": "oauth",
+        "AWS_SECRET_ACCESS_KEY": "aws",
+        "GITHUB_TOKEN": "gh",
+        "UNRELATED": "x",
+    }
+    for name, value in secrets.items():
+        monkeypatch.setenv(name, value)
+    monkeypatch.setenv("TMPDIR", "scratch-temp")
+    monkeypatch.setenv("WSL_INTEROP", "/run/WSL/1_interop")
+    env = triage.mcp_server_env(REPLAY)
+    assert not set(secrets) & set(env)
+    assert not any(value in env.values() for value in secrets.values())
+    assert set(env) <= {*triage._SERVER_ENV_PASSTHROUGH, "PATH", "PC_DIAG_REPLAY"}
+    assert env["TMPDIR"] == "scratch-temp"
+    assert env["WSL_INTEROP"] == "/run/WSL/1_interop"
+    assert env["PC_DIAG_REPLAY"] == str(REPLAY.resolve())
+    assert "PC_DIAG_REPLAY" not in triage.mcp_server_env(None)
 
 
 def test_rejects_unknown_effort(monkeypatch: pytest.MonkeyPatch) -> None:
