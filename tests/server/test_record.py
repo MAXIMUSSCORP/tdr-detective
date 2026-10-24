@@ -154,7 +154,7 @@ def test_capture_writes_replay_directory(tmp_path: Path) -> None:
         window,
         root=tmp_path / "raw",
         include_dxdiag=True,
-        identity=lambda: {"computer_name": "HOSTPC"},
+        identity=lambda: {"computer_name": "HOSTPC", "user_name": "alice"},
         log=logs.append,
     )
     assert target == tmp_path / "raw" / "case-1"
@@ -165,12 +165,17 @@ def test_capture_writes_replay_directory(tmp_path: Path) -> None:
     assert any("skipped" in line for line in logs)
     with pytest.raises(CollectorUnavailable):
         replayed.dxdiag()
-    assert json.loads((target / record.IDENTIFIERS_FILE).read_text()) == {"computer_name": "HOSTPC"}
+    assert json.loads((target / record.IDENTIFIERS_FILE).read_text()) == {
+        "computer_name": "HOSTPC",
+        "user_name": "alice",
+    }
 
 
 def test_capture_cli_uses_live_collector(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     source = ReplayCollector(write_raw(tmp_path / "src"))
-    monkeypatch.setattr(source, "identity", lambda: {"user_name": "alice"}, raising=False)
+    monkeypatch.setattr(
+        source, "identity", lambda: {"computer_name": "HOSTPC", "user_name": "alice"}, raising=False
+    )
     monkeypatch.setattr(record, "PowerShellCollector", lambda: source)
     end = NOW.isoformat()
     start = (NOW - timedelta(hours=2)).isoformat()

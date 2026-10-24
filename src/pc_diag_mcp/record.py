@@ -70,9 +70,10 @@ _IPV6 = re.compile(
 # \\server\share, but not the \\?\ and \\.\ device-path prefixes.
 _UNC = re.compile(r"(?<![\w\\])\\\\(?![?.]\\)[A-Za-z0-9._$-]+\\[^\\\s\"<>|\[]+")
 _URL_WITH_QUERY = re.compile(r"\bhttps?://[^\s\"'<>]+\?[^\s\"'<>]*")
-# Driver/firmware versions such as 4.92.0.0 are valid IPv4 shapes; fields named *version* are
-# never addresses, so the IPv4 rule skips them.
+# Driver/firmware versions such as 4.92.0.0 are valid IPv4 shapes. The IPv4 rule skips a value
+# only when its field is named *version* AND the whole value is a dotted version.
 _VERSION_KEY = re.compile(r"(?i)version")
+_VERSION_VALUE = re.compile(r"^\d+(?:\.\d+){1,3}$")
 _BARE_MAC = re.compile(r"^[0-9A-Fa-f]{12}$")
 _MAC_KEY = re.compile(r"(?i)mac|address")
 _SERIAL_KEY = re.compile(r"(?i)serial|machineid|uuid|productid|hardwareid")
@@ -80,6 +81,11 @@ _EMPTY_SERIAL = {"", "0", "0x0", "none", "null", "n/a", "unknown", "to be filled
 _PLACEHOLDER = re.compile(r"^\[[A-Z]+(?:-\d+)?\]$")
 # Literals that would mangle ordinary data if replaced everywhere.
 _GENERIC_NAMES = {"root", "user", "users", "admin", "administrator", "system", "default", "public"}
+
+
+def _is_version(key: str | None, value: str) -> bool:
+    """A version-named field whose whole value is a dotted version (e.g. 4.92.0.0)."""
+    return bool(key and _VERSION_KEY.search(key) and _VERSION_VALUE.fullmatch(value.strip()))
 
 
 @dataclass
@@ -151,7 +157,7 @@ class Scrubber:
         if self._mac_field(key, value):
             return self._stable("MAC", str(value).strip())
         if isinstance(value, str):
-            return self.scrub_text(value, version_field=bool(key and _VERSION_KEY.search(key)))
+            return self.scrub_text(value, version_field=_is_version(key, value))
         return value
 
     def findings(self, value: Any, key: str | None = None, where: str = "$") -> list[str]:
@@ -173,8 +179,7 @@ class Scrubber:
         if self._mac_field(key, value):
             found.append(f"{where}: MAC address field {key}")
         if isinstance(value, str):
-            versions = bool(key and _VERSION_KEY.search(key))
-            found += self._text_findings(value, where, version_field=versions)
+            found += self._text_findings(value, where, version_field=_is_version(key, value))
         return found
 
     def _text_findings(self, text: str, where: str, *, version_field: bool = False) -> list[str]:
@@ -330,6 +335,16 @@ def _capture_name_arg(text: str) -> str:
         raise argparse.ArgumentTypeError(str(exc)) from exc
 
 
+def _require_identity(identifiers: dict[str, str]) -> dict[str, str]:
+    missing = [k for k in ("computer_name", "user_name") if not identifiers.get(k, "").strip()]
+    if missing:
+        raise ValueError(
+            "host identity is incomplete (missing " + ", ".join(missing) + "); computer_name and "
+            "user_name are required so the scrubber can remove them"
+        )
+    return identifiers
+
+
 def capture(
     collector: Collector,
     name: str,
@@ -350,6 +365,8 @@ def capture(
     target = root / name
     if target.exists():
         raise FileExistsError(f"{target} already exists")
+    # Without the host's names the scrubber cannot find them later: refuse up front.
+    identifiers = _require_identity(identity()) if identity is not None else None
     system = collector.system_info()
     events = collector.events(EventQuery(window=window, max_events=5000))
     files: dict[str, Any] = {"events.json": [e.model_dump(mode="json") for e in events]}
@@ -390,8 +407,8 @@ def capture(
         system=system,
     )
     files["scenario.json"] = scenario.model_dump(mode="json")
-    if identity is not None:
-        files[IDENTIFIERS_FILE] = identity()
+    if identifiers is not None:
+        files[IDENTIFIERS_FILE] = identifiers
 
     root.mkdir(parents=True, exist_ok=True)
     staging = Path(tempfile.mkdtemp(prefix=f".capture-{name}-", dir=root))
