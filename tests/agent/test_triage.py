@@ -159,7 +159,8 @@ def test_options(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> None:
     assert o.skills == [triage.SKILL_NAME]
     assert o.strict_mcp_config is True
     assert o.tools == ["Bash", "Skill", "Read"]
-    assert o.allowed_tools == ["mcp__pc-diag__*", "Skill(pc-stability-triage)"]
+    assert o.allowed_tools == [*triage.PC_DIAG_TOOLS, "Skill(pc-stability-triage)"]
+    assert not [rule for rule in o.allowed_tools if "*" in rule]
     # No Bash allow rule: every Bash call must reach the strict can_use_tool parser.
     assert not [rule for rule in o.allowed_tools if rule.startswith("Bash")]
     assert {"Write", "Edit", "WebFetch", "WebSearch", "Glob", "Grep", "Agent"} <= set(
@@ -346,6 +347,11 @@ def test_compressor_rejects_backslash_paths(sandbox: Path, command: str) -> None
         ("Read", {"file_path": "/etc/passwd"}),
         ("Agent", {"prompt": "x"}),
         ("mcp__other__delete", {}),
+        ("mcp__pc-diag__format_disk", {}),  # not a registered pc-diag tool
+        ("mcp__pc-diag__", {}),
+        ("Skill", {"command": "pc-stability-triage"}),  # only the skill key counts
+        ("Skill", {"skill": "pc-stability-triage-evil"}),
+        ("Skill", {}),
         ("Skill", {"skill": "deep-research"}),
         ("Bash", {"command": "reg add HKLM\\System\\X /v TdrDelay /d 10"}),
         ("Bash", {"command": "cat /etc/passwd"}),
@@ -379,6 +385,45 @@ def test_guardrail_denies_everything_else(name: str, inp: dict[str, Any]) -> Non
     output = hook(name, inp)["hookSpecificOutput"]
     assert output["permissionDecision"] == "deny"
     assert "read-only" in output["permissionDecisionReason"]
+
+
+def test_pc_diag_tools_match_the_server_registration() -> None:
+    from fastmcp import Client
+
+    from pc_diag_mcp.collectors import ReplayCollector
+    from pc_diag_mcp.server import create_server
+
+    async def names() -> set[str]:
+        async with Client(create_server(ReplayCollector(REPLAY))) as client:
+            return {t.name for t in await client.list_tools()}
+
+    registered = asyncio.run(names())
+    assert len(registered) == 8
+    assert set(triage.PC_DIAG_TOOLS) == {f"mcp__pc-diag__{n}" for n in registered}
+
+
+@pytest.mark.parametrize(
+    "hook_input",
+    [
+        {"hook_event_name": "PreToolUse", "tool_name": "Bash", "tool_input": "rm -rf ~"},
+        {"hook_event_name": "PreToolUse", "tool_name": "Bash", "tool_input": None},
+        {"hook_event_name": "PreToolUse", "tool_name": "mcp__pc-diag__system_info"},
+        {"hook_event_name": "PreToolUse", "tool_input": {}},
+        {"tool_name": "Write", "tool_input": {}},
+        None,
+    ],
+)
+def test_hook_fails_closed_on_malformed_input(hook_input: Any) -> None:
+    guard = triage.Guard(triage.REPO_ROOT)
+    out: Any = asyncio.run(guard.pre_tool_use(hook_input, "t1", {"signal": None}))
+    assert out["hookSpecificOutput"]["permissionDecision"] == "deny"
+
+
+def test_can_use_tool_denies_non_dict_input() -> None:
+    guard = triage.Guard(triage.REPO_ROOT)
+    bad: Any = "python x"
+    decision = asyncio.run(guard.can_use_tool("Bash", bad, ToolPermissionContext(tool_use_id="t")))
+    assert isinstance(decision, PermissionResultDeny)
 
 
 def test_hook_is_registered_for_every_tool(monkeypatch: pytest.MonkeyPatch) -> None:

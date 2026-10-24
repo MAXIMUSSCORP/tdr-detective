@@ -16,6 +16,7 @@ from __future__ import annotations
 
 import fnmatch
 import json
+import logging
 import os
 import re
 import shlex
@@ -47,18 +48,22 @@ from claude_agent_sdk.types import EffortLevel, McpStdioServerConfig
 from pydantic import BaseModel, ConfigDict
 
 from pc_diag_mcp.models import Diagnosis, RunStats
+from pc_diag_mcp.tools.describe import TOOL_NAMES
 from pc_diag_mcp.tools.events import TEMPFILE_GLOB, events_temp_dir
 from tdr_agent.answer import extract_diagnosis
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
+log = logging.getLogger("tdr_agent.triage")
 CONFIG_NAME = "skill_tools"
 SKILL_NAME = "pc-stability-triage"
 SERVER_NAME = "pc-diag"
 COMPRESSOR = f".claude/skills/{SKILL_NAME}/scripts/compress_events.py"
 MCP_PREFIX = f"mcp__{SERVER_NAME}__"
 
+# Exactly the tools the pc-diag server registers (tests pin the two lists together).
+PC_DIAG_TOOLS: tuple[str, ...] = tuple(f"{MCP_PREFIX}{name}" for name in TOOL_NAMES)
 BASE_TOOLS = ["Bash", "Skill", "Read"]
-ALLOWED_TOOLS = [f"{MCP_PREFIX}*", f"Skill({SKILL_NAME})"]
+ALLOWED_TOOLS = [*PC_DIAG_TOOLS, f"Skill({SKILL_NAME})"]
 DISALLOWED_TOOLS = [
     "Write",
     "Edit",
@@ -210,10 +215,12 @@ def is_skill_file(file_path: object, cwd: Path) -> bool:
 
 def is_permitted(tool_name: str, tool_input: dict[str, Any], cwd: Path, temp_dir: Path) -> bool:
     """The read-only surface: pc-diag tools, this skill and its files, and the compressor."""
-    if tool_name.startswith(MCP_PREFIX):
+    if not isinstance(tool_name, str) or not isinstance(tool_input, dict):
+        return False
+    if tool_name in PC_DIAG_TOOLS:
         return True
     if tool_name == "Skill":
-        return SKILL_NAME in (tool_input.get("skill"), tool_input.get("command"))
+        return tool_input.get("skill") == SKILL_NAME
     if tool_name == "Read":
         return is_skill_file(tool_input.get("file_path"), cwd)
     command = tool_input.get("command")
@@ -246,11 +253,16 @@ class Guard:
         """Runs before every tool call, even ones the CLI would auto-approve (its built-in
         read-only commands, reads under cwd, settings rules), and denies anything outside the
         surface."""
-        if hook_input["hook_event_name"] != "PreToolUse":
-            return {}
-        tool_name = hook_input["tool_name"]
-        if is_permitted(tool_name, hook_input["tool_input"], self.cwd, self.temp_dir):
-            return {}  # no decision: the normal permission flow still applies
+        tool_name = "this tool"
+        try:
+            if hook_input["hook_event_name"] != "PreToolUse":
+                return {}
+            tool_name = str(hook_input["tool_name"])
+            if is_permitted(tool_name, hook_input["tool_input"], self.cwd, self.temp_dir):
+                return {}  # no decision: the normal permission flow still applies
+        except Exception:
+            # A guard that cannot decide must deny.
+            log.warning("PreToolUse guard could not check %s; denying", tool_name, exc_info=True)
         return {
             "hookSpecificOutput": {
                 "hookEventName": "PreToolUse",
