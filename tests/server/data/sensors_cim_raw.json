@@ -1,0 +1,183 @@
+{
+  "gpu_engine": {
+    "ok": true,
+    "rows": [
+      {
+        "utilization": 0,
+        "name": "pid_10132_luid_0x00000000_0x0001492A_phys_0_eng_0_engtype_3D"
+      },
+      {
+        "utilization": 0,
+        "name": "pid_10132_luid_0x00000000_0x0001492A_phys_0_eng_10_engtype_"
+      },
+      {
+        "utilization": 0,
+        "name": "pid_10132_luid_0x00000000_0x0001492A_phys_0_eng_11_engtype_"
+      },
+      {
+        "utilization": 0,
+        "name": "pid_10132_luid_0x00000000_0x0001492A_phys_0_eng_12_engtype_"
+      },
+      {
+        "utilization": 0,
+        "name": "pid_10132_luid_0x00000000_0x0001492A_phys_0_eng_1_engtype_VideoDecode"
+      },
+      {
+        "utilization": 0,
+        "name": "pid_10132_luid_0x00000000_0x0001492A_phys_0_eng_2_engtype_Copy"
+      },
+      {
+        "utilization": 0,
+        "name": "pid_10132_luid_0x00000000_0x0001492A_phys_0_eng_3_engtype_VideoProcessing"
+      },
+      {
+        "utilization": 0,
+        "name": "pid_10132_luid_0x00000000_0x0001492A_phys_0_eng_4_engtype_"
+      },
+      {
+        "utilization": 0,
+        "name": "pid_10132_luid_0x00000000_0x0001492A_phys_0_eng_5_engtype_Compute"
+      },
+      {
+        "utilization": 0,
+        "name": "pid_10132_luid_0x00000000_0x0001492A_phys_0_eng_6_engtype_GSC"
+      },
+      {
+        "utilization": 0,
+        "name": "pid_10132_luid_0x00000000_0x0001492A_phys_0_eng_7_engtype_Copy"
+      },
+      {
+        "utilization": 0,
+        "name": "pid_10132_luid_0x00000000_0x0001492A_phys_0_eng_8_engtype_"
+      },
+      {
+        "utilization": 0,
+        "name": "pid_10132_luid_0x00000000_0x0001492A_phys_0_eng_9_engtype_"
+      },
+      {
+        "utilization": 0,
+        "name": "pid_10460_luid_0x00000000_0x0001492A_phys_0_eng_0_engtype_3D"
+      },
+      {
+        "utilization": 0,
+        "name": "pid_10460_luid_0x00000000_0x0001492A_phys_0_eng_10_engtype_"
+      },
+      {
+        "utilization": 0,
+        "name": "pid_10460_luid_0x00000000_0x0001492A_phys_0_eng_11_engtype_"
+      },
+      {
+        "utilization": 0,
+        "name": "pid_10460_luid_0x00000000_0x0001492A_phys_0_eng_12_engtype_"
+      },
+      {
+        "utilization": 0,
+        "name": "pid_10460_luid_0x00000000_0x0001492A_phys_0_eng_1_engtype_VideoDecode"
+      },
+      {
+        "utilization": 0,
+        "name": "pid_10460_luid_0x00000000_0x0001492A_phys_0_eng_2_engtype_Copy"
+      },
+      {
+        "utilization": 0,
+        "name": "pid_10460_luid_0x00000000_0x0001492A_phys_0_eng_3_engtype_VideoProcessing"
+      },
+      {
+        "utilization": 0,
+        "name": "pid_10460_luid_0x00000000_0x0001492A_phys_0_eng_4_engtype_"
+      },
+      {
+        "utilization": 0,
+        "name": "pid_10460_luid_0x00000000_0x0001492A_phys_0_eng_5_engtype_Compute"
+      },
+      {
+        "utilization": 0,
+        "name": "pid_10460_luid_0x00000000_0x0001492A_phys_0_eng_6_engtype_GSC"
+      },
+      {
+        "utilization": 0,
+        "name": "pid_10460_luid_0x00000000_0x0001492A_phys_0_eng_7_engtype_Copy"
+      },
+      {
+        "utilization": 0,
+        "name": "pid_10460_luid_0x00000000_0x0001492A_phys_0_eng_8_engtype_"
+      },
+      {
+        "utilization": 0,
+        "name": "pid_10460_luid_0x00000000_0x0001492A_phys_0_eng_9_engtype_"
+      },
+      {
+        "utilization": 0,
+        "name": "pid_10556_luid_0x00000000_0x0001492A_phys_0_eng_0_engtype_3D"
+      },
+      {
+        "utilization": 0,
+        "name": "pid_10556_luid_0x00000000_0x0001492A_phys_0_eng_10_engtype_"
+      },
+      {
+        "utilization": 0,
+        "name": "pid_10556_luid_0x00000000_0x0001492A_phys_0_eng_11_engtype_"
+      },
+      {
+        "utilization": 0,
+        "name": "pid_10556_luid_0x00000000_0x0001492A_phys_0_eng_12_engtype_"
+      },
+      {
+        "utilization": 0,
+        "name": "pid_10556_luid_0x00000000_0x0001492A_phys_0_eng_1_engtype_VideoDecode"
+      },
+      {
+        "utilization": 0,
+        "name": "pid_10556_luid_0x00000000_0x0001492A_phys_0_eng_2_engtype_Copy"
+      },
+      {
+        "utilization": 0,
+        "name": "pid_10556_luid_0x00000000_0x0001492A_phys_0_eng_3_engtype_VideoProcessing"
+      },
+      {
+        "utilization": 0,
+        "name": "pid_10556_luid_0x00000000_0x0001492A_phys_0_eng_4_engtype_"
+      },
+      {
+        "utilization": 0,
+        "name": "pid_10556_luid_0x00000000_0x0001492A_phys_0_eng_5_engtype_Compute"
+      },
+      {
+        "utilization": 0,
+        "name": "pid_10556_luid_0x00000000_0x0001492A_phys_0_eng_6_engtype_GSC"
+      },
+      {
+        "utilization": 0,
+        "name": "pid_10556_luid_0x00000000_0x0001492A_phys_0_eng_7_engtype_Copy"
+      },
+      {
+        "utilization": 0,
+        "name": "pid_10556_luid_0x00000000_0x0001492A_phys_0_eng_8_engtype_"
+      },
+      {
+        "utilization": 0,
+        "name": "pid_10556_luid_0x00000000_0x0001492A_phys_0_eng_9_engtype_"
+      },
+      {
+        "utilization": 0,
+        "name": "pid_11216_luid_0x00000000_0x0001492A_phys_0_eng_0_engtype_3D"
+      }
+    ]
+  },
+  "taken_at": "2026-10-24T01:51:52.1169517Z",
+  "thermal": {
+    "ok": true,
+    "rows": [
+      {
+        "kelvin": 333,
+        "kelvin_tenths": 3332,
+        "name": "\\_TZ.THRM"
+      },
+      {
+        "kelvin": 319,
+        "kelvin_tenths": 3192,
+        "name": "\\_TZ.THZ0"
+      }
+    ]
+  }
+}

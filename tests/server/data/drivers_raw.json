@@ -1,0 +1,299 @@
+[
+  {
+    "version": "10.0.26100.1",
+    "device_name": "Microsoft Streaming Service Proxy",
+    "provider": "Microsoft",
+    "signed": true,
+    "date": "2006-06-21",
+    "device_class": "MEDIA",
+    "inf_name": "ksfilter.inf"
+  },
+  {
+    "version": "4.92.0.0",
+    "device_name": "NVIDIA Virtual Audio Device (Wave Extensible) (WDM)",
+    "provider": "NVIDIA",
+    "signed": true,
+    "date": "2026-08-04",
+    "device_class": "MEDIA",
+    "inf_name": "oem146.inf"
+  },
+  {
+    "version": "10.0.26100.9278",
+    "device_name": "Audio Kernel-Mode Proxy Audio Device",
+    "provider": "Microsoft",
+    "signed": true,
+    "date": "2026-08-24",
+    "device_class": "MEDIA",
+    "inf_name": "apxunit.inf"
+  },
+  {
+    "version": "10.0.26100.9278",
+    "device_name": "Audio Kernel-Mode Proxy Audio Device",
+    "provider": "Microsoft",
+    "signed": true,
+    "date": "2026-08-24",
+    "device_class": "MEDIA",
+    "inf_name": "apxunit.inf"
+  },
+  {
+    "version": "10.0.26100.9278",
+    "device_name": "Audio Kernel-Mode Proxy Unit Device",
+    "provider": "Microsoft",
+    "signed": true,
+    "date": "2026-08-24",
+    "device_class": "MEDIA",
+    "inf_name": "apxunit.inf"
+  },
+  {
+    "version": "10.0.26100.1",
+    "device_name": "Microsoft Bluetooth A2dp Source",
+    "provider": "Microsoft",
+    "signed": true,
+    "date": "2024-03-31",
+    "device_class": "MEDIA",
+    "inf_name": "microsoft_bluetooth_a2dp_src.inf"
+  },
+  {
+    "version": "10.0.26100.1",
+    "device_name": "Microsoft Bluetooth A2dp Sink",
+    "provider": "Microsoft",
+    "signed": true,
+    "date": "2024-03-31",
+    "device_class": "MEDIA",
+    "inf_name": "microsoft_bluetooth_a2dp_snk.inf"
+  },
+  {
+    "version": "20.43.12573.6",
+    "device_name": "Microphone on BT",
+    "provider": "Intel(R) Corporation",
+    "signed": true,
+    "date": "2026-01-13",
+    "device_class": "MEDIA",
+    "inf_name": "oem27.inf"
+  },
+  {
+    "version": "20.43.12573.6",
+    "device_name": "Headphones on BT",
+    "provider": "Intel(R) Corporation",
+    "signed": true,
+    "date": "2026-01-13",
+    "device_class": "MEDIA",
+    "inf_name": "oem27.inf"
+  },
+  {
+    "version": "20.43.12573.6",
+    "device_name": "Intel® Smart Sound Technology ACX Streaming for Bluetooth® LE Audio",
+    "provider": "Intel(R) Corporation",
+    "signed": true,
+    "date": "2026-01-13",
+    "device_class": "MEDIA",
+    "inf_name": "oem27.inf"
+  },
+  {
+    "version": "20.43.12573.6",
+    "device_name": "Intel® Smart Sound Technology for Bluetooth® Audio",
+    "provider": "Intel(R) Corporation",
+    "signed": true,
+    "date": "2026-01-13",
+    "device_class": "MEDIA",
+    "inf_name": "oem25.inf"
+  },
+  {
+    "version": "20.43.12573.6",
+    "device_name": "Speaker on SDW",
+    "provider": "Intel(R) Corporation",
+    "signed": true,
+    "date": "2026-01-13",
+    "device_class": "MEDIA",
+    "inf_name": "oem26.inf"
+  },
+  {
+    "version": "20.43.12573.6",
+    "device_name": "Headset Earphone on SDW",
+    "provider": "Intel(R) Corporation",
+    "signed": true,
+    "date": "2026-01-13",
+    "device_class": "MEDIA",
+    "inf_name": "oem26.inf"
+  },
+  {
+    "version": "20.43.12573.6",
+    "device_name": "Headset Microphone on SDW",
+    "provider": "Intel(R) Corporation",
+    "signed": true,
+    "date": "2026-01-13",
+    "device_class": "MEDIA",
+    "inf_name": "oem26.inf"
+  },
+  {
+    "version": "20.43.12573.6",
+    "device_name": "Microphone Array on SDW",
+    "provider": "Intel(R) Corporation",
+    "signed": true,
+    "date": "2026-01-13",
+    "device_class": "MEDIA",
+    "inf_name": "oem26.inf"
+  },
+  {
+    "version": "20.43.12573.6",
+    "device_name": "Intel® Smart Sound Technology ACX Streaming for SoundWire",
+    "provider": "Intel(R) Corporation",
+    "signed": true,
+    "date": "2026-01-13",
+    "device_class": "MEDIA",
+    "inf_name": "oem26.inf"
+  },
+  {
+    "version": "20.43.12573.6",
+    "device_name": "Intel® Smart Sound Technology for USB Audio",
+    "provider": "Intel(R) Corporation",
+    "signed": true,
+    "date": "2026-01-13",
+    "device_class": "MEDIA",
+    "inf_name": "oem22.inf"
+  },
+  {
+    "version": "10.0.26100.9549",
+    "device_name": "SoundWire Audio",
+    "provider": "Microsoft",
+    "signed": true,
+    "date": "2006-06-21",
+    "device_class": "MEDIA",
+    "inf_name": "sdcaclass.inf"
+  },
+  {
+    "version": "10.0.26100.9549",
+    "device_name": "SoundWire Audio",
+    "provider": "Microsoft",
+    "signed": true,
+    "date": "2006-06-21",
+    "device_class": "MEDIA",
+    "inf_name": "sdcaclass.inf"
+  },
+  {
+    "version": "10.0.26100.9549",
+    "device_name": "SoundWire Audio",
+    "provider": "Microsoft",
+    "signed": true,
+    "date": "2006-06-21",
+    "device_class": "MEDIA",
+    "inf_name": "sdcaclass.inf"
+  },
+  {
+    "version": "10.0.26100.9549",
+    "device_name": "SoundWire Audio",
+    "provider": "Microsoft",
+    "signed": true,
+    "date": "2006-06-21",
+    "device_class": "MEDIA",
+    "inf_name": "sdcaclass.inf"
+  },
+  {
+    "version": "10.0.26100.9549",
+    "device_name": "SoundWire Audio",
+    "provider": "Microsoft",
+    "signed": true,
+    "date": "2006-06-21",
+    "device_class": "MEDIA",
+    "inf_name": "sdcaclass.inf"
+  },
+  {
+    "version": "10.0.26100.9549",
+    "device_name": "SoundWire Audio",
+    "provider": "Microsoft",
+    "signed": true,
+    "date": "2006-06-21",
+    "device_class": "MEDIA",
+    "inf_name": "sdcaclass.inf"
+  },
+  {
+    "version": "10.0.26100.9549",
+    "device_name": "SoundWire Audio",
+    "provider": "Microsoft",
+    "signed": true,
+    "date": "2006-06-21",
+    "device_class": "MEDIA",
+    "inf_name": "sdcaclass.inf"
+  },
+  {
+    "version": "10.0.26100.9549",
+    "device_name": "SoundWire Audio",
+    "provider": "Microsoft",
+    "signed": true,
+    "date": "2006-06-21",
+    "device_class": "MEDIA",
+    "inf_name": "sdcaclass.inf"
+  },
+  {
+    "version": "10.0.26100.9549",
+    "device_name": "SoundWire Audio",
+    "provider": "Microsoft",
+    "signed": true,
+    "date": "2006-06-21",
+    "device_class": "MEDIA",
+    "inf_name": "sdcaclass.inf"
+  },
+  {
+    "version": "10.0.26100.9549",
+    "device_name": "SoundWire Audio",
+    "provider": "Microsoft",
+    "signed": true,
+    "date": "2006-06-21",
+    "device_class": "MEDIA",
+    "inf_name": "sdcaclass.inf"
+  },
+  {
+    "version": "10.0.26100.9549",
+    "device_name": "SoundWire Audio",
+    "provider": "Microsoft",
+    "signed": true,
+    "date": "2006-06-21",
+    "device_class": "MEDIA",
+    "inf_name": "sdcaclass.inf"
+  },
+  {
+    "version": "10.0.26100.9278",
+    "device_name": "SoundWire Speakers",
+    "provider": "Microsoft",
+    "signed": true,
+    "date": "2006-06-21",
+    "device_class": "MEDIA",
+    "inf_name": "sdcaaggregator.inf"
+  },
+  {
+    "version": "10.0.26100.9278",
+    "device_name": "SoundWire Audio",
+    "provider": "Microsoft",
+    "signed": true,
+    "date": "2006-06-21",
+    "device_class": "MEDIA",
+    "inf_name": "sdcaaggregator.inf"
+  },
+  {
+    "version": "1.4.6.3",
+    "device_name": "NVIDIA High Definition Audio",
+    "provider": "NVIDIA Corporation",
+    "signed": true,
+    "date": "2026-07-23",
+    "device_class": "MEDIA",
+    "inf_name": "oem160.inf"
+  },
+  {
+    "version": "32.0.16.1742",
+    "device_name": "NVIDIA GeForce RTX 5070 Ti Laptop GPU",
+    "provider": "NVIDIA",
+    "signed": true,
+    "date": "2026-09-30",
+    "device_class": "DISPLAY",
+    "inf_name": "oem147.inf"
+  },
+  {
+    "version": "32.0.101.8509",
+    "device_name": "Intel(R) Graphics",
+    "provider": "Intel Corporation",
+    "signed": true,
+    "date": "2026-02-05",
+    "device_class": "DISPLAY",
+    "inf_name": "oem93.inf"
+  }
+]
