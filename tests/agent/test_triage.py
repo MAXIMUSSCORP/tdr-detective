@@ -5,6 +5,7 @@ import os
 import re
 import sys
 from collections.abc import AsyncIterator
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
@@ -280,12 +281,81 @@ def test_guardrail_allows_only_the_read_only_surface(
 
 
 def test_compressor_accepts_the_absolute_temp_path(sandbox: Path) -> None:
-    absolute = (sandbox / SAVED).resolve().as_posix()
+    absolute = (sandbox / SAVED).resolve().as_posix()  # X:/... on native Windows
     command = f"python {triage.COMPRESSOR} {absolute}"
-    expected = triage._FOREIGN_PATH.match(absolute) is None  # drive-qualified on Windows
-    assert triage.is_compressor_command(command, sandbox, sandbox / "tmp" / "tdr-detective") is (
-        expected
+    assert triage.is_compressor_command(command, sandbox, sandbox / "tmp" / "tdr-detective")
+
+
+def test_saved_events_path_round_trips_through_the_guard(tmp_path: Path) -> None:
+    from pc_diag_mcp.collectors import ReplayCollector
+    from pc_diag_mcp.tools import SavedEventsResult, query_events
+    from pc_diag_mcp.tools.events import events_temp_dir
+
+    result = query_events(
+        ReplayCollector(REPLAY),
+        datetime(2026, 10, 15, 1, 30, tzinfo=UTC),
+        datetime(2026, 10, 15, 2, 0, tzinfo=UTC),
+        save_to="tempfile",
+        temp_dir=tmp_path,
     )
+    assert isinstance(result, SavedEventsResult)
+    assert "\\" not in result.path  # forward slashes on every OS
+    command = f"python {triage.COMPRESSOR} {result.path}"
+    guard_dir = events_temp_dir(tmp_path)
+    assert triage.is_compressor_command(command, triage.REPO_ROOT, guard_dir)
+
+
+@pytest.fixture
+def windows(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> Path:
+    """Simulate native Windows: drive Q: maps onto tmp_path; returns the temp dir."""
+    real_resolve = triage._resolve
+
+    def resolve(arg: str, cwd: Path) -> Path:
+        if arg[:2].upper() == "Q:":
+            return real_resolve(str(tmp_path) + arg[2:], cwd)
+        return real_resolve(arg, cwd)
+
+    monkeypatch.setattr(triage, "_on_windows", lambda: True)
+    monkeypatch.setattr(triage, "_resolve", resolve)
+    temp_dir = tmp_path / "Users" / "RUNNER~1" / "AppData" / "Local" / "Temp" / "tdr-detective"
+    temp_dir.mkdir(parents=True)
+    (temp_dir / "events-k3j.json").write_text("[]", encoding="utf-8")
+    return temp_dir
+
+
+WIN_SAVED = "Q:/Users/RUNNER~1/AppData/Local/Temp/tdr-detective/events-k3j.json"
+
+
+def test_windows_drive_path_with_forward_slashes_is_accepted(windows: Path) -> None:
+    command = f"python {triage.COMPRESSOR} {WIN_SAVED} --prefix E"
+    assert triage.is_compressor_command(command, triage.REPO_ROOT, windows)
+
+
+@pytest.mark.parametrize(
+    "arg",
+    [
+        WIN_SAVED.replace("/", "\\"),  # backslashes
+        "Q:" + WIN_SAVED[2:].replace("/", "\\", 1),
+        "//?/" + WIN_SAVED,  # device namespace, slash spelling
+        "\\\\?\\" + WIN_SAVED.replace("/", "\\"),
+        "//./pipe/events-k3j.json",
+        "\\\\.\\pipe\\events-k3j.json",
+        "//host/share/events-k3j.json",
+        "Q:Users/RUNNER~1/AppData/Local/Temp/tdr-detective/events-k3j.json",  # drive-relative
+        "Q:/Users/RUNNER~1/AppData/Local/Temp/events-k3j.json",  # outside the temp dir
+        "~/events-k3j.json",  # Bash would expand this
+        "Q:/x/~/events-k3j.json",
+    ],
+)
+def test_windows_paths_outside_the_rule_are_denied(windows: Path, arg: str) -> None:
+    command = f"python {triage.COMPRESSOR} {arg}"
+    assert not triage.is_compressor_command(command, triage.REPO_ROOT, windows)
+
+
+def test_drive_paths_are_denied_off_windows(windows: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setattr(triage, "_on_windows", lambda: False)
+    command = f"python {triage.COMPRESSOR} {WIN_SAVED}"
+    assert not triage.is_compressor_command(command, triage.REPO_ROOT, windows)
 
 
 @pytest.mark.parametrize(

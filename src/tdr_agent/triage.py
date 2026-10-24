@@ -94,17 +94,19 @@ SYSTEM_PROMPT = (
 # Compressor arguments: input paths plus the flags that only tune the digest. --map is left
 # out on purpose because it writes a file. Values are validated; argparse prefix
 # abbreviations (e.g. --ma for --map) never match because flags must be exact.
-_PATH_ARG = re.compile(r"^[A-Za-z0-9_./+,@%][A-Za-z0-9_./+,@%=-]*$")
-# UNC (//host, which leaks NTLM over SMB) and drive-qualified paths; backslashes are
-# rejected for the whole command by _SHELL_META.
-_FOREIGN_PATH = re.compile(r"^(?://|[A-Za-z]:)")
+# "~" is allowed inside a name (Windows 8.3 short names such as RUNNER~1) but never where
+# Bash would expand it; see _TILDE_EXPANSION.
+_PATH_ARG = re.compile(r"^[A-Za-z0-9_./+,@%][A-Za-z0-9_./+,@%=~-]*$")
+_DRIVE = re.compile(r"^[A-Za-z]:")
+_DRIVE_ABSOLUTE = re.compile(r"^[A-Za-z]:/")
+_TILDE_EXPANSION = re.compile(r"(?:^|[\s:=])~")
 _FLAG_VALUES = {
     "--prefix": re.compile(r"^[A-Za-z]{1,8}$"),
     "--burst-gap": re.compile(r"^[0-9]{1,5}(\.[0-9]{1,3})?$"),
     "--max-noise-lines": re.compile(r"^[0-9]{1,4}$"),
 }
 _HELP_FLAGS = ("-h", "--help")
-_SHELL_META = re.compile(r"[;&|`$<>(){}\[\]*?!~#'\"\n\r\\]")
+_SHELL_META = re.compile(r"[;&|`$<>(){}\[\]*?!#'\"\n\r\\]")
 _DATE_SUFFIX = re.compile(r"^-\d{8}$")
 # What the pc-diag server needs from the environment: finding Python and powershell.exe,
 # the Windows directory, temp dirs (it writes saved events there), locale, WSL interop.
@@ -152,14 +154,35 @@ def _denial(tool_name: str) -> str:
     )
 
 
+def _on_windows() -> bool:
+    return os.name == "nt"
+
+
+def _resolve(arg: str, cwd: Path) -> Path:
+    target = Path(arg)
+    return Path(os.path.realpath(target if target.is_absolute() else cwd / target))
+
+
+def _path_shape_ok(arg: str) -> bool:
+    """Reject UNC and device paths (//host, //?/, //./; backslash forms never get here) and
+    drive-qualified paths, except ``X:/...`` with forward slashes on native Windows."""
+    if arg.startswith("//"):
+        return False
+    body = arg
+    if _DRIVE.match(arg):
+        if not (_on_windows() and _DRIVE_ABSOLUTE.match(arg)):
+            return False
+        body = arg[2:]
+    return bool(_PATH_ARG.match(body))
+
+
 def is_saved_events_file(arg: str, cwd: Path, temp_dir: Path) -> bool:
     """True only for a regular ``events-*.json`` file directly inside the MCP server's temp
-    dir, after resolving symlinks. Anything else could be a UNC path, a device, a FIFO or
-    simply a file the agent has no business reading."""
-    if _FOREIGN_PATH.match(arg) or not _PATH_ARG.match(arg):
+    dir, after resolving symlinks. Anything else could be a UNC path (NTLM over SMB), a
+    device, a FIFO or simply a file the agent has no business reading."""
+    if not _path_shape_ok(arg):
         return False
-    target = Path(arg)
-    resolved = Path(os.path.realpath(target if target.is_absolute() else cwd / target))
+    resolved = _resolve(arg, cwd)
     if resolved.parent != Path(os.path.realpath(temp_dir)):
         return False
     if not fnmatch.fnmatchcase(resolved.name, TEMPFILE_GLOB):
@@ -192,7 +215,7 @@ def _compressor_args_ok(args: list[str], cwd: Path, temp_dir: Path) -> bool:
 def is_compressor_command(command: str, cwd: Path, temp_dir: Path) -> bool:
     """True only for ``python[3] <COMPRESSOR> [saved event files] [digest flags]`` with no
     shell syntax and no option that writes a file."""
-    if _SHELL_META.search(command):
+    if _SHELL_META.search(command) or _TILDE_EXPANSION.search(command):
         return False
     try:
         argv = shlex.split(command)
