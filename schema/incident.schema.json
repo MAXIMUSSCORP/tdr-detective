@@ -1,0 +1,446 @@
+{
+  "$defs": {
+    "BugReport": {
+      "additionalProperties": false,
+      "properties": {
+        "actual": {
+          "title": "Actual",
+          "type": "string"
+        },
+        "driver_version": {
+          "title": "Driver Version",
+          "type": "string"
+        },
+        "evidence": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Evidence",
+          "type": "array"
+        },
+        "expected": {
+          "title": "Expected",
+          "type": "string"
+        },
+        "gpu": {
+          "title": "Gpu",
+          "type": "string"
+        },
+        "occurred_at": {
+          "format": "date-time",
+          "title": "Occurred At",
+          "type": "string"
+        },
+        "os_build": {
+          "title": "Os Build",
+          "type": "string"
+        },
+        "severity": {
+          "enum": [
+            "critical",
+            "high",
+            "medium",
+            "low"
+          ],
+          "title": "Severity",
+          "type": "string"
+        },
+        "steps_to_reproduce": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Steps To Reproduce",
+          "type": "array"
+        },
+        "summary": {
+          "title": "Summary",
+          "type": "string"
+        },
+        "title": {
+          "title": "Title",
+          "type": "string"
+        }
+      },
+      "required": [
+        "title",
+        "summary",
+        "os_build",
+        "gpu",
+        "driver_version",
+        "occurred_at",
+        "steps_to_reproduce",
+        "expected",
+        "actual",
+        "evidence",
+        "severity"
+      ],
+      "title": "BugReport",
+      "type": "object"
+    },
+    "Diagnosis": {
+      "additionalProperties": false,
+      "description": "The structured answer the agent must produce.",
+      "properties": {
+        "bug_report": {
+          "$ref": "#/$defs/BugReport"
+        },
+        "causes": {
+          "items": {
+            "$ref": "#/$defs/RankedCause"
+          },
+          "minItems": 1,
+          "title": "Causes",
+          "type": "array"
+        },
+        "next_steps": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Next Steps",
+          "type": "array"
+        },
+        "window": {
+          "$ref": "#/$defs/TimeWindow"
+        }
+      },
+      "required": [
+        "window",
+        "causes",
+        "next_steps",
+        "bug_report"
+      ],
+      "title": "Diagnosis",
+      "type": "object"
+    },
+    "EvidenceItem": {
+      "additionalProperties": false,
+      "properties": {
+        "detail": {
+          "default": "",
+          "title": "Detail",
+          "type": "string"
+        },
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "kind": {
+          "$ref": "#/$defs/EvidenceKind"
+        },
+        "label": {
+          "title": "Label",
+          "type": "string"
+        },
+        "severity": {
+          "default": "info",
+          "enum": [
+            "info",
+            "warning",
+            "error",
+            "critical"
+          ],
+          "title": "Severity",
+          "type": "string"
+        },
+        "time": {
+          "format": "date-time",
+          "title": "Time",
+          "type": "string"
+        },
+        "unit": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Unit"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Value"
+        }
+      },
+      "required": [
+        "id",
+        "kind",
+        "time",
+        "label"
+      ],
+      "title": "EvidenceItem",
+      "type": "object"
+    },
+    "EvidenceKind": {
+      "enum": [
+        "event",
+        "sensor",
+        "process",
+        "driver",
+        "frametime"
+      ],
+      "title": "EvidenceKind",
+      "type": "string"
+    },
+    "GpuInfo": {
+      "additionalProperties": false,
+      "properties": {
+        "driver_date": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Driver Date"
+        },
+        "driver_version": {
+          "title": "Driver Version",
+          "type": "string"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "vendor": {
+          "$ref": "#/$defs/GpuVendor"
+        }
+      },
+      "required": [
+        "name",
+        "vendor",
+        "driver_version"
+      ],
+      "title": "GpuInfo",
+      "type": "object"
+    },
+    "GpuVendor": {
+      "enum": [
+        "amd",
+        "nvidia",
+        "intel",
+        "other"
+      ],
+      "title": "GpuVendor",
+      "type": "string"
+    },
+    "RankedCause": {
+      "additionalProperties": false,
+      "properties": {
+        "category": {
+          "$ref": "#/$defs/RootCauseCategory"
+        },
+        "confidence": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Confidence",
+          "type": "number"
+        },
+        "evidence_refs": {
+          "description": "EvidenceItem ids supporting this cause.",
+          "items": {
+            "type": "string"
+          },
+          "title": "Evidence Refs",
+          "type": "array"
+        },
+        "rationale": {
+          "title": "Rationale",
+          "type": "string"
+        }
+      },
+      "required": [
+        "category",
+        "confidence",
+        "rationale"
+      ],
+      "title": "RankedCause",
+      "type": "object"
+    },
+    "RootCauseCategory": {
+      "enum": [
+        "gpu_driver_timeout",
+        "gpu_thermal",
+        "power_loss",
+        "hardware_error",
+        "kernel_driver_fault",
+        "memory_pressure",
+        "storage_io",
+        "application_hang",
+        "insufficient_evidence"
+      ],
+      "title": "RootCauseCategory",
+      "type": "string"
+    },
+    "RunStats": {
+      "additionalProperties": false,
+      "properties": {
+        "cache_read_tokens": {
+          "default": 0,
+          "title": "Cache Read Tokens",
+          "type": "integer"
+        },
+        "config": {
+          "title": "Config",
+          "type": "string"
+        },
+        "cost_usd": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Cost Usd"
+        },
+        "input_tokens": {
+          "title": "Input Tokens",
+          "type": "integer"
+        },
+        "latency_ms": {
+          "title": "Latency Ms",
+          "type": "integer"
+        },
+        "model": {
+          "title": "Model",
+          "type": "string"
+        },
+        "output_tokens": {
+          "title": "Output Tokens",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "config",
+        "model",
+        "input_tokens",
+        "output_tokens",
+        "latency_ms"
+      ],
+      "title": "RunStats",
+      "type": "object"
+    },
+    "SystemInfo": {
+      "additionalProperties": false,
+      "properties": {
+        "gpus": {
+          "items": {
+            "$ref": "#/$defs/GpuInfo"
+          },
+          "title": "Gpus",
+          "type": "array"
+        },
+        "os_build": {
+          "title": "Os Build",
+          "type": "string"
+        },
+        "os_caption": {
+          "title": "Os Caption",
+          "type": "string"
+        },
+        "utc_offset_minutes": {
+          "description": "Local UTC offset when captured; used to resolve questions like 'at 9:42'.",
+          "title": "Utc Offset Minutes",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "os_caption",
+        "os_build",
+        "gpus",
+        "utc_offset_minutes"
+      ],
+      "title": "SystemInfo",
+      "type": "object"
+    },
+    "TimeWindow": {
+      "additionalProperties": false,
+      "properties": {
+        "end": {
+          "format": "date-time",
+          "title": "End",
+          "type": "string"
+        },
+        "start": {
+          "format": "date-time",
+          "title": "Start",
+          "type": "string"
+        }
+      },
+      "required": [
+        "start",
+        "end"
+      ],
+      "title": "TimeWindow",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "created_at": {
+      "format": "date-time",
+      "title": "Created At",
+      "type": "string"
+    },
+    "diagnosis": {
+      "$ref": "#/$defs/Diagnosis"
+    },
+    "evidence": {
+      "items": {
+        "$ref": "#/$defs/EvidenceItem"
+      },
+      "title": "Evidence",
+      "type": "array"
+    },
+    "id": {
+      "title": "Id",
+      "type": "string"
+    },
+    "question": {
+      "title": "Question",
+      "type": "string"
+    },
+    "run": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/RunStats"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "system": {
+      "$ref": "#/$defs/SystemInfo"
+    }
+  },
+  "required": [
+    "id",
+    "question",
+    "created_at",
+    "system",
+    "diagnosis",
+    "evidence"
+  ],
+  "title": "Incident",
+  "type": "object"
+}
