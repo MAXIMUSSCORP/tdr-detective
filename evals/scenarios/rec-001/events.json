@@ -99,9 +99,9 @@
     "provider": "Microsoft-Windows-Time-Service",
     "event_id": 37,
     "level": "information",
-    "message": "The time provider NtpClient is currently receiving valid time data from time.windows.com,0x9 (ntp.m|0x9|0.0.0.0:123->168.61.215.74:123).",
+    "message": "The time provider NtpClient is currently receiving valid time data from time.windows.com,0x9 (ntp.m|0x9|0.0.0.0:123->[IPV4-1]:123).",
     "data": {
-      "TimeSource": "time.windows.com,0x9 (ntp.m|0x9|0.0.0.0:123->168.61.215.74:123)"
+      "TimeSource": "time.windows.com,0x9 (ntp.m|0x9|0.0.0.0:123->[IPV4-1]:123)"
     }
   },
   {
@@ -1952,7 +1952,7 @@
     "provider": "Microsoft-Windows-Directory-Services-SAM",
     "event_id": 16983,
     "level": "information",
-    "message": "The security account manager is now logging periodic summary events for remote clients that call legacy password change or set RPC methods. For more information please see https://go.microsoft.com/fwlink/?linkid=2150956.",
+    "message": "The security account manager is now logging periodic summary events for remote clients that call legacy password change or set RPC methods. For more information please see [URL-1]",
     "data": {}
   },
   {
@@ -1962,7 +1962,7 @@
     "provider": "Microsoft-Windows-Directory-Services-SAM",
     "event_id": 16977,
     "level": "information",
-    "message": "The domain is configured with the following minimum password length-related settings. MinimumPasswordLength: 0 RelaxMinimumPasswordLengthLimits: 0 MinimumPasswordLengthAudit: -1 For more information see https://go.microsoft.com/fwlink/?LinkId=2097191.",
+    "message": "The domain is configured with the following minimum password length-related settings. MinimumPasswordLength: 0 RelaxMinimumPasswordLengthLimits: 0 MinimumPasswordLengthAudit: -1 For more information see [URL-2]",
     "data": {
       "MinimumPasswordLength": "0",
       "RelaxMinimumPasswordLengthLimits": "0",
@@ -1976,7 +1976,7 @@
     "provider": "Microsoft-Windows-Directory-Services-SAM",
     "event_id": 16962,
     "level": "information",
-    "message": "Remote calls to the SAM database are being restricted using the default security descriptor: O:SYG:SYD:(A;;RC;;;BA). For more information please see http://go.microsoft.com/fwlink/?LinkId=787651.",
+    "message": "Remote calls to the SAM database are being restricted using the default security descriptor: O:SYG:SYD:(A;;RC;;;BA). For more information please see [URL-3]",
     "data": {
       "Default SD String:": "O:SYG:SYD:(A;;RC;;;BA)"
     }
@@ -4410,9 +4410,9 @@
     "provider": "Microsoft-Windows-Time-Service",
     "event_id": 37,
     "level": "information",
-    "message": "The time provider NtpClient is currently receiving valid time data from time.windows.com,0x9 (ntp.m|0x9|0.0.0.0:123->168.61.215.74:123).",
+    "message": "The time provider NtpClient is currently receiving valid time data from time.windows.com,0x9 (ntp.m|0x9|0.0.0.0:123->[IPV4-1]:123).",
     "data": {
-      "TimeSource": "time.windows.com,0x9 (ntp.m|0x9|0.0.0.0:123->168.61.215.74:123)"
+      "TimeSource": "time.windows.com,0x9 (ntp.m|0x9|0.0.0.0:123->[IPV4-1]:123)"
     }
   },
   {
