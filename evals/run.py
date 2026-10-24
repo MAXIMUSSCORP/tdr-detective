@@ -33,10 +33,8 @@ Exit codes: 0 when the run (or dry run) completed, 1 when no case matched the fi
 from __future__ import annotations
 
 import argparse
-import json
 import math
 import os
-import re
 import sys
 from collections import deque
 from collections.abc import Callable, Sequence
@@ -48,6 +46,7 @@ from typing import IO, Literal, Protocol, cast
 
 from evals.schema import EvalCase, ResultRow, Runner, load_cases
 from pc_diag_mcp.models import RunStats
+from tdr_agent.redact import redact
 
 EVALS_DIR = Path(__file__).resolve().parent
 CASES_PATH = EVALS_DIR / "cases.jsonl"
@@ -57,17 +56,6 @@ CONFIGS = ("raw_dump", "skill_tools")
 EFFORTS = ("low", "medium", "high", "xhigh", "max")
 DEFAULT_MODEL = "claude-opus-5-5"
 DEFAULT_EFFORT = "medium"
-
-_SECRET_ENV = (
-    "ANTHROPIC_API_KEY",
-    "ANTHROPIC_AUTH_TOKEN",
-    "CLAUDE_CODE_OAUTH_TOKEN",
-    "AWS_SECRET_ACCESS_KEY",
-    "AWS_SESSION_TOKEN",
-)
-_GOOGLE_CREDENTIAL_FIELDS = ("private_key", "private_key_id", "client_secret", "refresh_token")
-_ANTHROPIC_KEY = re.compile(r"sk-ant-[A-Za-z0-9_-]+")
-_MIN_SECRET_LEN = 8
 
 
 class EvalRunner(Runner, Protocol):
@@ -181,27 +169,6 @@ def select_cases(
         wanted = set(ids)
         chosen = [c for c in chosen if c.id in wanted]
     return chosen[:limit] if limit is not None else chosen
-
-
-def _secret_values() -> list[str]:
-    values = [os.environ.get(name, "") for name in _SECRET_ENV]
-    google = os.environ.get("GOOGLE_APPLICATION_CREDENTIALS")
-    if google:
-        try:
-            data = json.loads(Path(google).read_text(encoding="utf-8"))
-        except (OSError, ValueError):
-            data = None
-        if isinstance(data, dict):
-            values += [v for k in _GOOGLE_CREDENTIAL_FIELDS if isinstance(v := data.get(k), str)]
-    return [v for v in values if len(v) >= _MIN_SECRET_LEN]
-
-
-def redact(text: str) -> str:
-    """Replace credential values (raw and JSON-escaped) and Anthropic-key-shaped strings."""
-    for value in _secret_values():
-        for form in (value, json.dumps(value)[1:-1]):
-            text = text.replace(form, "[redacted]")
-    return _ANTHROPIC_KEY.sub("[redacted]", text)
 
 
 def redact_row(row: ResultRow) -> ResultRow:
