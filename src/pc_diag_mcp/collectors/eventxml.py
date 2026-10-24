@@ -7,6 +7,7 @@ to PowerShell as data on stdin. Nothing the model supplies is ever interpreted a
 from __future__ import annotations
 
 import re
+import unicodedata
 import xml.etree.ElementTree as ET
 from datetime import UTC, datetime
 
@@ -32,10 +33,32 @@ _LEVEL_CODES: dict[EventLevel, tuple[int, ...]] = {
 }
 _LEVEL_BY_CODE = {code: level for level, codes in _LEVEL_CODES.items() for code in codes}
 _WHITESPACE = re.compile(r"\s+")
-# C0/C1 controls except tab, plus zero-width and bidi-override characters that can hide text.
-_UNSAFE_CHARS = re.compile(
-    r"[\x00-\x08\x0a-\x1f\x7f-\x9f\u200b-\u200f\u202a-\u202e\u2060-\u2064\u2066-\u2069\ufeff]"
-)
+# Invisible characters that can hide or smuggle text: format (Cf), surrogate (Cs), private-use
+# (Co) and unassigned (Cn) code points, variation selectors and the Unicode tag block.
+_INVISIBLE_CATEGORIES = frozenset({"Cf", "Cs", "Co", "Cn"})
+_INVISIBLE_RANGES = ((0xFE00, 0xFE0F), (0xE0000, 0xE007F), (0xE0100, 0xE01EF))
+
+
+def _strip_unsafe(text: str, control_replacement: str) -> str:
+    """Drop invisible characters; replace control characters (Cc, except tab)."""
+    out: list[str] = []
+    for char in text:
+        code = ord(char)
+        category = unicodedata.category(char)
+        if category == "Cc":
+            if char == "\t":
+                out.append(char)
+            else:
+                out.append(control_replacement)
+        elif category in _INVISIBLE_CATEGORIES or any(
+            low <= code <= high for low, high in _INVISIBLE_RANGES
+        ):
+            continue
+        else:
+            out.append(char)
+    return "".join(out)
+
+
 _FRACTION = re.compile(r"(\.\d{6})\d+")
 
 
@@ -82,17 +105,17 @@ def truncate(text: str, limit: int = MAX_TEXT) -> str:
 
 def sanitize_text(text: str, limit: int = MAX_TEXT) -> str:
     """Log text is written by arbitrary local software: drop control/bidi characters."""
-    return truncate(_UNSAFE_CHARS.sub(" ", text).strip(), limit)
+    return truncate(_strip_unsafe(text, " ").strip(), limit)
 
 
 def sanitize_label(text: str, limit: int = MAX_LABEL) -> str:
-    return truncate(_UNSAFE_CHARS.sub("", text).strip(), limit)
+    return truncate(_strip_unsafe(text, "").strip(), limit)
 
 
 def clean_message(message: str | None) -> str:
     if not message:
         return ""
-    return truncate(_WHITESPACE.sub(" ", _UNSAFE_CHARS.sub(" ", message)).strip())
+    return truncate(_WHITESPACE.sub(" ", _strip_unsafe(message, " ")).strip())
 
 
 def sanitize_record(record: EventRecord) -> EventRecord:

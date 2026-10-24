@@ -39,7 +39,7 @@ def test_parse_event_strips_control_characters_and_caps_identifiers() -> None:
     (key,) = record.data
     assert len(key) == 128
     assert record.data[key] == "line1 line2\ttab"
-    assert record.message == "msg with bell [0m"
+    assert record.message == "msg withbell [0m"  # bidi override removed, BEL replaced
     assert _clean(record.message)
 
 
