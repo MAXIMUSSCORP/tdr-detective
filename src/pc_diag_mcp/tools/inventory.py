@@ -4,8 +4,6 @@ from __future__ import annotations
 
 from datetime import datetime
 
-from pydantic import BaseModel, ConfigDict
-
 from pc_diag_mcp.collectors.base import CollectionManifest, Collector, collect
 from pc_diag_mcp.collectors.parsers import PROCESS_SORT_KEYS
 from pc_diag_mcp.models import (
@@ -22,10 +20,8 @@ from pc_diag_mcp.tools.params import (
     SensorSnapshotParams,
     SortKey,
 )
-
-
-class _Result(BaseModel):
-    model_config = ConfigDict(extra="forbid", frozen=True)
+from pc_diag_mcp.tools.results import Result as _Result
+from pc_diag_mcp.tools.results import UntrustedResult
 
 
 class ProcessSnapshotResult(_Result):
@@ -34,7 +30,7 @@ class ProcessSnapshotResult(_Result):
     collection: CollectionManifest
 
 
-class SensorSnapshotResult(_Result):
+class SensorSnapshotResult(UntrustedResult):
     snapshots: list[SensorSnapshot]
     collection: CollectionManifest
 

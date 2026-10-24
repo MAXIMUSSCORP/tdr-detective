@@ -18,6 +18,7 @@ from pc_diag_mcp.collectors.base import CollectorError
 from pc_diag_mcp.models import EventLevel, EventQuery, EventRecord
 
 MAX_TEXT = 600
+MAX_LABEL = 128
 _EVENT_NS = "{http://schemas.microsoft.com/win/2004/08/events/event}"
 # Defence in depth: EventQuery already restricts provider names to this alphabet.
 _SAFE_PROVIDER = re.compile(r"^[A-Za-z0-9 ._-]{1,128}$")
@@ -31,6 +32,10 @@ _LEVEL_CODES: dict[EventLevel, tuple[int, ...]] = {
 }
 _LEVEL_BY_CODE = {code: level for level, codes in _LEVEL_CODES.items() for code in codes}
 _WHITESPACE = re.compile(r"\s+")
+# C0/C1 controls except tab, plus zero-width and bidi-override characters that can hide text.
+_UNSAFE_CHARS = re.compile(
+    r"[\x00-\x08\x0a-\x1f\x7f-\x9f\u200b-\u200f\u202a-\u202e\u2060-\u2064\u2066-\u2069\ufeff]"
+)
 _FRACTION = re.compile(r"(\.\d{6})\d+")
 
 
@@ -75,10 +80,34 @@ def truncate(text: str, limit: int = MAX_TEXT) -> str:
     return text if len(text) <= limit else text[: limit - 1] + "…"
 
 
+def sanitize_text(text: str, limit: int = MAX_TEXT) -> str:
+    """Log text is written by arbitrary local software: drop control/bidi characters."""
+    return truncate(_UNSAFE_CHARS.sub(" ", text).strip(), limit)
+
+
+def sanitize_label(text: str, limit: int = MAX_LABEL) -> str:
+    return truncate(_UNSAFE_CHARS.sub("", text).strip(), limit)
+
+
 def clean_message(message: str | None) -> str:
     if not message:
         return ""
-    return truncate(_WHITESPACE.sub(" ", message).strip())
+    return truncate(_WHITESPACE.sub(" ", _UNSAFE_CHARS.sub(" ", message)).strip())
+
+
+def sanitize_record(record: EventRecord) -> EventRecord:
+    """Idempotent; applied to every collector's output, not only to freshly parsed XML."""
+    data: dict[str, str] = {}
+    for key, value in record.data.items():
+        _put(data, key, value)
+    return record.model_copy(
+        update={
+            "log": sanitize_label(record.log),
+            "provider": sanitize_label(record.provider),
+            "message": clean_message(record.message),
+            "data": data,
+        }
+    )
 
 
 def _local(tag: str) -> str:
@@ -86,11 +115,12 @@ def _local(tag: str) -> str:
 
 
 def _put(data: dict[str, str], key: str, value: str) -> None:
+    key = sanitize_label(key) or "param"
     name, n = key, 1
     while name in data:
         n += 1
-        name = f"{key}_{n}"
-    data[name] = truncate(value.strip())
+        name = sanitize_label(f"{key}_{n}")
+    data[name] = sanitize_text(value)
 
 
 def _event_data(event: ET.Element) -> dict[str, str]:
@@ -136,8 +166,8 @@ def parse_event(xml: str, message: str | None) -> EventRecord:
         return EventRecord(
             record_id=int(system.findtext(f"{_EVENT_NS}EventRecordID") or ""),
             time=_parse_time(created.get("SystemTime") or ""),
-            log=system.findtext(f"{_EVENT_NS}Channel") or "",
-            provider=provider.get("Name") or "",
+            log=sanitize_label(system.findtext(f"{_EVENT_NS}Channel") or ""),
+            provider=sanitize_label(provider.get("Name") or ""),
             event_id=int(system.findtext(f"{_EVENT_NS}EventID") or ""),
             level=_LEVEL_BY_CODE.get(
                 int(system.findtext(f"{_EVENT_NS}Level") or "4"), EventLevel.INFORMATION
