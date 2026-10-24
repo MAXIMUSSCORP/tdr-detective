@@ -101,6 +101,27 @@ _FLAG_VALUES = {
 _HELP_FLAGS = ("-h", "--help")
 _SHELL_META = re.compile(r"[;&|`$<>(){}\[\]*?!~#'\"\n\r\\]")
 _DATE_SUFFIX = re.compile(r"^-\d{8}$")
+# What the pc-diag server needs from the environment: finding Python and powershell.exe,
+# the Windows directory, temp dirs (it writes saved events there), locale, WSL interop.
+_SERVER_ENV_PASSTHROUGH = (
+    "SYSTEMROOT",
+    "SystemRoot",
+    "windir",
+    "WINDIR",
+    "SystemDrive",
+    "TEMP",
+    "TMP",
+    "TMPDIR",
+    "LANG",
+    "LC_ALL",
+    "LC_CTYPE",
+    "WSL_INTEROP",
+    "WSL_DISTRO_NAME",
+    "WSLENV",
+)
+# Claude Code strips credentials from the environment of every subprocess it starts (Bash,
+# hooks, MCP servers) when this is set; without it the API key reaches the MCP server.
+SUBPROCESS_ENV_SCRUB = "CLAUDE_CODE_SUBPROCESS_ENV_SCRUB"
 
 
 class TriageSetupError(RuntimeError):
@@ -239,6 +260,20 @@ class Guard:
         }
 
 
+def _python_path() -> str:
+    # The skill runs `python ...`; make that resolve to this interpreter's environment.
+    return os.pathsep.join([str(Path(sys.executable).parent), os.environ.get("PATH", "")])
+
+
+def mcp_server_env(replay_dir: Path | None) -> dict[str, str]:
+    """A minimal, credential-free environment for the pc-diag server."""
+    env = {name: os.environ[name] for name in _SERVER_ENV_PASSTHROUGH if os.environ.get(name)}
+    env["PATH"] = _python_path()
+    if replay_dir is not None:
+        env["PC_DIAG_REPLAY"] = str(replay_dir.resolve())
+    return env
+
+
 def build_options(
     *,
     replay_dir: Path | None,
@@ -253,11 +288,8 @@ def build_options(
         "type": "stdio",
         "command": sys.executable,
         "args": ["-m", "pc_diag_mcp.server"],
+        "env": mcp_server_env(replay_dir),
     }
-    if replay_dir is not None:
-        server["env"] = {"PC_DIAG_REPLAY": str(replay_dir.resolve())}
-    # The skill runs `python ...`; make that resolve to this interpreter's environment.
-    path = os.pathsep.join([str(Path(sys.executable).parent), os.environ.get("PATH", "")])
     guard = Guard(cwd)
     return ClaudeAgentOptions(
         system_prompt=SYSTEM_PROMPT,
@@ -276,7 +308,9 @@ def build_options(
         effort=cast(EffortLevel, effort),
         max_budget_usd=max_budget_usd,
         cwd=cwd,
-        env={"PATH": path},
+        # The CLI itself still needs its credentials; the scrub keeps them out of the
+        # Bash tool, hooks and the MCP server.
+        env={"PATH": _python_path(), SUBPROCESS_ENV_SCRUB: "1"},
     )
 
 
