@@ -1,0 +1,329 @@
+{
+  "id": "demo-black-screen-0942",
+  "question": "My screen went black for a few seconds at 9:42 while I was playing, then came back. What happened?",
+  "created_at": "2026-10-20T13:51:18Z",
+  "system": {
+    "os_caption": "Microsoft Windows 11 Pro",
+    "os_build": "26100.4652",
+    "gpus": [
+      {
+        "name": "AMD Radeon RX 7800 XT",
+        "vendor": "amd",
+        "driver_version": "32.0.21013.1000",
+        "driver_date": "2026-07-14"
+      }
+    ],
+    "utc_offset_minutes": -240
+  },
+  "diagnosis": {
+    "window": {
+      "start": "2026-10-20T13:32:00Z",
+      "end": "2026-10-20T13:45:00Z"
+    },
+    "causes": [
+      {
+        "category": "gpu_driver_timeout",
+        "confidence": 0.71,
+        "rationale": "Display event 4101 at 09:42:07 reports that amdkmdag stopped responding and recovered, and two seconds later Windows Error Reporting filed LiveKernelEvent 141 (VIDEO_ENGINE_TIMEOUT_DETECTED) against amdkmdag.sys. That is a TDR: the GPU missed the two-second watchdog, Windows reset it, and the display came back. The 2.1 s frame directly before the reset is the black screen the user saw.",
+        "evidence_refs": ["ev-display-4101", "ev-lke-141", "ft-12", "ft-13", "drv-amdkmdag"]
+      },
+      {
+        "category": "gpu_thermal",
+        "confidence": 0.22,
+        "rationale": "GPU hotspot climbed from 71 °C to 106 °C over eight minutes of sustained load and fell to 74 °C once the GPU reset. It stayed under the 110 °C throttle point, so heat is a plausible contributor to the hang but is not shown to be the cause.",
+        "evidence_refs": ["sn-hotspot-1", "sn-hotspot-4", "sn-hotspot-6", "sn-hotspot-7", "sn-hotspot-8"]
+      },
+      {
+        "category": "application_hang",
+        "confidence": 0.04,
+        "rationale": "game.exe was the only heavy GPU client. A hang inside the game would freeze its own window but would not normally trigger a kernel-mode TDR with a live dump, so this is unlikely.",
+        "evidence_refs": ["pr-game"]
+      }
+    ],
+    "next_steps": [
+      "Clean-install the current AMD Adrenalin driver (the installed amdkmdag is 32.0.21013.1000 from July) and retest the same game session.",
+      "Check case airflow and the GPU fan curve; retest once with the power limit lowered by 10% to see whether the timeouts stop.",
+      "If it happens again, attach the live kernel dump from C:\\Windows\\LiveKernelReports\\WATCHDOG to an AMD bug report."
+    ],
+    "bug_report": {
+      "title": "amdkmdag TDR (LiveKernelEvent 141) during sustained 3D load on driver 32.0.21013.1000",
+      "summary": "While a game was running, the display went black for about two seconds and then recovered. The System log records Display event 4101 for amdkmdag, followed by a LiveKernelEvent 141 (VIDEO_ENGINE_TIMEOUT_DETECTED) report. GPU hotspot temperature was 106 °C just before the timeout.",
+      "os_build": "26100.4652",
+      "gpu": "AMD Radeon RX 7800 XT",
+      "driver_version": "32.0.21013.1000",
+      "occurred_at": "2026-10-20T13:42:07Z",
+      "steps_to_reproduce": [
+        "Boot Windows 11 24H2 (build 26100.4652) with AMD driver 32.0.21013.1000.",
+        "Run a GPU-bound 3D game at 1440p, uncapped frame rate, for about ten minutes.",
+        "Watch for the display going black and recovering."
+      ],
+      "expected": "The game keeps rendering with stable frame times and the driver does not reset.",
+      "actual": "Frame time spiked to 2.1 s, the screen went black, and Windows reset the display driver (Display 4101, LiveKernelEvent 141).",
+      "evidence": ["ev-display-4101", "ev-lke-141", "ft-13", "sn-hotspot-7", "drv-amdkmdag"],
+      "severity": "high"
+    }
+  },
+  "evidence": [
+    {
+      "id": "drv-amdkmdag",
+      "kind": "driver",
+      "time": "2026-10-20T13:32:10Z",
+      "label": "amdkmdag 32.0.21013.1000 (2026-07-14)",
+      "detail": "Display adapter driver: Advanced Micro Devices, Inc., oem42.inf, signed.",
+      "severity": "info"
+    },
+    {
+      "id": "pr-game",
+      "kind": "process",
+      "time": "2026-10-20T13:33:05Z",
+      "label": "game.exe started",
+      "detail": "Working set 6.1 GB; the only process with sustained GPU load.",
+      "severity": "info"
+    },
+    {
+      "id": "sn-hotspot-1",
+      "kind": "sensor",
+      "time": "2026-10-20T13:34:00Z",
+      "label": "GPU hotspot",
+      "detail": "Junction temperature (LibreHardwareMonitor); edge 64 °C.",
+      "severity": "info",
+      "value": 71,
+      "unit": "°C"
+    },
+    {
+      "id": "sn-hotspot-2",
+      "kind": "sensor",
+      "time": "2026-10-20T13:36:00Z",
+      "label": "GPU hotspot",
+      "detail": "Junction temperature (LibreHardwareMonitor); edge 69 °C.",
+      "severity": "info",
+      "value": 79,
+      "unit": "°C"
+    },
+    {
+      "id": "sn-hotspot-3",
+      "kind": "sensor",
+      "time": "2026-10-20T13:38:00Z",
+      "label": "GPU hotspot",
+      "detail": "Junction temperature (LibreHardwareMonitor); edge 74 °C.",
+      "severity": "info",
+      "value": 86,
+      "unit": "°C"
+    },
+    {
+      "id": "sn-hotspot-4",
+      "kind": "sensor",
+      "time": "2026-10-20T13:40:00Z",
+      "label": "GPU hotspot",
+      "detail": "Junction temperature (LibreHardwareMonitor); edge 78 °C.",
+      "severity": "warning",
+      "value": 93,
+      "unit": "°C"
+    },
+    {
+      "id": "sn-hotspot-5",
+      "kind": "sensor",
+      "time": "2026-10-20T13:41:00Z",
+      "label": "GPU hotspot",
+      "detail": "Junction temperature (LibreHardwareMonitor); edge 81 °C.",
+      "severity": "warning",
+      "value": 99,
+      "unit": "°C"
+    },
+    {
+      "id": "sn-hotspot-6",
+      "kind": "sensor",
+      "time": "2026-10-20T13:41:40Z",
+      "label": "GPU hotspot",
+      "detail": "Junction temperature (LibreHardwareMonitor); edge 83 °C.",
+      "severity": "error",
+      "value": 103,
+      "unit": "°C"
+    },
+    {
+      "id": "sn-hotspot-7",
+      "kind": "sensor",
+      "time": "2026-10-20T13:42:04Z",
+      "label": "GPU hotspot",
+      "detail": "Junction temperature (LibreHardwareMonitor); edge 84 °C. Peak for the session.",
+      "severity": "error",
+      "value": 106,
+      "unit": "°C"
+    },
+    {
+      "id": "sn-hotspot-8",
+      "kind": "sensor",
+      "time": "2026-10-20T13:43:30Z",
+      "label": "GPU hotspot",
+      "detail": "Junction temperature (LibreHardwareMonitor); edge 66 °C after the driver reset.",
+      "severity": "info",
+      "value": 74,
+      "unit": "°C"
+    },
+    {
+      "id": "ft-01",
+      "kind": "frametime",
+      "time": "2026-10-20T13:41:00Z",
+      "label": "Frame time",
+      "detail": "PresentMon, game.exe; 95th percentile over 1 s.",
+      "severity": "info",
+      "value": 7.1,
+      "unit": "ms"
+    },
+    {
+      "id": "ft-02",
+      "kind": "frametime",
+      "time": "2026-10-20T13:41:10Z",
+      "label": "Frame time",
+      "detail": "PresentMon, game.exe; 95th percentile over 1 s.",
+      "severity": "info",
+      "value": 7.3,
+      "unit": "ms"
+    },
+    {
+      "id": "ft-03",
+      "kind": "frametime",
+      "time": "2026-10-20T13:41:20Z",
+      "label": "Frame time",
+      "detail": "PresentMon, game.exe; 95th percentile over 1 s.",
+      "severity": "info",
+      "value": 7.0,
+      "unit": "ms"
+    },
+    {
+      "id": "ft-04",
+      "kind": "frametime",
+      "time": "2026-10-20T13:41:30Z",
+      "label": "Frame time",
+      "detail": "PresentMon, game.exe; 95th percentile over 1 s.",
+      "severity": "info",
+      "value": 7.6,
+      "unit": "ms"
+    },
+    {
+      "id": "ft-05",
+      "kind": "frametime",
+      "time": "2026-10-20T13:41:40Z",
+      "label": "Frame time",
+      "detail": "PresentMon, game.exe; 95th percentile over 1 s.",
+      "severity": "info",
+      "value": 8.4,
+      "unit": "ms"
+    },
+    {
+      "id": "ft-06",
+      "kind": "frametime",
+      "time": "2026-10-20T13:41:48Z",
+      "label": "Frame time",
+      "detail": "PresentMon, game.exe; 95th percentile over 1 s.",
+      "severity": "info",
+      "value": 9.8,
+      "unit": "ms"
+    },
+    {
+      "id": "ft-07",
+      "kind": "frametime",
+      "time": "2026-10-20T13:41:54Z",
+      "label": "Frame time",
+      "detail": "PresentMon, game.exe; 95th percentile over 1 s.",
+      "severity": "warning",
+      "value": 14.2,
+      "unit": "ms"
+    },
+    {
+      "id": "ft-08",
+      "kind": "frametime",
+      "time": "2026-10-20T13:41:58Z",
+      "label": "Frame time",
+      "detail": "PresentMon, game.exe; 95th percentile over 1 s.",
+      "severity": "warning",
+      "value": 21.5,
+      "unit": "ms"
+    },
+    {
+      "id": "ft-09",
+      "kind": "frametime",
+      "time": "2026-10-20T13:42:00Z",
+      "label": "Frame time",
+      "detail": "PresentMon, game.exe; 95th percentile over 1 s.",
+      "severity": "warning",
+      "value": 38.0,
+      "unit": "ms"
+    },
+    {
+      "id": "ft-10",
+      "kind": "frametime",
+      "time": "2026-10-20T13:42:01Z",
+      "label": "Frame time",
+      "detail": "PresentMon, game.exe; 95th percentile over 1 s.",
+      "severity": "warning",
+      "value": 64.0,
+      "unit": "ms"
+    },
+    {
+      "id": "ft-11",
+      "kind": "frametime",
+      "time": "2026-10-20T13:42:02Z",
+      "label": "Frame time",
+      "detail": "PresentMon, game.exe; 95th percentile over 1 s.",
+      "severity": "error",
+      "value": 212.0,
+      "unit": "ms"
+    },
+    {
+      "id": "ft-12",
+      "kind": "frametime",
+      "time": "2026-10-20T13:42:03Z",
+      "label": "Frame time hitch",
+      "detail": "PresentMon, game.exe; GPU busy for the whole interval, no frames presented.",
+      "severity": "error",
+      "value": 640.0,
+      "unit": "ms"
+    },
+    {
+      "id": "ft-13",
+      "kind": "frametime",
+      "time": "2026-10-20T13:42:05Z",
+      "label": "Frame time hitch",
+      "detail": "PresentMon, game.exe; last frame before the device was removed and reset.",
+      "severity": "critical",
+      "value": 2140.0,
+      "unit": "ms"
+    },
+    {
+      "id": "ft-14",
+      "kind": "frametime",
+      "time": "2026-10-20T13:42:30Z",
+      "label": "Frame time",
+      "detail": "PresentMon, game.exe; rendering resumed after recovery.",
+      "severity": "info",
+      "value": 7.4,
+      "unit": "ms"
+    },
+    {
+      "id": "ev-display-4101",
+      "kind": "event",
+      "time": "2026-10-20T13:42:07Z",
+      "label": "Display 4101: amdkmdag stopped responding and has recovered",
+      "detail": "System log, provider Display, event 4101, record 48211: Display driver amdkmdag stopped responding and has successfully recovered.",
+      "severity": "warning"
+    },
+    {
+      "id": "ev-lke-141",
+      "kind": "event",
+      "time": "2026-10-20T13:42:09Z",
+      "label": "LiveKernelEvent 141 (VIDEO_ENGINE_TIMEOUT_DETECTED)",
+      "detail": "Application log, Windows Error Reporting event 1001, record 90377: LiveKernelEvent, P1 141, bucket LKD_0x141_Tdr:6_IMAGE_amdkmdag.sys_Navi32. Dump: C:\\Windows\\LiveKernelReports\\WATCHDOG\\WATCHDOG-20261020-0942.dmp.",
+      "severity": "error"
+    }
+  ],
+  "run": {
+    "config": "skill_tools",
+    "model": "claude-sonnet-4-5",
+    "input_tokens": 18420,
+    "output_tokens": 1310,
+    "cache_read_tokens": 9800,
+    "cost_usd": 0.0779,
+    "latency_ms": 21400
+  }
+}
