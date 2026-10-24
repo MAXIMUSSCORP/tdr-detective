@@ -12,6 +12,7 @@ Layout (see ``ReplayScenario``)::
 
 from __future__ import annotations
 
+from datetime import datetime
 from pathlib import Path
 from typing import TypeVar
 
@@ -108,6 +109,9 @@ class ReplayCollector:
         record_source("replay:drivers.json")
         wanted = {c.upper() for c in device_classes}
         return [d for d in self._load("drivers.json", _DRIVERS) if d.device_class.upper() in wanted]
+
+    def now(self) -> datetime:
+        return self.scenario.now
 
     def system_info(self) -> SystemInfo:
         record_source("replay:scenario.json")

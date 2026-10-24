@@ -126,6 +126,9 @@ class StubCollector:
     def system_info(self) -> SystemInfo:
         return SystemInfo(os_caption="W", os_build="1", gpus=[], utc_offset_minutes=0)
 
+    def now(self) -> datetime:
+        return T0
+
     def dxdiag(self) -> DxDiagSummary:
         return DxDiagSummary(directx_version="DirectX 12", display_devices=[])
 
@@ -324,6 +327,7 @@ def test_dxdiag_and_system_info() -> None:
     assert dxdiag_summary(stub).dxdiag.directx_version == "DirectX 12"
     info = system_info(stub)
     assert info.system.os_caption == "W" and info.collection.elapsed_ms >= 0
+    assert info.now == T0  # the collector's clock
 
 
 def test_tools_with_replay_collector(tmp_path: Path) -> None:
@@ -333,7 +337,9 @@ def test_tools_with_replay_collector(tmp_path: Path) -> None:
     collector = ReplayCollector(write_replay(tmp_path / "r", events=events))
     result = list_tdr_incidents(collector, *SAMPLE_WINDOW)
     assert result.incidents and result.collection.scripts == ["replay:events.json"]
-    assert system_info(collector).collection.scripts == ["replay:scenario.json"]
+    info = system_info(collector)
+    assert info.collection.scripts == ["replay:scenario.json"]
+    assert info.now == collector.scenario.now
 
 
 @pytest.mark.parametrize("tool", TOOL_NAMES)

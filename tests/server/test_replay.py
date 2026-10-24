@@ -161,6 +161,11 @@ def test_system_info_and_dxdiag(replay: ReplayCollector) -> None:
     assert replay.dxdiag().directx_version == "DirectX 12"
 
 
+def test_now_is_the_scenario_clock(replay: ReplayCollector) -> None:
+    assert replay.now() == replay.scenario.now
+    assert replay.now().utcoffset() is not None
+
+
 def test_missing_optional_files_are_unavailable(tmp_path: Path) -> None:
     collector = ReplayCollector(write_replay(tmp_path / "bare", events=[]))
     for call in (

@@ -12,6 +12,7 @@ import time
 from collections.abc import Callable
 from contextvars import ContextVar
 from dataclasses import dataclass, field
+from datetime import datetime
 from typing import Literal, Protocol, runtime_checkable
 
 from pydantic import BaseModel, ConfigDict, Field
@@ -80,6 +81,11 @@ class Collector(Protocol):
     def drivers(self, device_classes: list[str]) -> list[DriverInfo]: ...
 
     def system_info(self) -> SystemInfo: ...
+
+    def now(self) -> datetime:
+        """The host's current time, timezone-aware UTC. A replay answers with its recorded
+        clock, so relative times ("tonight") resolve inside the scenario."""
+        ...
 
     def dxdiag(self) -> DxDiagSummary: ...
 

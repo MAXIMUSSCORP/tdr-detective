@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from datetime import datetime
+
 import pytest
 
 from pc_diag_mcp.collectors.eventxml import clean_message, sanitize_label, sanitize_text
@@ -70,6 +72,9 @@ class _Dirty:
             ],
             utc_offset_minutes=-360,
         )
+
+    def now(self) -> datetime:
+        return T0
 
 
 def test_process_and_system_labels_are_sanitized_and_marked() -> None:

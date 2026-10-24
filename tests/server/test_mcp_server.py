@@ -6,6 +6,7 @@ import logging
 import os
 import sys
 from collections.abc import Awaitable, Callable
+from datetime import UTC, datetime, timedelta
 from pathlib import Path
 from typing import Any
 
@@ -84,6 +85,27 @@ def test_system_info() -> None:
     assert data is not None
     assert data["system"]["os_build"] == "22631.4317"
     assert data["collection"]["source"] == "replay"
+    # The replay's clock, not the machine running the eval.
+    assert datetime.fromisoformat(data["now"]) == datetime(2026, 10, 15, 2, 8, 8, tzinfo=UTC)
+
+
+def test_system_info_advertises_now() -> None:
+    tools = {t.name: t for t in run(lambda c: c.list_tools())}
+    tool = tools["system_info"]
+    assert tool.description is not None and "now" in tool.description
+    schema = tool.output_schema
+    assert schema is not None
+    assert "now" in schema["required"]
+    now = schema["properties"]["now"]
+    assert now["format"] == "date-time"
+    assert "not your own clock" in now["description"]
+
+
+def test_live_now_is_the_real_time() -> None:
+    before = datetime.now(UTC)
+    now = PowerShellCollector().now()
+    assert now.tzinfo is not None and now.utcoffset() == timedelta(0)
+    assert before - timedelta(seconds=5) <= now <= datetime.now(UTC) + timedelta(seconds=5)
 
 
 def test_list_tdr_incidents() -> None:
